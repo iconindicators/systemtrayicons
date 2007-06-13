@@ -1,9 +1,9 @@
 <project name="StardateSystemTray" default="CompileAndJar" basedir=".">
-	
+
 	<description>Stardate and Stardate System Tray project build file.</description>
-	
+
 	<property environment="env"/>
-	
+
 	<property name="bin" location="bin" />
 	<property name="javadoc" location="javadoc" />
 	<property name="installer" location="installer" />
@@ -15,7 +15,8 @@
 	<condition property="IsWindows" value="true">
 		<os family="winnt" />
 	</condition>
-	
+
+
 	<target name="CompileAndJar" description="Compiles and JARs the stardate back-end, example programs and the system tray front end.">
 		<delete dir="${bin}" />
 		<mkdir dir="${bin}" />
@@ -32,14 +33,12 @@
 
 		<jar jarfile="${bin}/stardate-applet.jar" basedir="${bin}" includes="StardateApplet*.class" />
 
-		<delete file="${bin}/MANIFEST.MF" />
 		<manifest file="${bin}/MANIFEST.MF">
 			<attribute name="Class-Path" value=". stardate.jar" />
 			<attribute name="Main-Class" value="StardateConverter" />
 		</manifest>
 		<jar jarfile="${bin}/stardate-converter.jar" basedir="${bin}" includes="StardateConverter.class" manifest="${bin}/MANIFEST.MF" />
 
-		<delete file="${bin}/MANIFEST.MF" />
 		<manifest file="${bin}/MANIFEST.MF">
 			<attribute name="Class-Path" value=". stardate.jar joda-time-1.4.jar jRegistryKey.jar" />
 			<attribute name="Main-Class" value="StardateSystemTray" />
@@ -47,7 +46,7 @@
 		<jar jarfile="${bin}/stardate-system-tray.jar" basedir="${bin}" includes="PopupMenu.class Properties.class StardateSystemTray.class SystemStart.class TrayIcon.class" manifest="${bin}/MANIFEST.MF" />
 	</target>
 
-	
+
 	<target name="CodeRelease" depends="CompileAndJar" description="Releases the JAR'd code.">
 		<delete dir="${release}" />
 		<mkdir dir="${release}" />
@@ -57,35 +56,40 @@
 		<delete dir="${bin}" />
 	</target>
 
-	
-	<target name="Installer" unless="IsWindows" depends="CodeRelease" description="Build the Microsoft Windows installer executable using NSIS.">
-		<delete file="${launcher}/win32/StardateSystemTray.exe" />
+
+	<target name="Installer" if="IsWindows" depends="CodeRelease" description="Build the Microsoft Windows installer executable using NSIS.">
 		<exec executable="${env.NSIS_HOME}/Makensis.exe">
 			<arg line="${launcher}/win32/Launcher.nsi"/>
 		</exec>
 
-		<delete file="${release}/StardateSystemTraySetup.exe" />
 		<exec executable="${env.NSIS_HOME}/Makensis.exe">
 			<arg line="${installer}/win32/Installer.nsi"/>
 		</exec>
 		<move file="${installer}/win32/StardateSystemTraySetup.exe" tofile="${release}/StardateSystemTraySetup.exe" /> 
 
 		<delete file="${launcher}/win32/StardateSystemTray.exe" />
-		<delete dir="${bin}" />
 	</target>
 
-	
+
 	<target name="JavaDoc" description="Create Javadoc for the Stardate API.">
 		<property name="windowtitle" value="Stardate v1.0 API Specification" />
 		<property name="doctitle" value="Stardate v1.0 API Specification" />
 		<property name="header" value="Stardate v1.0 API Specification" />
 		<delete dir="${javadoc}" />
 		<mkdir dir="${javadoc}" />
-		<javadoc sourcefiles="${src}/Stardate.java,${src}/StardateException.java" packagenames="*.*" destdir="${javadoc}" author="true" version="true" use="true" splitindex="true" overview="${src}/overview.html" windowtitle="${windowtitle}" header="${header}" doctitle="${doctitle}">
-			<classpath>
-				<pathelement location="${lib}/joda-time-1.4.jar" />
-				<pathelement location="${lib}/win32/jRegistryKey.jar" />
-			</classpath>
+		<javadoc 
+			sourcefiles="${src}/Stardate.java,${src}/StardateException.java" 
+			packagenames="*.*" 
+			destdir="${javadoc}" 
+			author="true" 
+			version="true" 
+			use="true" 
+			splitindex="true" 
+			overview="${src}/overview.html" 
+			windowtitle="${windowtitle}" 
+			header="${header}" 
+			doctitle="${doctitle}"
+		>
 		</javadoc>
 	</target>
 </project>
