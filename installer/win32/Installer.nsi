@@ -77,6 +77,7 @@ Section "Default Section"
 
   SetOutPath "$INSTDIR"
   
+  File ..\..\ReleaseNotes.txt
   File ..\..\release\stardate.jar
   File ..\..\release\stardate-system-tray.jar
   File ..\..\lib\joda-time-1.4.jar
