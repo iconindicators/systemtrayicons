@@ -1,0 +1,10 @@
+Stardate and Stardate System Tray Release Notes
+-----------------------------------------------
+
+
+2007-06-13 Version 1.0
+
+* First release.
+
+
+http://sourceforge.net/projects/stardatesystray
