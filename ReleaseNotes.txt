@@ -2,6 +2,12 @@ Stardate and Stardate System Tray Release Notes
 -----------------------------------------------
 
 
+2007-06-22 Version 1.1
+
+* Disabled the pop up menu when the About dialogue is displayed.
+* Now uses system Look and Feel.
+
+
 2007-06-13 Version 1.0
 
 * First release.
