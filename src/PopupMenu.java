@@ -1,6 +1,6 @@
 import java.awt.CheckboxMenuItem;
 import java.awt.MenuItem;
-import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -12,9 +12,6 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
 
-/**
- *
- */
 public class PopupMenu extends java.awt.PopupMenu implements ActionListener, ItemListener
 {
 	static final String POPUP_ABOUT = "About";
@@ -51,9 +48,8 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     private CheckboxMenuItem m_checkboxMenuItemDateFormatMedium = null;
     private CheckboxMenuItem m_checkboxMenuItemDateFormatShort = null;
 
-    private JDialog m_aboutDialog = null;
-    private Point m_aboutDialogLocation = null;
-    
+    private static boolean m_popupDisabled = false;
+
     
     public PopupMenu()
 	{
@@ -142,43 +138,38 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	}
 
     
+    public boolean popupIsDisabled() { return m_popupDisabled; }
+    
+    
     public void actionPerformed( ActionEvent actionEvent )
 	{
     	String menuItem = ( (MenuItem)actionEvent.getSource() ).getLabel();
 
     	if( POPUP_ABOUT.equals( menuItem ) )
     	{
-    		if( m_aboutDialog == null )
-    		{
-        		JLabel label = 
-        			new JLabel
-        			( 
+    		m_popupDisabled = true;
+    		final JLabel label = 
+    			new JLabel
+    			( 
         				"<html><center>" +
-        				"<i>" + APPLICATION_NAME + "</i><br>" + APPLICATION_VERSION + "<br><br>" + 
+        				"<b>" + APPLICATION_NAME + "</b><br>" + APPLICATION_VERSION + "<br><br>" + 
         				CREDIT_ALGORITHM_LINE1 + "<br>" + CREDIT_ALGORITHM_LINE2 + "<br><br>" + 
         				CREDIT_CHRONOLOGY + "<br><br>" + 
         				CREDIT_REGISTRY + "<br><br>" + 
         				CREDIT_NSIS + "<br><br>" +
         				"</center></html>",
         				SwingConstants.CENTER
-        			);
+    			);
 
-               JOptionPane optionPane = new JOptionPane( new Object[] { label } );
-               m_aboutDialog = optionPane.createDialog( null, POPUP_ABOUT );
-               m_aboutDialogLocation = m_aboutDialog.getLocation();
-    		}
+    		final JDialog dialog = new JOptionPane( new Object[] { label } ).createDialog( POPUP_ABOUT );
+	        int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - dialog.getWidth() ) / 2;
+	        int originY = ( Toolkit.getDefaultToolkit().getScreenSize().height - dialog.getHeight() ) / 2;
+	        dialog.setLocation( originX, originY );
+	        dialog.setVisible( true );
+	        
+	        m_popupDisabled = false;
 
-    		if( m_aboutDialog.isVisible() )
-    		{
-        		m_aboutDialog.toFront();
-    		}
-    		else
-    		{
-    	   		m_aboutDialog.setLocation( m_aboutDialogLocation );
-    			m_aboutDialog.setVisible( true );
-    		}
-
-           return;
+			return;
     	}
 
     	if( POPUP_EXIT.equals( menuItem ) )
