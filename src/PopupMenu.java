@@ -36,7 +36,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	static final String SUBPOPUP_DATE_TIME_FORMAT_SHORT = "Short";
 
 	public static final String APPLICATION_NAME = "Stardate System Tray";
-	public static final String APPLICATION_VERSION = "Version 1.0 (2007-06-11)";
+	public static final String APPLICATION_VERSION = "Version 1.1 (2007-06-22)";
 
 	private static final String CREDIT_ALGORITHM_LINE1 = "Stardate algorithm based on";
 	private static final String CREDIT_ALGORITHM_LINE2 = "<i>STARDATES IN STAR TREK FAQ</i>";
