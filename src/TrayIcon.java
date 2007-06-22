@@ -35,7 +35,9 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 
 	private static final String MESSAGE_TOOL_TIP = "Stardate: ";
 
+	private PopupMenu m_popupMenu = null;
 
+	
 	private TrayIcon( PopupMenu popupMenu )
 	{
 		super( new ImageIcon( TRAY_ICON_IMAGE ).getImage(), null, popupMenu );
@@ -43,6 +45,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 		setImageAutoSize( true );
 		addMouseListener( this );
 		addMouseMotionListener( this );
+		m_popupMenu = popupMenu;
 	}
 
 	
@@ -177,6 +180,14 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 		{
         	TrayIcon trayIcon = (TrayIcon)mouseEvent.getSource();
 			trayIcon.displayMessage( PopupMenu.APPLICATION_NAME, getMessageString(), TrayIcon.MessageType.NONE );
+		}
+		else if( mouseEvent.getButton() == MouseEvent.BUTTON3 )
+		{
+			// Disable the pop up menu when we put up another dialog.
+			if( m_popupMenu.popupIsDisabled() )
+				setPopupMenu( null );
+			else
+				setPopupMenu( m_popupMenu );
 		}
 	}
 
