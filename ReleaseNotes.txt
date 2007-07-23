@@ -1,0 +1,10 @@
+World Time System Tray Release Notes
+------------------------------------
+
+
+2007-07-24 Version 1.0
+
+* First release.
+
+
+http://sourceforge.net/projects/wrldtimesystray
