@@ -2,6 +2,12 @@ Stardate and Stardate System Tray Release Notes
 -----------------------------------------------
 
 
+2007-07-24 Version 1.2
+
+* Better handling for absence of system tray support.
+* Added internationalisation capability.
+
+
 2007-06-22 Version 1.1
 
 * Disabled the pop up menu when the About dialogue is displayed.
