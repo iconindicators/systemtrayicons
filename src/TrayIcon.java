@@ -20,20 +20,20 @@ import org.joda.time.format.DateTimeFormatter;
 
 public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseMotionListener
 {
-	private static final String TRAY_ICON_IMAGE = "trayicon.gif";
+	private static final String TRAY_ICON_IMAGE = "trayicon.gif"; 
 
-	private static final String MESSAGE_NO_CHRONOLOGIES = "No chronologies selected.";
-	private static final String MESSAGE_BUDDHIST = "Buddhist: ";
-	private static final String MESSAGE_COPTIC = "Coptic: ";
-	private static final String MESSAGE_ETHIOPIC = "Ethiopic: ";
-	private static final String MESSAGE_GREGORIAN = "Gregorian: ";
-	private static final String MESSAGE_GREGORIAN_JULIAN = "Gregorian-Julian: ";
-	private static final String MESSAGE_ISLAMIC = "Islamic: ";
-	private static final String MESSAGE_ISO8601 = "ISO8601: ";
-	private static final String MESSAGE_JULIAN = "Julian: ";
-	private static final String MESSAGE_STARDATE = "Stardate: ";
+	private static final String MESSAGE_NO_CHRONOLOGIES = Messages.getString( "TrayIcon.1" ); 
+	private static final String MESSAGE_BUDDHIST = Messages.getString( "TrayIcon.2" ); 
+	private static final String MESSAGE_COPTIC = Messages.getString( "TrayIcon.3" ); 
+	private static final String MESSAGE_ETHIOPIC = Messages.getString( "TrayIcon.4" ); 
+	private static final String MESSAGE_GREGORIAN = Messages.getString( "TrayIcon.5" ); 
+	private static final String MESSAGE_GREGORIAN_JULIAN = Messages.getString( "TrayIcon.6" ); 
+	private static final String MESSAGE_ISLAMIC = Messages.getString( "TrayIcon.7" ); 
+	private static final String MESSAGE_ISO8601 = Messages.getString( "TrayIcon.8" ); 
+	private static final String MESSAGE_JULIAN = Messages.getString( "TrayIcon.9" ); 
+	private static final String MESSAGE_STARDATE = Messages.getString( "TrayIcon.10" ); 
 
-	private static final String MESSAGE_TOOL_TIP = "Stardate: ";
+	private static final String MESSAGE_TOOL_TIP = Messages.getString( "TrayIcon.11" ); 
 
 	private PopupMenu m_popupMenu = null;
 
@@ -65,7 +65,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     	{
         	conversionDateTime = currentDateTime.withChronology( BuddhistChronology.getInstance() );
     		if( message.length() > 0 )
-    			message.append( "\n" );
+    			message.append( "\n" ); 
 
     		message.append( MESSAGE_BUDDHIST ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
@@ -74,7 +74,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     	{
         	conversionDateTime = currentDateTime.withChronology( CopticChronology.getInstance() );
     		if( message.length() > 0 )
-    			message.append( "\n" );
+    			message.append( "\n" ); 
 
     		message.append( MESSAGE_COPTIC ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
@@ -84,7 +84,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     	{
         	conversionDateTime = currentDateTime.withChronology( EthiopicChronology.getInstance() );
     		if( message.length() > 0 )
-    			message.append( "\n" );
+    			message.append( "\n" ); 
 
     		message.append( MESSAGE_ETHIOPIC ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
@@ -93,7 +93,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     	{
         	conversionDateTime = currentDateTime.withChronology( GregorianChronology.getInstance() );
     		if( message.length() > 0 )
-    			message.append( "\n" );
+    			message.append( "\n" ); 
 
     		message.append( MESSAGE_GREGORIAN ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
@@ -102,7 +102,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     	{
         	conversionDateTime = currentDateTime.withChronology( GJChronology.getInstance() );
     		if( message.length() > 0 )
-    			message.append( "\n" );
+    			message.append( "\n" ); 
 
     		message.append( MESSAGE_GREGORIAN_JULIAN ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
@@ -111,7 +111,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     	{
         	conversionDateTime = currentDateTime.withChronology( IslamicChronology.getInstance() );
     		if( message.length() > 0 )
-    			message.append( "\n" );
+    			message.append( "\n" ); 
 
     		message.append( MESSAGE_ISLAMIC ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
@@ -120,7 +120,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     	{
         	conversionDateTime = currentDateTime.withChronology( ISOChronology.getInstance() );
     		if( message.length() > 0 )
-    			message.append( "\n" );
+    			message.append( "\n" ); 
 
     		message.append( MESSAGE_ISO8601 ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
@@ -129,7 +129,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     	{
         	conversionDateTime = currentDateTime.withChronology( JulianChronology.getInstance() );
     		if( message.length() > 0 )
-    			message.append( "\n" );
+    			message.append( "\n" ); 
 
     		message.append( MESSAGE_JULIAN ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
@@ -140,7 +140,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     		stardate.setGregorian( currentDateTime.toGregorianCalendar() );
 
     		if( message.length() > 0 )
-    			message.append( "\n" );
+    			message.append( "\n" ); 
 
     		message.append( MESSAGE_STARDATE ).append( stardate.toStardateString() );
     	}
@@ -170,7 +170,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 		if( showStardateIssue )
 			setToolTip( MESSAGE_TOOL_TIP + stardate.toStardateString() );
 		else
-			setToolTip( MESSAGE_TOOL_TIP + stardate.getStardateInteger() + "." + stardate.getStardateFraction() );
+			setToolTip( MESSAGE_TOOL_TIP + stardate.getStardateInteger() + "." + stardate.getStardateFraction() ); 
 	}
 
     
