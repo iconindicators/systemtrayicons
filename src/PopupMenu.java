@@ -14,35 +14,36 @@ import javax.swing.SwingConstants;
 
 public class PopupMenu extends java.awt.PopupMenu implements ActionListener, ItemListener
 {
-	static final String POPUP_ABOUT = "About";
-	static final String POPUP_EXIT = "Exit";
-	static final String POPUP_CHRONOLOGY = "Chronologies";
-	static final String POPUP_DATE_FORMAT = "Date Format";
-	static final String POPUP_RUN_ON_SYSTEM_START = "Run on system start";
-	static final String POPUP_SHOW_STARDATE_ISSUE = "Show Stardate ISSUE";
+	static final String POPUP_ABOUT = Messages.getString( "PopupMenu.0" ); 
+	static final String POPUP_EXIT = Messages.getString( "PopupMenu.1" ); 
+	static final String POPUP_CHRONOLOGY = Messages.getString( "PopupMenu.2" ); 
+	static final String POPUP_DATE_FORMAT = Messages.getString( "PopupMenu.3" ); 
+	static final String POPUP_RUN_ON_SYSTEM_START = Messages.getString( "PopupMenu.4" ); 
+	static final String POPUP_SHOW_STARDATE_ISSUE = Messages.getString( "PopupMenu.5" ); 
 
-	static final String SUBPOPUP_SHOW_MESSAGE_BUDDHIST = "Buddhist";
-	static final String SUBPOPUP_SHOW_MESSAGE_COPTIC = "Coptic";
-	static final String SUBPOPUP_SHOW_MESSAGE_ETHIOPIC = "Ethiopic";
-	static final String SUBPOPUP_SHOW_MESSAGE_GREGORIAN = "Gregorian";
-	static final String SUBPOPUP_SHOW_MESSAGE_GREGORIAN_JULIAN = "Gregorian-Julian";
-	static final String SUBPOPUP_SHOW_MESSAGE_ISLAMIC = "Islamic";
-	static final String SUBPOPUP_SHOW_MESSAGE_ISO8601 = "ISO8601";
-	static final String SUBPOPUP_SHOW_MESSAGE_JULIAN = "Julian";
-	static final String SUBPOPUP_SHOW_MESSAGE_STARDATE = "Stardate";
+	static final String SUBPOPUP_SHOW_MESSAGE_BUDDHIST = Messages.getString( "PopupMenu.6" ); 
+	static final String SUBPOPUP_SHOW_MESSAGE_COPTIC = Messages.getString( "PopupMenu.7" ); 
+	static final String SUBPOPUP_SHOW_MESSAGE_ETHIOPIC = Messages.getString( "PopupMenu.8" ); 
+	static final String SUBPOPUP_SHOW_MESSAGE_GREGORIAN = Messages.getString( "PopupMenu.9" ); 
+	static final String SUBPOPUP_SHOW_MESSAGE_GREGORIAN_JULIAN = Messages.getString( "PopupMenu.10" ); 
+	static final String SUBPOPUP_SHOW_MESSAGE_ISLAMIC = Messages.getString( "PopupMenu.11" ); 
+	static final String SUBPOPUP_SHOW_MESSAGE_ISO8601 = Messages.getString( "PopupMenu.12" ); 
+	static final String SUBPOPUP_SHOW_MESSAGE_JULIAN = Messages.getString( "PopupMenu.13" ); 
+	static final String SUBPOPUP_SHOW_MESSAGE_STARDATE = Messages.getString( "PopupMenu.14" ); 
 
-	static final String SUBPOPUP_DATE_TIME_FORMAT_LONG = "Long";
-	static final String SUBPOPUP_DATE_TIME_FORMAT_MEDIUM = "Medium";
-	static final String SUBPOPUP_DATE_TIME_FORMAT_SHORT = "Short";
+	static final String SUBPOPUP_DATE_TIME_FORMAT_LONG = Messages.getString( "PopupMenu.15" ); 
+	static final String SUBPOPUP_DATE_TIME_FORMAT_MEDIUM = Messages.getString( "PopupMenu.16" ); 
+	static final String SUBPOPUP_DATE_TIME_FORMAT_SHORT = Messages.getString( "PopupMenu.17" ); 
 
-	public static final String APPLICATION_NAME = "Stardate System Tray";
-	public static final String APPLICATION_VERSION = "Version 1.1 (2007-06-22)";
+	public static final String APPLICATION_NAME = Messages.getString( "PopupMenu.18" ); 
+	public static final String APPLICATION_VERSION = Messages.getString( "PopupMenu.19" ); 
+	public static final String APPLICATION_VERSION_NUMBER = "1.2 (2007-07-24)"; 
 
-	private static final String CREDIT_ALGORITHM_LINE1 = "Stardate algorithm based on";
-	private static final String CREDIT_ALGORITHM_LINE2 = "<i>STARDATES IN STAR TREK FAQ</i>";
-	private static final String CREDIT_CHRONOLOGY = "Chronology conversion via <i>Joda Time</i>";
-	private static final String CREDIT_REGISTRY = "Registry access via <i>JRegistryKey</i>";
-	private static final String CREDIT_NSIS = "Executables created with <i>NSIS</i>";
+	private static final String CREDIT_ALGORITHM_LINE1 = Messages.getString( "PopupMenu.21" ); 
+	private static final String CREDIT_ALGORITHM_LINE2 = Messages.getString( "PopupMenu.22" ); 
+	private static final String CREDIT_CHRONOLOGY = Messages.getString( "PopupMenu.23" ); 
+	private static final String CREDIT_REGISTRY = Messages.getString( "PopupMenu.24" ); 
+	private static final String CREDIT_NSIS = Messages.getString( "PopupMenu.25" ); 
 
     private CheckboxMenuItem m_checkboxMenuItemDateFormatLong = null;
     private CheckboxMenuItem m_checkboxMenuItemDateFormatMedium = null;
@@ -151,14 +152,14 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     		final JLabel label = 
     			new JLabel
     			( 
-        				"<html><center>" +
-        				"<b>" + APPLICATION_NAME + "</b><br>" + APPLICATION_VERSION + "<br><br>" + 
-        				CREDIT_ALGORITHM_LINE1 + "<br>" + CREDIT_ALGORITHM_LINE2 + "<br><br>" + 
-        				CREDIT_CHRONOLOGY + "<br><br>" + 
-        				CREDIT_REGISTRY + "<br><br>" + 
-        				CREDIT_NSIS + "<br><br>" +
-        				"</center></html>",
-        				SwingConstants.CENTER
+    				"<html><center>" + 
+    				"<b>" + APPLICATION_NAME + "</b><br>" + APPLICATION_VERSION + " " + APPLICATION_VERSION_NUMBER + "<br><br>" +  
+    				CREDIT_ALGORITHM_LINE1 + "<br>" + CREDIT_ALGORITHM_LINE2 + "<br><br>" +   
+    				CREDIT_CHRONOLOGY + "<br><br>" +  
+    				CREDIT_REGISTRY + "<br><br>" +  
+    				CREDIT_NSIS + "<br><br>" + 
+    				"</center></html>", 
+    				SwingConstants.CENTER
     			);
 
     		final JDialog dialog = new JOptionPane( new Object[] { label } ).createDialog( POPUP_ABOUT );
