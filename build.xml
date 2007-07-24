@@ -5,6 +5,7 @@
 	<property environment="env"/>
 
 	<property name="bin" location="bin" />
+	<property name="i18n" location="i18n" />
 	<property name="javadoc" location="javadoc" />
 	<property name="installer" location="installer" />
 	<property name="launcher" location="launcher" />
@@ -33,6 +34,10 @@
 
 		<jar jarfile="${bin}/stardate-applet.jar" basedir="${bin}" includes="StardateApplet*.class" />
 
+		<copy todir="${bin}/i18n">
+			<fileset dir="${i18n}"/>
+		</copy>
+
 		<manifest file="${bin}/MANIFEST.MF">
 			<attribute name="Class-Path" value=". stardate.jar" />
 			<attribute name="Main-Class" value="StardateConverter" />
@@ -43,7 +48,7 @@
 			<attribute name="Class-Path" value=". stardate.jar joda-time-1.4.jar jRegistryKey.jar" />
 			<attribute name="Main-Class" value="StardateSystemTray" />
 		</manifest>
-		<jar jarfile="${bin}/stardate-system-tray.jar" basedir="${bin}" includes="PopupMenu.class Properties.class StardateSystemTray.class SystemStart.class TrayIcon.class" manifest="${bin}/MANIFEST.MF" />
+		<jar jarfile="${bin}/stardate-system-tray.jar" basedir="${bin}" includes=" i18n/* Messages.class PopupMenu.class Properties.class StardateSystemTray.class SystemStart.class TrayIcon.class" manifest="${bin}/MANIFEST.MF" />
 	</target>
 
 
