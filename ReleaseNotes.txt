@@ -2,6 +2,63 @@ World Time System Tray Release Notes
 ------------------------------------
 
 
+2007-10-10 Version 1.1
+
+* Rename dialog now resizes properly.
+
+* New option for combining Time Zones 
+    - Exact match on Date/Time and Time Zone 
+    - Exact match on Date/Time only
+    - Never (does not combine Time Zones)
+
+  A side effect of the option "match on Date/Time only" is when some Date/Time
+  formats (typically FULL) are selected AND two (or more) Time Zones selected
+  which have the same Date/Time but different Time Zone, the Time Zone will be
+  erroneous for all but the first.  For example:
+
+	Cape Town: Wednesday, 3 October 2007 04:43:06 AM SAST
+    Rome: Wednesday, 3 October 2007 04:43:06 AM CEST
+
+  would be combined to be:
+
+    Cape Town | Rome: Wednesday, 3 October 2007 04:43:06 AM SAST
+
+  where the time zone "SAST" is clearly wrong for Rome.  Unfortunately 
+  stripping the "SAST" off won't work for i18n.  Suggestions for a fix are
+  most welcome!
+  
+  Option to allow the separator to also be specified.  You could have:
+
+    Cape Town | Rome: 4:43 AM
+
+        or
+
+    Cape Town, Rome: 4:43 AM
+
+        or whatever.
+
+* Fixed icon in About dialog.
+
+* Found Joda Time was not using the most recent tz database, so Auckland (New 
+  Zealand) was the wrong time when it went into daylight savings.
+
+  Removed dependence on Joda Time and now uses only Java.  Found the following
+  URLs very useful in doing this:
+
+    http://www.exampledepot.com/egs/java.util/GetTimeOtherZone2.html
+    http://www.icu-project.org/docs/papers/international_calendars_in_java.html
+    http://www.xmission.com/~goodhill/dates/FAQ-PVL/faq_b2.htm
+    http://www.rgagnon.com/javadetails/java-0102.html
+    http://www.velocityreviews.com/forums/t140900-conversion-of-date-from-one-timezone-to-another.html
+    http://www.odi.ch/prog/design/datetime.php
+
+* New option to specify the layout of Date/Times.
+
+* New option to specify a separator between Time Zones when combining.
+
+* The "Run on System Start" option only displays for Microsoft Windows.
+
+
 2007-07-24 Version 1.0
 
 * First release.
