@@ -24,7 +24,6 @@
 		<javac srcdir="${src}" destdir="${bin}" nowarn="${nowarn}">
 			<classpath>
 				<pathelement location="${lib}/win32/jRegistryKey.jar" />
-				<pathelement location="${lib}/joda-time-1.4.jar" />
 			</classpath>
 			<compilerarg value="-Xlint:${Xlint}" />
 		</javac>
@@ -34,7 +33,7 @@
 		</copy>
 
 		<manifest file="${bin}/MANIFEST.MF">
-			<attribute name="Class-Path" value=". joda-time-1.4.jar jRegistryKey.jar" />
+			<attribute name="Class-Path" value=". jRegistryKey.jar" />
 			<attribute name="Main-Class" value="WorldTimeSystemTray" />
 		</manifest>
 		<jar jarfile="${bin}/world-time-system-tray.jar" basedir="${bin}" manifest="${bin}/MANIFEST.MF" />
