@@ -11,14 +11,16 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout.ParallelGroup;
 import javax.swing.GroupLayout.SequentialGroup;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 
-public class RenameTimeZones extends JDialog implements ActionListener
+public class RenameTimeZones extends JDialog
 {
 	private JButton m_ok = null;
-	private JButton m_cancel = null;
     private Vector<JTextField> m_timeZoneTextfields = null;
 
 
@@ -27,7 +29,7 @@ public class RenameTimeZones extends JDialog implements ActionListener
 
     public static RenameTimeZones create()
     {
-    	RenameTimeZones renameTimeZones = new RenameTimeZones();
+    	final RenameTimeZones renameTimeZones = new RenameTimeZones();
 
         Vector<String> timeZones = Properties.getInstance().getPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED );
         Vector<String> timeZonesDisplay = Properties.getInstance().getPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED_DISPLAY_NAMES );
@@ -38,41 +40,54 @@ public class RenameTimeZones extends JDialog implements ActionListener
         	timeZoneLabels.add( new JLabel( timeZones.get( i ) + ":" ) ); 
         	renameTimeZones.m_timeZoneTextfields.add( new JTextField( timeZonesDisplay.get( i ) ) );
         }
-    	
+
         renameTimeZones.m_ok = new JButton( Messages.getString( "RenameTimeZones.1" ) ); 
-        renameTimeZones.m_ok.addActionListener( renameTimeZones );
-        
-        renameTimeZones.m_cancel = new JButton( Messages.getString( "RenameTimeZones.2" ) ); 
-        renameTimeZones.m_cancel.addActionListener( renameTimeZones );
+        renameTimeZones.m_ok.addActionListener( renameTimeZones.new OKActionListener() );
+
+        JButton cancel = new JButton( Messages.getString( "RenameTimeZones.2" ) ); 
+    	cancel.addActionListener( new ActionListener() { public void actionPerformed( ActionEvent actionEvent ) { renameTimeZones.dispose(); } } );
         
         GroupLayout layout = new GroupLayout( renameTimeZones.getContentPane() );
         renameTimeZones.getContentPane().setLayout( layout );
         layout.setAutoCreateGaps( true );
         layout.setAutoCreateContainerGaps( true );
 
-    	SequentialGroup sequentialGroup = null;
+        layout.linkSize( SwingConstants.HORIZONTAL, renameTimeZones.m_ok, cancel );
+    	for( int i = 1; i < renameTimeZones.m_timeZoneTextfields.size(); i++ )
+            layout.linkSize( SwingConstants.VERTICAL, renameTimeZones.m_timeZoneTextfields.get( i ), renameTimeZones.m_timeZoneTextfields.get( i - 1 ) );
+
+        SequentialGroup sequentialGroup = null;
     	ParallelGroup parallelGroup = null;
 
     	// Horizontal Group.
     	sequentialGroup = layout.createSequentialGroup();
 
-    	parallelGroup = layout.createParallelGroup( GroupLayout.Alignment.CENTER );
+    	parallelGroup = layout.createParallelGroup();
     	for( int i = 0; i < timeZoneLabels.size(); i++ )
-        	parallelGroup.addComponent( timeZoneLabels.get( i ) );
+    		parallelGroup.addComponent( timeZoneLabels.get( i ) );
 
-    	parallelGroup.addComponent( renameTimeZones.m_ok );
-    	
     	sequentialGroup.addGroup( parallelGroup );
 
-    	parallelGroup = layout.createParallelGroup( GroupLayout.Alignment.CENTER );
+    	parallelGroup = layout.createParallelGroup();
     	for( int i = 0; i < renameTimeZones.m_timeZoneTextfields.size(); i++ )
-        	parallelGroup.addComponent( renameTimeZones.m_timeZoneTextfields.get( i ) );
+    		parallelGroup.addComponent( renameTimeZones.m_timeZoneTextfields.get( i ) );
 
-    	parallelGroup.addComponent( renameTimeZones.m_cancel );
-    	
     	sequentialGroup.addGroup( parallelGroup );
 
-        layout.setHorizontalGroup( sequentialGroup );
+    	parallelGroup = layout.createParallelGroup();
+
+    	parallelGroup.addGroup( sequentialGroup );
+    	
+    	parallelGroup.addGroup
+		(
+			Alignment.CENTER,	
+			layout.createSequentialGroup()
+				.addComponent( renameTimeZones.m_ok )
+				.addPreferredGap( ComponentPlacement.UNRELATED )
+				.addComponent( cancel )
+		);
+
+		layout.setHorizontalGroup( parallelGroup );
 
         // Vertical Group.
     	sequentialGroup = layout.createSequentialGroup();
@@ -84,13 +99,15 @@ public class RenameTimeZones extends JDialog implements ActionListener
     				.addComponent( renameTimeZones.m_timeZoneTextfields.get( i ) )
         	);
 
+    	sequentialGroup.addPreferredGap( ComponentPlacement.UNRELATED );
+
     	sequentialGroup.addGroup
     	( 
     		layout.createParallelGroup()
     			.addComponent( renameTimeZones.m_ok )
-    			.addComponent( renameTimeZones.m_cancel )
+    			.addComponent( cancel )
     	);
-    	
+
         layout.setVerticalGroup( sequentialGroup );
 
         renameTimeZones.setTitle( Messages.getString( "RenameTimeZones.3" ) ); 
@@ -100,15 +117,17 @@ public class RenameTimeZones extends JDialog implements ActionListener
 		int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - renameTimeZones.getWidth() ) / 2;
         int originY = ( Toolkit.getDefaultToolkit().getScreenSize().height - renameTimeZones.getHeight() ) / 2;
         renameTimeZones.setLocation( originX, originY );
-        
+        renameTimeZones.addComponentListener( new ComponentListener( renameTimeZones, false, true ) );
+        renameTimeZones.setVisible( true );
+
 		return renameTimeZones;
     }
 
-
-    public void actionPerformed( ActionEvent actionEvent )
-	{
-		if( actionEvent.getSource() == m_ok )
-		{
+    
+    private class OKActionListener implements ActionListener
+    {
+    	public void actionPerformed( ActionEvent actionEvent )
+    	{
 			// Check for empty values.
 			for( int i = 0; i < m_timeZoneTextfields.size(); i++ )
 			{
@@ -151,10 +170,8 @@ public class RenameTimeZones extends JDialog implements ActionListener
 
 			Properties.getInstance().setPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED_DISPLAY_NAMES, timeZonesDisplay );
 	    	Properties.getInstance().store();
-		}
 
-		m_ok.removeActionListener( this );
-		m_cancel.removeActionListener( this );
-		dispose();
-	}
+	    	RenameTimeZones.this.dispose();
+    	}
+    }
 }

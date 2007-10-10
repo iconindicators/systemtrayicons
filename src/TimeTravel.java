@@ -6,7 +6,9 @@ import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.text.Collator;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
+import java.util.TimeZone;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -20,10 +22,9 @@ import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EtchedBorder;
-
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 
 
 public class TimeTravel extends JDialog implements ActionListener, ItemListener, WindowListener
@@ -63,17 +64,17 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
         	)
         );
 
-        // The data we pass to the combo box has to be a copy.  
+        // The data we pass to the combo box has to be a copy.
         // When we (later) remove the items from the combo, the original data gets clobbered.
-        timeTravel.m_timeZoneComboBox = new JComboBox( (Vector<String>)timeTravel.m_timeZonesDisplayable.clone() ); 
+        timeTravel.m_timeZoneComboBox = new JComboBox( (Vector<?>)timeTravel.m_timeZonesDisplayable.clone() ); 
     	timeTravel.m_timeZoneComboBox.addActionListener( timeTravel );
 
     	timeTravel.m_showAllTimeZonesCheckbox = new JCheckBox( Messages.getString( "TimeTravel.4" ) ); 
     	timeTravel.m_showAllTimeZonesCheckbox.addItemListener( timeTravel );
 
-        timeTravel.m_hourSpinner = new JSpinner( new SpinnerNumberModel( new DateTime().getHourOfDay(), 0, 23, 1 ) );
+        timeTravel.m_hourSpinner = new JSpinner( new SpinnerNumberModel( new GregorianCalendar().get( GregorianCalendar.HOUR_OF_DAY ), 0, 23, 1 ) );
 
-        timeTravel.m_minuteSpinner = new JSpinner( new SpinnerNumberModel( new DateTime().getMinuteOfHour(), 0, 59, 1 ) );
+        timeTravel.m_minuteSpinner = new JSpinner( new SpinnerNumberModel( new GregorianCalendar().get( GregorianCalendar.MINUTE ), 0, 59, 1 ) );
 
     	timeTravel.m_includeLocalCheckbox = new JCheckBox( Messages.getString( "TimeTravel.5" ) );
     	timeTravel.m_includeLocalCheckbox.addItemListener( timeTravel );
@@ -88,7 +89,7 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
 
         layout.setHorizontalGroup
         (
-    		layout.createParallelGroup( GroupLayout.Alignment.CENTER )
+    		layout.createParallelGroup( Alignment.CENTER )
     			.addGroup
     			(
 		    		layout.createSequentialGroup()
@@ -121,7 +122,7 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
 				    			)
 		    			)
 	    		)
-	    		.addComponent( timeTravel.m_includeLocalCheckbox, GroupLayout.Alignment.LEADING )
+	    		.addComponent( timeTravel.m_includeLocalCheckbox, Alignment.LEADING )
 				.addComponent( timeTravel.m_output )
 				.addComponent( timeTravel.m_calculate )
 		);
@@ -135,12 +136,8 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
     					.addComponent( selectTimeZone )
     					.addComponent( timeTravel.m_timeZoneComboBox )
     			)
-    			.addGroup
-    			(
-    		    	layout.createSequentialGroup()
-    		    		.addComponent( timeTravel.m_showAllTimeZonesCheckbox )
-    		    		.addGap( 15 )
-    			)
+    			.addComponent( timeTravel.m_showAllTimeZonesCheckbox )
+				.addPreferredGap( ComponentPlacement.UNRELATED )
     			.addGroup
     			(
     				layout.createParallelGroup()
@@ -154,22 +151,17 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
     					.addComponent( hours )
     					.addComponent( minutes )
     			)
-	    		.addGap( 10 )
+				.addPreferredGap( ComponentPlacement.UNRELATED )
 				.addComponent( timeTravel.m_includeLocalCheckbox )
 				.addComponent( timeTravel.m_output )
 				.addComponent( timeTravel.m_calculate )
 		);
 
-        timeTravel.m_output.setText
-        ( 
-        	Message.getMessageString
-        	( 
-        		timeTravel.m_timeZones.firstElement(),
-        		( (SpinnerNumberModel)timeTravel.m_hourSpinner.getModel() ).getNumber().intValue(),
-        		( (SpinnerNumberModel)timeTravel.m_minuteSpinner.getModel() ).getNumber().intValue(),
-        		true
-        	) 
-        );
+		GregorianCalendar gregorianCalendar = new GregorianCalendar( TimeZone.getTimeZone( timeTravel.m_timeZones.firstElement() ) );
+		gregorianCalendar.set( GregorianCalendar.HOUR_OF_DAY, ( (SpinnerNumberModel)timeTravel.m_hourSpinner.getModel() ).getNumber().intValue() );
+		gregorianCalendar.set( GregorianCalendar.MINUTE, ( (SpinnerNumberModel)timeTravel.m_minuteSpinner.getModel() ).getNumber().intValue() );
+
+		timeTravel.m_output.setText( Message.getMessageString( gregorianCalendar, true ) );
 
 		timeTravel.setTitle( Messages.getString( "TimeTravel.7" ) ); 
         timeTravel.setIconImage( new ImageIcon( TrayIcon.getTrayIconImage() ).getImage() );
@@ -180,6 +172,7 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
         timeTravel.setLocation( originX, originY );
         timeTravel.setResizable( false );
         timeTravel.addWindowListener( timeTravel );
+        timeTravel.setVisible( true );
 
         return timeTravel;
     }
@@ -231,18 +224,13 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
 			}
 			
 			if( m_includeLocalCheckbox.isSelected() )
-				appendTimeZoneToProperties( DateTimeZone.getDefault().getID() );
+				appendTimeZoneToProperties( TimeZone.getDefault().getID() );
 
-	        m_output.setText
-	        (
-	        	Message.getMessageString
-	        	(
-	        		timeZone,
-	        		( (SpinnerNumberModel)m_hourSpinner.getModel() ).getNumber().intValue(),
-	        		( (SpinnerNumberModel)m_minuteSpinner.getModel() ).getNumber().intValue(),
-	        		true
-	        	)
-	        );
+			GregorianCalendar gregorianCalendar = new GregorianCalendar( TimeZone.getTimeZone( timeZone ) );
+			gregorianCalendar.set( GregorianCalendar.HOUR_OF_DAY, ( (SpinnerNumberModel)m_hourSpinner.getModel() ).getNumber().intValue() );
+			gregorianCalendar.set( GregorianCalendar.MINUTE, ( (SpinnerNumberModel)m_minuteSpinner.getModel() ).getNumber().intValue() );
+
+	        m_output.setText( Message.getMessageString( gregorianCalendar, true ) );
 
 	        pack();
 	        

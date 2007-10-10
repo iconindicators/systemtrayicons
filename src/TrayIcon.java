@@ -1,6 +1,7 @@
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.GregorianCalendar;
 
 import javax.swing.ImageIcon;
 
@@ -31,10 +32,10 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 
 	public static final String getTrayIconImage() { return TRAY_ICON_IMAGE; }
 
+	
+	private String getMessageString() { return Message.getMessageString( new GregorianCalendar(), false ); }
 
-	private String getMessageString() { return Message.getMessageString( null, 0, 0, false ); }
 
-    
     public void mouseDragged( MouseEvent mouseEvent ) { }
 
 

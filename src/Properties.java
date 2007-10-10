@@ -11,6 +11,41 @@ public class Properties
 	private static final String PROPERTY_FILE = System.getProperty( "user.dir" ) + File.separator + "properties" ;
     private static Properties ms_instance = new Properties();
 
+    /** Options for combo portions of the layout */
+    public static final String PROPERTY_LAYOUT_LEFT_OPTION = "LayoutLeftOption"; 
+    public static final String PROPERTY_LAYOUT_CENTRE_OPTION = "LayoutCentreOption"; 
+    public static final String PROPERTY_LAYOUT_RIGHT_OPTION = "LayoutRightOption"; 
+
+    /** Values for combo portions of the layout */
+    public static final String PROPERTY_LAYOUT_OPTION_NONE = "";
+	public static final String PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR = Messages.getString( "Properties.0" );
+	public static final String PROPERTY_LAYOUT_OPTION_TIME = Messages.getString( "Properties.1" );
+	public static final String PROPERTY_LAYOUT_OPTION_TIME_ZONE = Messages.getString( "Properties.2" );
+
+    /** Values for text portions of the layout */
+    public static final String PROPERTY_LAYOUT_LEFT_TEXT = "LayoutLeftText"; 
+    public static final String PROPERTY_LAYOUT_LEFT_TEXT_DEFAULT = ""; 
+    public static final String PROPERTY_LAYOUT_LEFT_CENTRE_TEXT = "LayoutLeftCentreText"; 
+    public static final String PROPERTY_LAYOUT_LEFT_CENTRE_TEXT_DEFAULT = ": "; 
+    public static final String PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT = "LayoutRightCentreText"; 
+    public static final String PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT_DEFAULT = ""; 
+    public static final String PROPERTY_LAYOUT_RIGHT_TEXT = "LayoutRightText"; 
+    public static final String PROPERTY_LAYOUT_RIGHT_TEXT_DEFAULT = ""; 
+
+    /** Options for combining Time Zones. */
+    public static final String PROPERTY_COMBINE_TIME_ZONES_OPTION = "CombineTimeZone";
+    public static final String PROPERTY_COMBINE_TIME_ZONES_SAME_DATE_TIME_AND_TIME_ZONE = "SameDateTimeAndTimeZone";
+    public static final String PROPERTY_COMBINE_TIME_ZONES_SAME_DATE_TIME = "SameDateTime";
+    public static final String PROPERTY_COMBINE_TIME_ZONES_NEVER = "Never";
+
+    /** Separator for Time Zones - only used when combining Time Zones */
+    public static final String PROPERTY_COMBINE_TIME_ZONES_SEPARATOR = "Separator";
+    public static final String PROPERTY_COMBINE_TIME_ZONES_SEPARATOR_DEFAULT = " | ";
+
+    /** Indicators for the previous/next day. */
+    public static final String PROPERTY_DIFFERENT_DAY_INDICATOR_PREVIOUS_DAY = "DifferentDayIndicatorPreviousDay";
+    public static final String PROPERTY_DIFFERENT_DAY_INDICATOR_NEXT_DAY = "DifferentDayIndicatorNextDay";
+
 	/** User time zones and their display names. */
     public static final String PROPERTY_TIME_ZONES_SELECTED = "TimeZonesSelected";
     public static final String PROPERTY_TIME_ZONES_SELECTED_DISPLAY_NAMES = "TimeZonesSelectedDisplayNames";
@@ -39,9 +74,6 @@ public class Properties
 
 	public static final String PROPERTY_SHOW_USER_DEFINED = "ShowUserDefined";
 	public static final String PROPERTY_SHOW_USER_DEFINED_PATTERN = "ShowUserDefinedPattern";
-
-	/**	Different Day Indicator */
-	public static final String PROPERTY_SHOW_DIFFERENT_DAY_INDICATOR = "ShowDifferentDayIndicator";
 
 	/** Show the times in the tool tip. */
 	public static final String PROPERTY_SHOW_TIMES_IN_TOOL_TIP = "ShowTimesInToolTip";

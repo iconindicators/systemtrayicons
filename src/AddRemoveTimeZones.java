@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.GroupLayout.Alignment;
 
 
 public class AddRemoveTimeZones extends JDialog implements ActionListener
@@ -40,7 +41,7 @@ public class AddRemoveTimeZones extends JDialog implements ActionListener
 
         layout.setHorizontalGroup
         (
-    		layout.createParallelGroup( GroupLayout.Alignment.CENTER )
+    		layout.createParallelGroup( Alignment.CENTER )
     			.addComponent( scrollPane )
     			.addComponent( addRemoveTimeZones.m_close )
     	);
@@ -59,6 +60,7 @@ public class AddRemoveTimeZones extends JDialog implements ActionListener
 		int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - addRemoveTimeZones.getWidth() ) / 2;
         int originY = ( Toolkit.getDefaultToolkit().getScreenSize().height - addRemoveTimeZones.getHeight() ) / 2;
         addRemoveTimeZones.setLocation( originX, originY );
+        addRemoveTimeZones.setVisible( true );
         
 		return addRemoveTimeZones;
     }

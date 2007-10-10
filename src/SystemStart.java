@@ -15,10 +15,15 @@ public class SystemStart
 	private static final String MICROSOFT_WINDOWS_REGISTRY_VALUE_DATA = System.getProperties().get( "user.dir" ) + "\\WorldTimeSystemTray.exe";
 
 
+    public static boolean isMicrosoftWindows()
+    {
+    	return System.getProperty( OS_NAME ).toLowerCase().contains( OS_NAME_MICROSOFT_WINDOWS.toLowerCase() );
+    }
+
+
     public static boolean runOnSystemStart()
     {
-    	String osName = System.getProperty( OS_NAME );
-    	if( osName.toLowerCase().contains( OS_NAME_MICROSOFT_WINDOWS.toLowerCase() ) )
+    	if( isMicrosoftWindows() )
     		return runOnSystemStartMicrosoftWindows();
 
     	return false;
@@ -38,8 +43,7 @@ public class SystemStart
 
     public static void setRunOnSystemStart( boolean b )
     {
-    	String osName = System.getProperty( OS_NAME );
-    	if( osName.toLowerCase().contains( OS_NAME_MICROSOFT_WINDOWS.toLowerCase() ) )
+    	if( isMicrosoftWindows() )
     		setRunOnSystemStartMicrosoftWindows( b );
     }
 

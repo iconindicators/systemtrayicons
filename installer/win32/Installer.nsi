@@ -79,7 +79,6 @@ Section "Default Section"
   
   File ..\..\ReleaseNotes.txt
   File ..\..\release\world-time-system-tray.jar
-  File ..\..\lib\joda-time-1.4.jar
   File ..\..\lib\win32\jRegistryKey.jar
   File ..\..\lib\win32\jRegistryKey.dll
   File ..\..\launcher\win32\WorldTimeSystemTray.exe	

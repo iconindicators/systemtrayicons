@@ -1,14 +1,14 @@
-import org.joda.time.DateTime;
+import java.util.GregorianCalendar;
 
 	
 	
 public class UserTimeZoneItem
 {
-	private DateTime m_dateTime = null;
+	private GregorianCalendar m_gregorianCalendar = null;
 	private String m_timeZone = null;
 	private String m_timeZoneDisplayable = null;
-	
-	
+
+
 	public UserTimeZoneItem( String timeZone, String timeZoneDisplayable )
 	{
 		if( timeZone == null )
@@ -25,7 +25,7 @@ public class UserTimeZoneItem
 	}
 
 
-	public DateTime getDateTime() { return m_dateTime; } 
+	public GregorianCalendar getGregorianCalendar() { return m_gregorianCalendar; } 
 
 
 	public String getTimeZone() { return m_timeZone; } 
@@ -34,12 +34,12 @@ public class UserTimeZoneItem
 	public String getTimeZoneDisplayable() { return m_timeZoneDisplayable; } 
 
 
-	public void setDateTime( DateTime dateTime ) 
+	public void setGregorianCalendar( GregorianCalendar gregorianCalendar ) 
 	{ 
-		if( dateTime == null )
-			throw new IllegalArgumentException( "DateTime cannot be null." );
+		if( gregorianCalendar == null )
+			throw new IllegalArgumentException( "Gregorian Calendar cannot be null." );
 
-		m_dateTime = dateTime; 
+		m_gregorianCalendar = gregorianCalendar; 
 	} 
 
 
