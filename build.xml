@@ -25,7 +25,7 @@
 			<classpath>
 				<pathelement location="${lib}/win32/jRegistryKey.jar" />
 			</classpath>
-			<compilerarg value="-Xlint:${Xlint}" />
+			<compilerarg value="-Xlint:unchecked" />
 		</javac>
 
 		<copy todir="${bin}/i18n">
