@@ -2,6 +2,22 @@ World Time System Tray Release Notes
 ------------------------------------
 
 
+2007-10-12 Version 1.2
+
+* Included GMT Time Zones.  This is what Java supplies out of the box.
+
+* Tray icon is now included in the JAR file.  Execute the JAR from the command
+  line as
+
+    "java -jar world-time-system-tray.jar"
+
+  Ensure that both jRegistryKey.jar and jRegistryKey.dll are present in the 
+  path if executing on Microsoft Windows.  Has not been tested on any platform
+  other than Microsoft Windows.
+
+* Added menu option to show tool tip (hover/bubble) text in a separate window.
+
+
 2007-10-10 Version 1.1
 
 * Rename dialog now resizes properly.
