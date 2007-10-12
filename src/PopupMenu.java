@@ -28,6 +28,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	private static final String POPUP_ABOUT = Messages.getString( "PopupMenu.6" );
 	private static final String POPUP_ADD_REMOVE_TIME_ZONES = Messages.getString( "PopupMenu.7" );
 	private static final String POPUP_RENAME_TIME_ZONES = Messages.getString( "PopupMenu.8" );
+	private static final String POPUP_SHOW_DATE_TIME = Messages.getString( "PopupMenu.59" );
 	private static final String POPUP_TIME_TRAVEL = Messages.getString( "PopupMenu.9" );
 	private static final String POPUP_FORMAT = Messages.getString( "PopupMenu.10" );
 	private static final String POPUP_COMBINE_TIME_ZONES = Messages.getString( "PopupMenu.51" );
@@ -117,6 +118,10 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	    add( menuItem );
 
 	    menuItem = new MenuItem( POPUP_TIME_TRAVEL );
+	    menuItem.addActionListener( this );
+	    add( menuItem );
+
+	    menuItem = new MenuItem( POPUP_SHOW_DATE_TIME );
 	    menuItem.addActionListener( this );
 	    add( menuItem );
 
@@ -304,6 +309,32 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 
         	m_popupDisabled = true;
     		RenameTimeZones.create();
+    		m_popupDisabled = false;
+    		return;
+    	}
+
+
+    	if( source instanceof MenuItem && POPUP_SHOW_DATE_TIME.equals( ( (MenuItem)source ).getLabel() ) )
+    	{
+        	Vector<String> userTimeZones = Properties.getInstance().getPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED );
+        	if( userTimeZones.isEmpty() )
+    		{
+        		m_popupDisabled = true;
+
+        		JOptionPane.showMessageDialog
+        		(
+        			null,
+        			Messages.getString( "PopupMenu.42" ),
+        			Messages.getString( "PopupMenu.43" ),
+        			JOptionPane.OK_OPTION
+        		);
+
+        		m_popupDisabled = false;
+        		return;
+    		}
+
+    		m_popupDisabled = true;
+    		ShowDateTime.create();
     		m_popupDisabled = false;
     		return;
     	}
