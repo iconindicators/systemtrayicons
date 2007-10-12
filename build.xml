@@ -6,6 +6,7 @@
 
 	<property name="bin" location="bin" />
 	<property name="i18n" location="i18n" />
+	<property name="img" location="img" />
 	<property name="installer" location="installer" />
 	<property name="launcher" location="launcher" />
 	<property name="lib" location="lib" />
@@ -31,6 +32,8 @@
 		<copy todir="${bin}/i18n">
 			<fileset dir="${i18n}"/>
 		</copy>
+
+		<copy file="${img}/trayicon.gif" todir="${bin}" />
 
 		<manifest file="${bin}/MANIFEST.MF">
 			<attribute name="Class-Path" value=". jRegistryKey.jar" />
