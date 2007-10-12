@@ -82,7 +82,6 @@ Section "Default Section"
   File ..\..\lib\win32\jRegistryKey.jar
   File ..\..\lib\win32\jRegistryKey.dll
   File ..\..\launcher\win32\WorldTimeSystemTray.exe	
-  File ..\..\img\trayicon.gif
   
   WriteRegStr HKCU "Software\World Time System Tray" "" $INSTDIR
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Run" "WorldTimeSystemTray" "$INSTDIR\WorldTimeSystemTray.exe"
