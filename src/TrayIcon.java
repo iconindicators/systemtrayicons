@@ -1,3 +1,4 @@
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -16,7 +17,8 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 
 	private TrayIcon( PopupMenu popupMenu )
 	{
-		super( new ImageIcon( TRAY_ICON_IMAGE ).getImage(), null, popupMenu );
+		super( new ImageIcon( ClassLoader.getSystemResource( TRAY_ICON_IMAGE ) ).getImage(), null, popupMenu );
+
 		setImageAutoSize( true );
 		addMouseListener( this );
 		addMouseMotionListener( this );
@@ -30,9 +32,9 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 	public void displayStartupBalloon() { displayMessage( PopupMenu.APPLICATION_NAME, getMessageString(), TrayIcon.MessageType.NONE ); }
 
 
-	public static final String getTrayIconImage() { return TRAY_ICON_IMAGE; }
+	public static final Image getTrayIconImage() { return new ImageIcon( ClassLoader.getSystemResource( TRAY_ICON_IMAGE ) ).getImage(); }
 
-	
+
 	private String getMessageString() { return Message.getMessageString( new GregorianCalendar(), false ); }
 
 

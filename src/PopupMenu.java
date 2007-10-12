@@ -9,7 +9,6 @@ import java.text.Collator;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
 
-import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -264,7 +263,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     			);
 
     		final JDialog dialog = new JOptionPane( new Object[] { label } ).createDialog( POPUP_ABOUT );
-    		dialog.setIconImage( new ImageIcon( TrayIcon.getTrayIconImage() ).getImage() );
+    		dialog.setIconImage( TrayIcon.getTrayIconImage() );
 	        int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - dialog.getWidth() ) / 2;
 	        int originY = ( Toolkit.getDefaultToolkit().getScreenSize().height - dialog.getHeight() ) / 2;
 	        dialog.setLocation( originX, originY );

@@ -13,7 +13,6 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -164,7 +163,7 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
 		timeTravel.m_output.setText( Message.getMessageString( gregorianCalendar, true ) );
 
 		timeTravel.setTitle( Messages.getString( "TimeTravel.7" ) ); 
-        timeTravel.setIconImage( new ImageIcon( TrayIcon.getTrayIconImage() ).getImage() );
+        timeTravel.setIconImage( TrayIcon.getTrayIconImage() );
         timeTravel.setModalityType( ModalityType.APPLICATION_MODAL );
         timeTravel.pack();
 		int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - timeTravel.getWidth() ) / 2;

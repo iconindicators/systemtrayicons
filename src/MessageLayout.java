@@ -6,7 +6,6 @@ import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -214,7 +213,7 @@ public class MessageLayout extends JDialog
 		);
 
 		messageLayout.setTitle( Messages.getString( "MessageLayout.3" ) ); 
-        messageLayout.setIconImage( new ImageIcon( TrayIcon.getTrayIconImage() ).getImage() );
+        messageLayout.setIconImage( TrayIcon.getTrayIconImage() );
         messageLayout.setModalityType( ModalityType.APPLICATION_MODAL );
         messageLayout.pack();
 		int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - messageLayout.getWidth() ) / 2;

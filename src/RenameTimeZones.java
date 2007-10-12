@@ -5,7 +5,6 @@ import java.text.Collator;
 import java.util.Vector;
 
 import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -111,7 +110,7 @@ public class RenameTimeZones extends JDialog
         layout.setVerticalGroup( sequentialGroup );
 
         renameTimeZones.setTitle( Messages.getString( "RenameTimeZones.3" ) ); 
-		renameTimeZones.setIconImage( new ImageIcon( TrayIcon.getTrayIconImage() ).getImage() );
+		renameTimeZones.setIconImage( TrayIcon.getTrayIconImage() );
 		renameTimeZones.setModalityType( ModalityType.APPLICATION_MODAL );
 		renameTimeZones.pack();
 		int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - renameTimeZones.getWidth() ) / 2;

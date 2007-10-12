@@ -3,7 +3,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -115,7 +114,7 @@ public class DifferentDayIndicator extends JDialog
 		);
 
 		differentDayIndicator.setTitle( Messages.getString( "DifferentDayIndicator.4" ) ); 
-        differentDayIndicator.setIconImage( new ImageIcon( TrayIcon.getTrayIconImage() ).getImage() );
+        differentDayIndicator.setIconImage( TrayIcon.getTrayIconImage() );
         differentDayIndicator.setModalityType( ModalityType.APPLICATION_MODAL );
         differentDayIndicator.pack();
 		int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - differentDayIndicator.getWidth() ) / 2;

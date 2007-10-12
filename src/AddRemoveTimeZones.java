@@ -5,7 +5,6 @@ import java.text.Collator;
 import java.util.Vector;
 
 import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -54,7 +53,7 @@ public class AddRemoveTimeZones extends JDialog implements ActionListener
 		);
 
         addRemoveTimeZones.setTitle( Messages.getString( "AddRemoveTimeZones.1" ) ); 
-		addRemoveTimeZones.setIconImage( new ImageIcon( TrayIcon.getTrayIconImage() ).getImage() );
+		addRemoveTimeZones.setIconImage( TrayIcon.getTrayIconImage() );
 		addRemoveTimeZones.setModalityType( ModalityType.APPLICATION_MODAL );
 		addRemoveTimeZones.pack();
 		int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - addRemoveTimeZones.getWidth() ) / 2;
