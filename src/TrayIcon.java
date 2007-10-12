@@ -17,7 +17,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 
 	private TrayIcon( PopupMenu popupMenu )
 	{
-		super( new ImageIcon( ClassLoader.getSystemResource( TRAY_ICON_IMAGE ) ).getImage(), null, popupMenu );
+		super( getTrayIconImage(), null, popupMenu );
 
 		setImageAutoSize( true );
 		addMouseListener( this );
