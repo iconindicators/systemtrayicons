@@ -28,16 +28,20 @@ public class UserTimeZones
 			String[] availableIDs = TimeZone.getAvailableIDs();
 			m_availableTimeZones = new ConcurrentSkipListSet<String>();
 
-			// Only want time zones which contain a "/".  Time zones without a "/" seem to be repeats or bogus.
-			// Also, drop time zones which contain GMT or SystemV.
+			// Want Time Zones which contain a "/".  Time Zones without a "/" seem to be repeats or bogus.
+			// Keep Time Zones beginning with "Etc/" - but strip this off.
+			// Drop Time Zones which begin with "SystemV/".
 			for( int i = 0; i < availableIDs.length; i++ ) 
 			{
 				String timezone = availableIDs[ i ];
-				if( timezone.startsWith( TIME_ZONE_ETC ) )
-					continue;
-
 				if( timezone.startsWith( TIME_ZONE_SYSTEMV ) )
 					continue;
+
+				if( timezone.startsWith( TIME_ZONE_ETC ) )
+				{
+					m_availableTimeZones.add( timezone.substring( TIME_ZONE_ETC.length() ) );
+					continue;
+				}
 
 				if( timezone.contains( TIME_ZONE_FORWARD_SLASH ) )
 					m_availableTimeZones.add( timezone );
