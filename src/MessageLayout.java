@@ -19,6 +19,7 @@ import javax.swing.border.EtchedBorder;
 
 public class MessageLayout extends JDialog
 {
+	private static final int BORDER_INDENT = 10;
 	private static final int NUMBER_OF_COLUMNS = 5;
 
 	private static String m_leftText, m_leftOption, m_leftCentreText, m_centreOption, m_rightCentreText, m_rightOption, m_rightText;
@@ -68,12 +69,16 @@ public class MessageLayout extends JDialog
     	final JLabel sampleLabel = new JLabel( Message.getMessageString( new GregorianCalendar(), true ) );
     	sampleLabel.setHorizontalAlignment( SwingConstants.CENTER );
     	sampleLabel.setBorder
-        (
+        ( 
         	BorderFactory.createCompoundBorder
-        	( 
-            		BorderFactory.createEmptyBorder( 10, 10, 10, 10 ),
+        	(
+            	BorderFactory.createCompoundBorder
+            	( 
+            		BorderFactory.createEmptyBorder( BORDER_INDENT, BORDER_INDENT, BORDER_INDENT, BORDER_INDENT ),
             		BorderFactory.createEtchedBorder( EtchedBorder.LOWERED )
-        	)
+            	),
+        		BorderFactory.createEmptyBorder( BORDER_INDENT, BORDER_INDENT, BORDER_INDENT, BORDER_INDENT )
+    		)
         );
 
     	sampleButton.addActionListener

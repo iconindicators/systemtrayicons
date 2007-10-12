@@ -28,7 +28,9 @@ import javax.swing.border.EtchedBorder;
 
 public class TimeTravel extends JDialog implements ActionListener, ItemListener, WindowListener
 {
-    private JComboBox m_timeZoneComboBox = null;
+	private static final int BORDER_INDENT = 10;
+
+	private JComboBox m_timeZoneComboBox = null;
     private JSpinner m_hourSpinner = null;
     private JSpinner m_minuteSpinner = null;
     private JLabel m_output = null;
@@ -57,10 +59,14 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
         timeTravel.m_output.setBorder
         ( 
         	BorderFactory.createCompoundBorder
-        	( 
-            		BorderFactory.createEmptyBorder( 10, 10, 10, 10 ),
+        	(
+            	BorderFactory.createCompoundBorder
+            	( 
+            		BorderFactory.createEmptyBorder( BORDER_INDENT, BORDER_INDENT, BORDER_INDENT, BORDER_INDENT ),
             		BorderFactory.createEtchedBorder( EtchedBorder.LOWERED )
-        	)
+            	),
+        		BorderFactory.createEmptyBorder( BORDER_INDENT, BORDER_INDENT, BORDER_INDENT, BORDER_INDENT )
+    		)
         );
 
         // The data we pass to the combo box has to be a copy.
