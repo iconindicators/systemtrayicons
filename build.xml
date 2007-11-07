@@ -45,27 +45,18 @@
 			<attribute name="Class-Path" value=". stardate.jar" />
 			<attribute name="Main-Class" value="StardateConverter" />
 		</manifest>
-		<jar jarfile="${bin}/stardate-converter.jar" basedir="${bin}" includes="StardateConverter.class  trayicon.gif" manifest="${bin}/MANIFEST.MF" />
+		<jar jarfile="${bin}/stardate-converter.jar" basedir="${bin}" includes="StardateConverter.class trayicon.gif" manifest="${bin}/MANIFEST.MF" />
 
 		<manifest file="${bin}/MANIFEST.MF">
 			<attribute name="Class-Path" value=". stardate.jar joda-time-1.4.jar jRegistryKey.jar" />
 			<attribute name="Main-Class" value="StardateSystemTray" />
 		</manifest>
 		<jar jarfile="${bin}/stardate-system-tray.jar" basedir="${bin}" includes=" i18n/* Messages.class PopupMenu.class Properties.class StardateSystemTray.class SystemStart.class TrayIcon.class trayicon.gif" manifest="${bin}/MANIFEST.MF" />
+
 	</target>
 
 
-	<target name="CodeRelease" depends="CompileAndJar" description="Releases the JAR'd code.">
-		<delete dir="${release}" />
-		<mkdir dir="${release}" />
-		<copy todir="${release}">
-			<fileset dir="${bin}" includes="**/*.jar" />
-		</copy>
-		<delete dir="${bin}" />
-	</target>
-
-
-	<target name="Installer" if="IsWindows" depends="CodeRelease" description="Build the Microsoft Windows installer executable using NSIS.">
+	<target name="LauncherAndInstaller" if="IsWindows" depends="CompileAndJar" description="Build the Microsoft Windows launcher and installer executables using NSIS.">
 		<exec executable="${env.NSIS_HOME}/Makensis.exe">
 			<arg line="${launcher}/win32/Launcher.nsi"/>
 		</exec>
@@ -73,6 +64,7 @@
 		<exec executable="${env.NSIS_HOME}/Makensis.exe">
 			<arg line="${installer}/win32/Installer.nsi"/>
 		</exec>
+		<mkdir dir="${release}" />
 		<move file="${installer}/win32/StardateSystemTraySetup.exe" tofile="${release}/StardateSystemTraySetup.exe" /> 
 
 		<delete file="${launcher}/win32/StardateSystemTray.exe" />
@@ -100,4 +92,21 @@
 		>
 		</javadoc>
 	</target>
+
+
+	<target name="Release" depends="LauncherAndInstaller, JavaDoc" description="Releases the Jar files, installer, JavaDoc and source code.">
+        <zip destfile="${release}/StardateJavaDoc.zip" basedir="${javadoc}" />	
+
+        <zip destfile="${release}/SampleApplet.zip">
+            <fileset file="${bin}/stardate.jar"/>
+            <fileset file="${bin}/stardate-applet.jar"/>
+            <fileset file="${src}/stardate.html"/>
+        </zip>
+
+        <zip destfile="${release}/SampleApplication.zip">
+            <fileset file="${bin}/stardate.jar"/>
+            <fileset file="${bin}/stardate-converter.jar"/>
+        </zip>
+	</target>
+
 </project>
