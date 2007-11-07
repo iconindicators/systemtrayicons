@@ -78,13 +78,12 @@ Section "Default Section"
   SetOutPath "$INSTDIR"
   
   File ..\..\ReleaseNotes.txt
-  File ..\..\release\stardate.jar
-  File ..\..\release\stardate-system-tray.jar
+  File ..\..\bin\stardate.jar
+  File ..\..\bin\stardate-system-tray.jar
   File ..\..\lib\joda-time-1.4.jar
   File ..\..\lib\win32\jRegistryKey.jar
   File ..\..\lib\win32\jRegistryKey.dll
   File ..\..\launcher\win32\StardateSystemTray.exe	
-  File ..\..\img\trayicon.gif
   
   WriteRegStr HKCU "Software\Stardate System Tray" "" $INSTDIR
   WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Run" "StardateSystemTray" "$INSTDIR\StardateSystemTray.exe"
