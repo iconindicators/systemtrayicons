@@ -114,6 +114,8 @@
             <fileset file="${bin}/stardate.jar"/>
             <fileset file="${bin}/stardate-system-tray.jar"/>
         </zip>
-	</target>
+
+        <zip destfile="${release}/Source.zip" basedir="${src}" includes="*.java" />		
+    </target>
 
 </project>
