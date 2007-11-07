@@ -2,6 +2,8 @@
 
 	<description>Stardate and Stardate System Tray project build file.</description>
 
+	<property name="version" value="1.3" />
+
 	<property environment="env"/>
 
 	<property name="bin" location="bin" />
@@ -65,7 +67,7 @@
 			<arg line="${installer}/win32/Installer.nsi"/>
 		</exec>
 		<mkdir dir="${release}" />
-		<move file="${installer}/win32/StardateSystemTraySetup.exe" tofile="${release}/StardateSystemTraySetup.exe" /> 
+		<move file="${installer}/win32/StardateSystemTraySetup.exe" tofile="${release}/StardateSystemTraySetup-${version}.exe" /> 
 
 		<delete file="${launcher}/win32/StardateSystemTray.exe" />
 	</target>
@@ -95,27 +97,29 @@
 
 
 	<target name="Release" depends="LauncherAndInstaller, JavaDoc" description="Releases the Jar files, installer, JavaDoc and source code.">
-        <zip destfile="${release}/StardateJavaDoc.zip" basedir="${javadoc}" />	
+        <zip destfile="${release}/StardateJavaDoc-${version}.zip" basedir="${javadoc}" />	
 
-        <zip destfile="${release}/SampleApplet.zip">
+        <zip destfile="${release}/SampleApplet-${version}.zip">
             <fileset file="${bin}/stardate.jar"/>
             <fileset file="${bin}/stardate-applet.jar"/>
             <fileset file="${src}/stardate.html"/>
         </zip>
 
-        <zip destfile="${release}/SampleApplication.zip">
+        <zip destfile="${release}/SampleApplication-${version}.zip">
             <fileset file="${bin}/stardate.jar"/>
             <fileset file="${bin}/stardate-converter.jar"/>
         </zip>
 
-		<copy file="${bin}/stardate.jar" todir="${release}" />
+        <zip destfile="${release}/StardateJAR-${version}.zip">
+            <fileset file="${bin}/stardate.jar"/>
+        </zip>
 
-        <zip destfile="${release}/StardateSystemTray.zip">
+        <zip destfile="${release}/StardateSystemTray-${version}.zip">
             <fileset file="${bin}/stardate.jar"/>
             <fileset file="${bin}/stardate-system-tray.jar"/>
         </zip>
 
-        <zip destfile="${release}/Source.zip" basedir="${src}" includes="*.java" />		
+        <zip destfile="${release}/Source-${version}.zip" basedir="${src}" includes="*.java" />		
     </target>
 
 </project>
