@@ -95,8 +95,7 @@ public class Properties
 
     public String getProperty( String key, String defaultValue )
     {
-        if( key == null )
-        	throw new IllegalArgumentException( "Key cannot be null." );
+        if( key == null ) throw new IllegalArgumentException( "Key cannot be null." );
 
         Object value = ms_properties.getProperty( key );
         return value == null ? defaultValue : value.toString();
@@ -105,8 +104,7 @@ public class Properties
 
     public boolean getPropertyBoolean( String key, boolean defaultValue )
     {
-        if( key == null )
-        	throw new IllegalArgumentException( "Key cannot be null." );
+        if( key == null ) throw new IllegalArgumentException( "Key cannot be null." );
 
         String val = ms_properties.getProperty( key );
         if( val == null || val.length() == 0 )
@@ -119,8 +117,7 @@ public class Properties
 
     public int getPropertyInteger( String key, int defaultValue )
     {
-        if( key == null )
-        	throw new IllegalArgumentException( "Key cannot be null." );
+        if( key == null ) throw new IllegalArgumentException( "Key cannot be null." );
 
         String val = ms_properties.getProperty( key );
         if( val == null || val.length() == 0 )
@@ -133,8 +130,7 @@ public class Properties
 
     public Vector<String> getPropertyList( String key )
     {
-        if( key == null )
-        	throw new IllegalArgumentException( "Key cannot be null." );
+        if( key == null ) throw new IllegalArgumentException( "Key cannot be null." );
 
         String value = ms_properties.getProperty( key );
         if( value == null || value.length() == 0 )
@@ -151,29 +147,27 @@ public class Properties
 
     public void setPropertyList( String key, Vector<String> values )
     {
-        if( key == null )
-        	throw new IllegalArgumentException( "Key cannot be null." );
+        if( key == null ) throw new IllegalArgumentException( "Key cannot be null." );
 
-        if( values == null )
-        	throw new IllegalArgumentException( "Values cannot be null." );
+        if( values == null ) throw new IllegalArgumentException( "Values cannot be null." );
 
         StringBuilder value = new StringBuilder();
         for( int i = 0; i < values.size(); i++ )
             value.append( values.elementAt( i ).replace( ",", "\\," ) + "," );
 
-        // Trim the last "," character and store.
+        // Trim the last "," character if it exists.
         if( ! values.isEmpty() )
-        ms_properties.setProperty( key, value.substring( 0, value.length() - 1 ) );
+        	ms_properties.setProperty( key, value.substring( 0, value.length() - 1 ) );
+        else
+        	ms_properties.setProperty( key, value.toString() );
     }
     
     
     public void setProperty( String key, String value )
     {
-        if( key == null )
-        	throw new IllegalArgumentException( "Key cannot be null." );
+        if( key == null ) throw new IllegalArgumentException( "Key cannot be null." );
 
-        if( value == null )
-        	throw new IllegalArgumentException( "Value cannot be null." );
+        if( value == null ) throw new IllegalArgumentException( "Value cannot be null." );
 
         ms_properties.setProperty( key, value );
     }
