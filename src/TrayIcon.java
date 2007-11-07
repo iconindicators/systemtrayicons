@@ -1,3 +1,4 @@
+import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -40,13 +41,16 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 	
 	private TrayIcon( PopupMenu popupMenu )
 	{
-		super( new ImageIcon( TRAY_ICON_IMAGE ).getImage(), null, popupMenu );
+		super( getTrayIconImage(), null, popupMenu );
 
 		setImageAutoSize( true );
 		addMouseListener( this );
 		addMouseMotionListener( this );
 		m_popupMenu = popupMenu;
 	}
+
+
+	private static final Image getTrayIconImage() { return new ImageIcon( ClassLoader.getSystemResource( TRAY_ICON_IMAGE ) ).getImage(); }
 
 	
 	public static TrayIcon createTrayIcon( PopupMenu popupMenu ) { return new TrayIcon( popupMenu ); }
@@ -64,18 +68,14 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_BUDDHIST, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( BuddhistChronology.getInstance() );
-    		if( message.length() > 0 )
-    			message.append( "\n" ); 
-
+        	message.append( message.length() > 0 ? "\n" : ""); 
     		message.append( MESSAGE_BUDDHIST ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_COPTIC, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( CopticChronology.getInstance() );
-    		if( message.length() > 0 )
-    			message.append( "\n" ); 
-
+        	message.append( message.length() > 0 ? "\n" : ""); 
     		message.append( MESSAGE_COPTIC ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
@@ -83,54 +83,42 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_ETHIOPIC, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( EthiopicChronology.getInstance() );
-    		if( message.length() > 0 )
-    			message.append( "\n" ); 
-
+        	message.append( message.length() > 0 ? "\n" : ""); 
     		message.append( MESSAGE_ETHIOPIC ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_GREGORIAN, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( GregorianChronology.getInstance() );
-    		if( message.length() > 0 )
-    			message.append( "\n" ); 
-
+        	message.append( message.length() > 0 ? "\n" : ""); 
     		message.append( MESSAGE_GREGORIAN ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_GREGORIAN_JULIAN, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( GJChronology.getInstance() );
-    		if( message.length() > 0 )
-    			message.append( "\n" ); 
-
+        	message.append( message.length() > 0 ? "\n" : ""); 
     		message.append( MESSAGE_GREGORIAN_JULIAN ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_ISLAMIC, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( IslamicChronology.getInstance() );
-    		if( message.length() > 0 )
-    			message.append( "\n" ); 
-
+        	message.append( message.length() > 0 ? "\n" : ""); 
     		message.append( MESSAGE_ISLAMIC ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_ISO8601, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( ISOChronology.getInstance() );
-    		if( message.length() > 0 )
-    			message.append( "\n" ); 
-
+        	message.append( message.length() > 0 ? "\n" : ""); 
     		message.append( MESSAGE_ISO8601 ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_JULIAN, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( JulianChronology.getInstance() );
-    		if( message.length() > 0 )
-    			message.append( "\n" ); 
-
+        	message.append( message.length() > 0 ? "\n" : ""); 
     		message.append( MESSAGE_JULIAN ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
@@ -138,10 +126,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     	{
     		Stardate stardate = new Stardate();
     		stardate.setGregorian( currentDateTime.toGregorianCalendar() );
-
-    		if( message.length() > 0 )
-    			message.append( "\n" ); 
-
+        	message.append( message.length() > 0 ? "\n" : ""); 
     		message.append( MESSAGE_STARDATE ).append( stardate.toStardateString() );
     	}
 
@@ -202,8 +187,8 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 
 
 	public void mouseReleased( MouseEvent mouseEvent ) { }
-	
-	
+
+
 	private DateTimeFormatter getDateTimeFormatter()
     {
 		DateTimeFormatter dateTimeFormatter = DateTimeFormat.longDate(); // Default.
