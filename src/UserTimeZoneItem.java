@@ -1,7 +1,6 @@
 import java.util.GregorianCalendar;
 
-	
-	
+
 public class UserTimeZoneItem
 {
 	private GregorianCalendar m_gregorianCalendar = null;
@@ -11,14 +10,11 @@ public class UserTimeZoneItem
 
 	public UserTimeZoneItem( String timeZone, String timeZoneDisplayable )
 	{
-		if( timeZone == null )
-			throw new IllegalArgumentException( "Time Zone cannot be null." );
+		if( timeZone == null ) throw new IllegalArgumentException( "Time Zone cannot be null." );
 
-		if( ! UserTimeZones.isValidTimeZone( timeZone ) )
-			throw new IllegalArgumentException( "Invalid Time Zone." );
+		if( ! UserTimeZones.isValidTimeZone( timeZone ) ) throw new IllegalArgumentException( "Invalid Time Zone." );
 		
-		if( timeZoneDisplayable == null )
-			throw new IllegalArgumentException( "Time Zone display name cannot be null." );
+		if( timeZoneDisplayable == null ) throw new IllegalArgumentException( "Time Zone display name cannot be null." );
 			
 		m_timeZone = timeZone;
 		m_timeZoneDisplayable = timeZoneDisplayable;
@@ -36,8 +32,7 @@ public class UserTimeZoneItem
 
 	public void setGregorianCalendar( GregorianCalendar gregorianCalendar ) 
 	{ 
-		if( gregorianCalendar == null )
-			throw new IllegalArgumentException( "Gregorian Calendar cannot be null." );
+		if( gregorianCalendar == null ) throw new IllegalArgumentException( "Gregorian Calendar cannot be null." );
 
 		m_gregorianCalendar = gregorianCalendar; 
 	} 
@@ -45,11 +40,9 @@ public class UserTimeZoneItem
 
 	public void setTimeZone( String timeZone ) 
 	{ 
-		if( timeZone == null )
-			throw new IllegalArgumentException( "Time Zone cannot be null." );
+		if( timeZone == null ) throw new IllegalArgumentException( "Time Zone cannot be null." );
 
-		if( ! UserTimeZones.isValidTimeZone( timeZone ) )
-			throw new IllegalArgumentException( "Invalid Time Zone." );
+		if( ! UserTimeZones.isValidTimeZone( timeZone ) ) throw new IllegalArgumentException( "Invalid Time Zone." );
 		
 		m_timeZone = timeZone; 
 	} 
@@ -57,8 +50,7 @@ public class UserTimeZoneItem
 
 	public void setTimeZoneDisplayable( String timeZoneDisplayable ) 
 	{ 
-		if( timeZoneDisplayable == null )
-			throw new IllegalArgumentException( "Time Zone display name cannot be null." );
+		if( timeZoneDisplayable == null ) throw new IllegalArgumentException( "Time Zone display name cannot be null." );
 			
 		m_timeZoneDisplayable = timeZoneDisplayable; 
 	} 
