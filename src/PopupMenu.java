@@ -37,7 +37,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 
 	public static final String APPLICATION_NAME = Messages.getString( "PopupMenu.18" ); 
 	public static final String APPLICATION_VERSION = Messages.getString( "PopupMenu.19" ); 
-	public static final String APPLICATION_VERSION_NUMBER = "1.2 (2007-07-24)"; 
+	public static final String APPLICATION_VERSION_NUMBER = "1.3 (2007-11-07)"; 
 
 	private static final String CREDIT_ALGORITHM_LINE1 = Messages.getString( "PopupMenu.21" ); 
 	private static final String CREDIT_ALGORITHM_LINE2 = Messages.getString( "PopupMenu.22" ); 
@@ -122,6 +122,14 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	    m_checkboxMenuItemDateFormatShort.addItemListener( this );
 	    subpopup.add( m_checkboxMenuItemDateFormatShort );
 
+	    boolean validFormat = 
+	    	dateTimeFormat.equalsIgnoreCase( Properties.PROPERTY_DATE_FORMAT_LONG ) ||
+	    	dateTimeFormat.equalsIgnoreCase( Properties.PROPERTY_DATE_FORMAT_MEDIUM ) ||
+	    	dateTimeFormat.equalsIgnoreCase( Properties.PROPERTY_DATE_FORMAT_SHORT );
+	    
+	    if( ! validFormat )
+		    m_checkboxMenuItemDateFormatLong.setState( true );
+	    
 	    add( subpopup );
 
 	    checkboxMenuItem = new CheckboxMenuItem( POPUP_RUN_ON_SYSTEM_START, SystemStart.runOnSystemStart() );
