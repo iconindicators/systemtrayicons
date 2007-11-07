@@ -44,8 +44,7 @@ public class Properties
 
     public String getProperty( String key, String defaultValue )
     {
-        if( ms_properties == null || key == null )
-        	return defaultValue;
+        if( key == null ) throw new IllegalArgumentException( "Key cannot be null." );
 
         Object value = ms_properties.getProperty( key );
         return value == null ? defaultValue : value.toString();
@@ -54,8 +53,7 @@ public class Properties
 
     public boolean getPropertyBoolean( String key, boolean defaultValue )
     {
-        if( ms_properties == null || key == null )
-            return defaultValue;
+        if( key == null ) throw new IllegalArgumentException( "Key cannot be null." );
 
         String val = ms_properties.getProperty( key );
         if( val == null || val.length() == 0 )
@@ -68,8 +66,11 @@ public class Properties
 
     public void setProperty( String key, String value )
     {
-        if( ms_properties != null && key != null )
-        	ms_properties.setProperty( key, value );
+        if( key == null ) throw new IllegalArgumentException( "Key cannot be null." );
+
+        if( value == null ) throw new IllegalArgumentException( "Value cannot be null." );
+
+        ms_properties.setProperty( key, value );
     }
 
 
