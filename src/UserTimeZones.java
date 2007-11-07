@@ -44,7 +44,9 @@ public class UserTimeZones
 				}
 
 				if( timezone.contains( TIME_ZONE_FORWARD_SLASH ) )
+				{
 					m_availableTimeZones.add( timezone );
+				}
 			}
 		}
 
@@ -67,7 +69,23 @@ public class UserTimeZones
 
 		Vector<UserTimeZoneItem> userTimeZoneItems = new Vector<UserTimeZoneItem>( timeZones.size() );
 		for( int i = 0; i < timeZones.size(); i++ )
-			userTimeZoneItems.add( new UserTimeZoneItem( timeZones.get( i ), timeZonesDisplayNames.get( i ) ) );
+		{
+			if( isValidTimeZone( timeZones.get( i ) ) )
+			{
+				userTimeZoneItems.add( new UserTimeZoneItem( timeZones.get( i ), timeZonesDisplayNames.get( i ) ) );
+			}
+			else
+			{
+				// Invalid Time Zone...so drop it.
+				timeZones.removeElementAt( i );
+				timeZonesDisplayNames.removeElementAt( i );
+			}
+		}
+
+		// We may have dropped invalid Time Zones...so save out what we currently have.
+		Properties.getInstance().setPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED, timeZones );
+		Properties.getInstance().setPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED_DISPLAY_NAMES, timeZonesDisplayNames );
+		Properties.getInstance().store();
 
 		for( int i = 0; i < timeZones.size(); i++ )
     	{
