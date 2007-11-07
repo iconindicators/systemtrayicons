@@ -107,6 +107,13 @@
             <fileset file="${bin}/stardate.jar"/>
             <fileset file="${bin}/stardate-converter.jar"/>
         </zip>
+
+		<copy file="${bin}/stardate.jar" todir="${release}" />
+
+        <zip destfile="${release}/StardateSystemTray.zip">
+            <fileset file="${bin}/stardate.jar"/>
+            <fileset file="${bin}/stardate-system-tray.jar"/>
+        </zip>
 	</target>
 
 </project>
