@@ -7,7 +7,6 @@ import java.util.Vector;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.GroupLayout.Alignment;
 
@@ -69,19 +68,6 @@ public class AddRemoveTimeZones extends JDialog implements ActionListener
 	{
     	if( actionEvent.getSource() == m_close )
 		{
-			if( m_addRemoveCheckboxList.getSelectedItems().isEmpty() )
-			{
-        		JOptionPane.showMessageDialog
-        		( 
-        			null, 
-        			Messages.getString( "AddRemoveTimeZones.2" ),
-        			Messages.getString( "AddRemoveTimeZones.3" ), 
-        			JOptionPane.OK_OPTION
-        		);
-
-        		return;
-			}
-			
 			m_close.removeActionListener( this );
 
 			Vector<String> existingTimeZones = Properties.getInstance().getPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED );
@@ -101,7 +87,7 @@ public class AddRemoveTimeZones extends JDialog implements ActionListener
 						break;
 					}
 				}
-				
+
 				if( j == existingTimeZones.size() )
 					newTimeZonesDisplayable.add( newTimeZones.get( i ) );
 			}
@@ -109,7 +95,7 @@ public class AddRemoveTimeZones extends JDialog implements ActionListener
 			Properties.getInstance().setPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED, newTimeZones );
 			Properties.getInstance().setPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED_DISPLAY_NAMES, newTimeZonesDisplayable );
 			Properties.getInstance().store();
-			
+
 			dispose();
 		}
 	}
