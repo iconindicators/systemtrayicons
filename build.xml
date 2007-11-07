@@ -43,17 +43,7 @@
 	</target>
 
 
-	<target name="CodeRelease" depends="CompileAndJar" description="Releases the JAR'd code.">
-		<delete dir="${release}" />
-		<mkdir dir="${release}" />
-		<copy todir="${release}">
-			<fileset dir="${bin}" includes="**/*.jar" />
-		</copy>
-		<delete dir="${bin}" />
-	</target>
-
-
-	<target name="Installer" if="IsWindows" depends="CodeRelease" description="Build the Microsoft Windows installer executable using NSIS.">
+	<target name="LauncherAndInstaller" if="IsWindows" depends="CompileAndJar" description="Build the Microsoft Windows installer executable using NSIS.">
 		<exec executable="${env.NSIS_HOME}/Makensis.exe">
 			<arg line="${launcher}/win32/Launcher.nsi"/>
 		</exec>
@@ -61,8 +51,17 @@
 		<exec executable="${env.NSIS_HOME}/Makensis.exe">
 			<arg line="${installer}/win32/Installer.nsi"/>
 		</exec>
+		<mkdir dir="${release}" />
 		<move file="${installer}/win32/WorldTimeSystemTraySetup.exe" tofile="${release}/WorldTimeSystemTraySetup.exe" /> 
 
 		<delete file="${launcher}/win32/WorldTimeSystemTray.exe" />
 	</target>
+
+
+	<target name="Release" depends="LauncherAndInstaller" description="Releases the Jar file and source code.">
+		<copy file="${bin}/world-time-system-tray.jar" todir="${release}" />
+
+        <zip destfile="${release}/Source.zip" basedir="${src}" includes="*.java" />		
+    </target>
+
 </project>
