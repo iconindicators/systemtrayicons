@@ -24,10 +24,7 @@ public class StardateException extends Exception
 	/**
 	 * Constructs a new exception with null as its detail message.
 	 */
-	public StardateException() 
-	{
-		super();
-	}
+	public StardateException() { super(); }
 
 	
 	/**
@@ -35,10 +32,7 @@ public class StardateException extends Exception
 	 * 
 	 * @param message The detail message.
 	 */
-	public StardateException( String message ) 
-	{
-		super( message );
-	}
+	public StardateException( String message ) { super( message ); }
 
 	
 	/**
@@ -48,10 +42,7 @@ public class StardateException extends Exception
 	 * 
 	 * @param cause The cause of this exception.
 	 */
-	public StardateException( Throwable cause ) 
-	{
-		super( cause );
-	}
+	public StardateException( Throwable cause ) { super( cause ); }
 
 	
 	/**
@@ -60,10 +51,7 @@ public class StardateException extends Exception
 	 * @param message The detail message.
 	 * @param cause The cause of this exception.
 	 */
-	public StardateException( String message, Throwable cause ) 
-	{
-		super( message, cause );
-	}
+	public StardateException( String message, Throwable cause ) { super( message, cause ); }
 	
 	
 	/**
@@ -83,8 +71,5 @@ public class StardateException extends Exception
 	 * 
 	 * @return The type of this exception.
 	 */
-	public Type getType()
-	{
-		return m_type;
-	}
+	public Type getType() { return m_type; }
 }

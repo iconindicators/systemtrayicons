@@ -80,10 +80,7 @@ public class StardateApplet extends Applet
 	}
 
 	
-	public String getAppletInfo()
-	{
-		return "Stardate Display."; 
-	}
+	public String getAppletInfo() { return "Stardate Display."; }
 
 
 	public String[][] getParameterInfo()

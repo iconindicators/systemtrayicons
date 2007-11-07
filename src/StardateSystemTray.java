@@ -17,25 +17,20 @@ public class StardateSystemTray
 
         if( ! SystemTray.isSupported() )
         {
-			JOptionPane.showMessageDialog
-			(
-				null, 
-				Messages.getString( "StardateSystemTray.0" ),  
-				Messages.getString( "StardateSystemTray.1" ),  
-				JOptionPane.ERROR_MESSAGE
-			);
-
+			JOptionPane.showMessageDialog( null, Messages.getString( "StardateSystemTray.0" ), Messages.getString( "StardateSystemTray.1" ), JOptionPane.ERROR_MESSAGE );
 			return;
         }
 
     	TrayIcon trayIcon = TrayIcon.createTrayIcon( new PopupMenu() );
     	SystemTray systemTray = SystemTray.getSystemTray();
-		try { systemTray.add( trayIcon ); }
+		
+    	try { systemTray.add( trayIcon ); }
 		catch( Throwable throwable ) 
 		{
 			JOptionPane.showMessageDialog( null, throwable.getMessage(), Messages.getString( "StardateSystemTray.2" ), JOptionPane.ERROR_MESSAGE );
 			return;
 		}
+
 		trayIcon.displayStartupBalloon();
 	}
 
