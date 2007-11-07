@@ -22,7 +22,9 @@ import javax.swing.SpinnerNumberModel;
 
 public class StardateConverter extends JFrame implements ActionListener
 {
-    private JRadioButton m_radioGregorianToStardate, m_radioStardateToGregorian;
+	private static final String TRAY_ICON_IMAGE = "trayicon.gif"; 
+
+	private JRadioButton m_radioGregorianToStardate, m_radioStardateToGregorian;
     private JSpinner m_spinnerIssue, m_spinnerInteger, m_spinnerFraction;
     private JSpinner m_spinnerYYYYMMDD, m_spinnerHHMMSS;
     private JButton m_convert;
@@ -32,10 +34,7 @@ public class StardateConverter extends JFrame implements ActionListener
     {
         super( "Stardate/Gregorian Converter" );
 
-        ImageIcon icon = new ImageIcon( "stardate.gif" );
-        if( icon != null )
-            setIconImage( icon.getImage() );
-
+        setIconImage( new ImageIcon( ClassLoader.getSystemResource( TRAY_ICON_IMAGE ) ).getImage() );
         setContentPane( buildMainPanel() );
         pack();
 
@@ -125,17 +124,18 @@ public class StardateConverter extends JFrame implements ActionListener
         }
         else if( source == m_radioGregorianToStardate || source == m_radioStardateToGregorian )
         {
-            m_spinnerIssue.setEnabled( ! m_radioGregorianToStardate.isSelected() );
-            m_spinnerInteger.setEnabled( ! m_radioGregorianToStardate.isSelected() );
-            m_spinnerFraction.setEnabled( ! m_radioGregorianToStardate.isSelected() );
+    	  m_spinnerIssue.setEnabled( ! m_radioGregorianToStardate.isSelected() );
+    	  m_spinnerInteger.setEnabled( ! m_radioGregorianToStardate.isSelected() );
+    	  m_spinnerFraction.setEnabled( ! m_radioGregorianToStardate.isSelected() );
 
-            m_spinnerYYYYMMDD.setEnabled( m_radioGregorianToStardate.isSelected() );
-            m_spinnerHHMMSS.setEnabled( m_radioGregorianToStardate.isSelected() );
+    	  m_spinnerYYYYMMDD.setEnabled( m_radioGregorianToStardate.isSelected() );
+    	  m_spinnerHHMMSS.setEnabled( m_radioGregorianToStardate.isSelected() );
 
-            if( m_radioGregorianToStardate.isSelected() )
-            	m_convert.setToolTipText( "Convert from a Gregorian date to a Stardate" );
-            else
-            	m_convert.setToolTipText( "Convert from a Stardate to a Gregorian date" );
+
+    	  if( m_radioGregorianToStardate.isSelected() )
+    		  m_convert.setToolTipText( "Convert from a Gregorian date to a Stardate" );
+    	  else
+    		  m_convert.setToolTipText( "Convert from a Stardate to a Gregorian date" );
         }
     }
 
@@ -215,8 +215,5 @@ public class StardateConverter extends JFrame implements ActionListener
     }
 
 
-    public static void main( String[] args )
-    {
-        new StardateConverter().setVisible( true );
-    }
+    public static void main( String[] args ) { new StardateConverter().setVisible( true ); }
 }
