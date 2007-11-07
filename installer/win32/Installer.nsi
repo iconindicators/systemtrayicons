@@ -78,7 +78,7 @@ Section "Default Section"
   SetOutPath "$INSTDIR"
   
   File ..\..\ReleaseNotes.txt
-  File ..\..\release\world-time-system-tray.jar
+  File ..\..\bin\world-time-system-tray.jar
   File ..\..\lib\win32\jRegistryKey.jar
   File ..\..\lib\win32\jRegistryKey.dll
   File ..\..\launcher\win32\WorldTimeSystemTray.exe	
