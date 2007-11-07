@@ -2,6 +2,35 @@ Stardate and Stardate System Tray Release Notes
 -----------------------------------------------
 
 
+2007-11-07 Version 1.3
+
+* Tray icon is now included in the stardate-system-tray.jar file.  
+  Execute the JAR from the command line as
+
+    "java -jar stardate-system-tray.jar"
+
+  Ensure that jRegistryKey.jar, jRegistryKey.dll, joda-time-1.4.jar and
+  stardate.jar are on the path if executing on Microsoft Windows.  
+
+  Ensure that joda-time-1.4.jar and stardate.jar are on the path if executing 
+  on any platform other than Microsoft Windows.  
+
+  Has not been tested on any platform other than Microsoft Windows.
+
+* Tray icon is now included in the stardate-converter.jar file.  
+  Execute the JAR from the command line as
+
+    "java -jar stardate-converter.jar"
+
+  Ensure that stardate.jar is on the path for all platforms.
+
+  Has not been tested on any platform other than Microsoft Windows.
+
+* Selects a default of LONG date format on invalid property value.
+
+* Empty lists are now correctly saved in properties.
+
+
 2007-07-24 Version 1.2
 
 * Better handling for absence of system tray support.
