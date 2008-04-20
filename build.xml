@@ -2,7 +2,7 @@
 
 	<description>Stardate and Stardate System Tray project build file.</description>
 
-	<property name="version" value="1.3" />
+	<property name="version" value="1.4" />
 
 	<property environment="env"/>
 
@@ -27,7 +27,7 @@
 
 		<javac srcdir="${src}" destdir="${bin}" nowarn="${nowarn}">
 			<classpath>
-				<pathelement location="${lib}/joda-time-1.4.jar" />								
+				<pathelement location="${lib}/joda-time-1.5.2.jar" />								
 				<pathelement location="${lib}/win32/jRegistryKey.jar" />
 			</classpath>
 			<compilerarg value="-Xlint:unchecked" />
@@ -50,7 +50,7 @@
 		<jar jarfile="${bin}/stardate-converter.jar" basedir="${bin}" includes="StardateConverter.class trayicon.gif" manifest="${bin}/MANIFEST.MF" />
 
 		<manifest file="${bin}/MANIFEST.MF">
-			<attribute name="Class-Path" value=". stardate.jar joda-time-1.4.jar jRegistryKey.jar" />
+			<attribute name="Class-Path" value=". stardate.jar joda-time-1.5.2.jar jRegistryKey.jar" />
 			<attribute name="Main-Class" value="StardateSystemTray" />
 		</manifest>
 		<jar jarfile="${bin}/stardate-system-tray.jar" basedir="${bin}" includes=" i18n/* Messages.class PopupMenu.class Properties.class StardateSystemTray.class SystemStart.class TrayIcon.class trayicon.gif" manifest="${bin}/MANIFEST.MF" />
