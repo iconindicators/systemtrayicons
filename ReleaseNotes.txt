@@ -2,6 +2,13 @@ Stardate and Stardate System Tray Release Notes
 -----------------------------------------------
 
 
+2008-04-20 Version 1.4
+
+* Updated to use latest Joda release.
+
+* Now uses correct icon (rather than Java default) in the About dialogue.
+
+
 2007-11-07 Version 1.3
 
 * To execute Stardate System Tray from the command line use
