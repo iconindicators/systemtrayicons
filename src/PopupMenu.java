@@ -37,7 +37,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 
 	public static final String APPLICATION_NAME = Messages.getString( "PopupMenu.18" ); 
 	public static final String APPLICATION_VERSION = Messages.getString( "PopupMenu.19" ); 
-	public static final String APPLICATION_VERSION_NUMBER = "1.3 (2007-11-07)"; 
+	public static final String APPLICATION_VERSION_NUMBER = "1.4 (2008-04-20)"; 
 
 	private static final String CREDIT_ALGORITHM_LINE1 = Messages.getString( "PopupMenu.21" ); 
 	private static final String CREDIT_ALGORITHM_LINE2 = Messages.getString( "PopupMenu.22" ); 
@@ -171,7 +171,8 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     			);
 
     		final JDialog dialog = new JOptionPane( new Object[] { label } ).createDialog( POPUP_ABOUT );
-	        int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - dialog.getWidth() ) / 2;
+    		dialog.setIconImage( TrayIcon.getTrayIconImage() );
+    		int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - dialog.getWidth() ) / 2;
 	        int originY = ( Toolkit.getDefaultToolkit().getScreenSize().height - dialog.getHeight() ) / 2;
 	        dialog.setLocation( originX, originY );
 	        dialog.setVisible( true );
