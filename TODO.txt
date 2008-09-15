@@ -1,0 +1,7 @@
+* Waiting on http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6440297 to be
+  resolved...then can release to Linux!
+
+* On Windows Vista, the UAC will prompt for administrator password on start up.
+
+* Update icons for higher resolution.
+
