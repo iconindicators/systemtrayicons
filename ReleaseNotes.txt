@@ -2,6 +2,16 @@ Stardate and Stardate System Tray Release Notes
 -----------------------------------------------
 
 
+2008-XX-YY Version 1.5
+
+* Updated to use jRegistryKey 1.4.5.0
+
+* Added an option to pad out the integer part of the stardate.
+  For example: the stardate [-28] 43.7 would be padded out to [-28] 0043.7
+
+* Cleaned up various compiler warnings.
+
+
 2008-04-20 Version 1.4
 
 * Updated to use latest Joda release.
