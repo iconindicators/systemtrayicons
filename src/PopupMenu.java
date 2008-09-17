@@ -14,36 +14,39 @@ import javax.swing.SwingConstants;
 
 public class PopupMenu extends java.awt.PopupMenu implements ActionListener, ItemListener
 {
-	static final String POPUP_ABOUT = Messages.getString( "PopupMenu.0" ); 
-	static final String POPUP_EXIT = Messages.getString( "PopupMenu.1" ); 
-	static final String POPUP_CHRONOLOGY = Messages.getString( "PopupMenu.2" ); 
-	static final String POPUP_DATE_FORMAT = Messages.getString( "PopupMenu.3" ); 
-	static final String POPUP_RUN_ON_SYSTEM_START = Messages.getString( "PopupMenu.4" ); 
-	static final String POPUP_SHOW_STARDATE_ISSUE = Messages.getString( "PopupMenu.5" ); 
+	private static final long serialVersionUID = 1L;
 
-	static final String SUBPOPUP_SHOW_MESSAGE_BUDDHIST = Messages.getString( "PopupMenu.6" ); 
-	static final String SUBPOPUP_SHOW_MESSAGE_COPTIC = Messages.getString( "PopupMenu.7" ); 
-	static final String SUBPOPUP_SHOW_MESSAGE_ETHIOPIC = Messages.getString( "PopupMenu.8" ); 
-	static final String SUBPOPUP_SHOW_MESSAGE_GREGORIAN = Messages.getString( "PopupMenu.9" ); 
-	static final String SUBPOPUP_SHOW_MESSAGE_GREGORIAN_JULIAN = Messages.getString( "PopupMenu.10" ); 
-	static final String SUBPOPUP_SHOW_MESSAGE_ISLAMIC = Messages.getString( "PopupMenu.11" ); 
-	static final String SUBPOPUP_SHOW_MESSAGE_ISO8601 = Messages.getString( "PopupMenu.12" ); 
-	static final String SUBPOPUP_SHOW_MESSAGE_JULIAN = Messages.getString( "PopupMenu.13" ); 
-	static final String SUBPOPUP_SHOW_MESSAGE_STARDATE = Messages.getString( "PopupMenu.14" ); 
+	static final String POPUP_ABOUT = Messages.getString( "PopupMenu.0" );  //$NON-NLS-1$
+	static final String POPUP_EXIT = Messages.getString( "PopupMenu.1" );  //$NON-NLS-1$
+	static final String POPUP_CHRONOLOGY = Messages.getString( "PopupMenu.2" );  //$NON-NLS-1$
+	static final String POPUP_DATE_FORMAT = Messages.getString( "PopupMenu.3" );  //$NON-NLS-1$
+	static final String POPUP_RUN_ON_SYSTEM_START = Messages.getString( "PopupMenu.4" );  //$NON-NLS-1$
+	static final String POPUP_SHOW_STARDATE_ISSUE = Messages.getString( "PopupMenu.5" );  //$NON-NLS-1$
+	static final String POPUP_PAD_STARDATE = Messages.getString( "PopupMenu.26" );  //$NON-NLS-1$
 
-	static final String SUBPOPUP_DATE_TIME_FORMAT_LONG = Messages.getString( "PopupMenu.15" ); 
-	static final String SUBPOPUP_DATE_TIME_FORMAT_MEDIUM = Messages.getString( "PopupMenu.16" ); 
-	static final String SUBPOPUP_DATE_TIME_FORMAT_SHORT = Messages.getString( "PopupMenu.17" ); 
+	static final String SUBPOPUP_SHOW_MESSAGE_BUDDHIST = Messages.getString( "PopupMenu.6" );  //$NON-NLS-1$
+	static final String SUBPOPUP_SHOW_MESSAGE_COPTIC = Messages.getString( "PopupMenu.7" );  //$NON-NLS-1$
+	static final String SUBPOPUP_SHOW_MESSAGE_ETHIOPIC = Messages.getString( "PopupMenu.8" );  //$NON-NLS-1$
+	static final String SUBPOPUP_SHOW_MESSAGE_GREGORIAN = Messages.getString( "PopupMenu.9" );  //$NON-NLS-1$
+	static final String SUBPOPUP_SHOW_MESSAGE_GREGORIAN_JULIAN = Messages.getString( "PopupMenu.10" );  //$NON-NLS-1$
+	static final String SUBPOPUP_SHOW_MESSAGE_ISLAMIC = Messages.getString( "PopupMenu.11" );  //$NON-NLS-1$
+	static final String SUBPOPUP_SHOW_MESSAGE_ISO8601 = Messages.getString( "PopupMenu.12" );  //$NON-NLS-1$
+	static final String SUBPOPUP_SHOW_MESSAGE_JULIAN = Messages.getString( "PopupMenu.13" );  //$NON-NLS-1$
+	static final String SUBPOPUP_SHOW_MESSAGE_STARDATE = Messages.getString( "PopupMenu.14" );  //$NON-NLS-1$
 
-	public static final String APPLICATION_NAME = Messages.getString( "PopupMenu.18" ); 
-	public static final String APPLICATION_VERSION = Messages.getString( "PopupMenu.19" ); 
-	public static final String APPLICATION_VERSION_NUMBER = "1.4 (2008-04-20)"; 
+	static final String SUBPOPUP_DATE_TIME_FORMAT_LONG = Messages.getString( "PopupMenu.15" );  //$NON-NLS-1$
+	static final String SUBPOPUP_DATE_TIME_FORMAT_MEDIUM = Messages.getString( "PopupMenu.16" );  //$NON-NLS-1$
+	static final String SUBPOPUP_DATE_TIME_FORMAT_SHORT = Messages.getString( "PopupMenu.17" );  //$NON-NLS-1$
 
-	private static final String CREDIT_ALGORITHM_LINE1 = Messages.getString( "PopupMenu.21" ); 
-	private static final String CREDIT_ALGORITHM_LINE2 = Messages.getString( "PopupMenu.22" ); 
-	private static final String CREDIT_CHRONOLOGY = Messages.getString( "PopupMenu.23" ); 
-	private static final String CREDIT_REGISTRY = Messages.getString( "PopupMenu.24" ); 
-	private static final String CREDIT_NSIS = Messages.getString( "PopupMenu.25" ); 
+	public static final String APPLICATION_NAME = Messages.getString( "PopupMenu.18" );  //$NON-NLS-1$
+	public static final String APPLICATION_VERSION = Messages.getString( "PopupMenu.19" );  //$NON-NLS-1$
+	public static final String APPLICATION_VERSION_NUMBER = "1.4 (2008-04-20)"; //TODO Change this! //$NON-NLS-1$
+
+	private static final String CREDIT_ALGORITHM_LINE1 = Messages.getString( "PopupMenu.21" );  //$NON-NLS-1$
+	private static final String CREDIT_ALGORITHM_LINE2 = Messages.getString( "PopupMenu.22" );  //$NON-NLS-1$
+	private static final String CREDIT_CHRONOLOGY = Messages.getString( "PopupMenu.23" );  //$NON-NLS-1$
+	private static final String CREDIT_REGISTRY = Messages.getString( "PopupMenu.24" );  //$NON-NLS-1$
+	private static final String CREDIT_NSIS = Messages.getString( "PopupMenu.25" );  //$NON-NLS-1$
 
     private CheckboxMenuItem m_checkboxMenuItemDateFormatLong = null;
     private CheckboxMenuItem m_checkboxMenuItemDateFormatMedium = null;
@@ -67,39 +70,39 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 
 	    CheckboxMenuItem checkboxMenuItem = null;
 
-	    checkboxMenuItem = new CheckboxMenuItem( SUBPOPUP_SHOW_MESSAGE_BUDDHIST, Boolean.valueOf( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_BUDDHIST, true ) ) );
+	    checkboxMenuItem = new CheckboxMenuItem( SUBPOPUP_SHOW_MESSAGE_BUDDHIST, Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_BUDDHIST, true ) );
 	    checkboxMenuItem.addItemListener( this );
 	    subpopup.add( checkboxMenuItem );
 
-	    checkboxMenuItem = new CheckboxMenuItem( SUBPOPUP_SHOW_MESSAGE_COPTIC, Boolean.valueOf( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_COPTIC, true ) ) );
+	    checkboxMenuItem = new CheckboxMenuItem( SUBPOPUP_SHOW_MESSAGE_COPTIC, Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_COPTIC, true ) );
 	    checkboxMenuItem.addItemListener( this );
 	    subpopup.add( checkboxMenuItem );
 
-	    checkboxMenuItem = new CheckboxMenuItem( SUBPOPUP_SHOW_MESSAGE_ETHIOPIC, Boolean.valueOf( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_ETHIOPIC, true ) ) );
+	    checkboxMenuItem = new CheckboxMenuItem( SUBPOPUP_SHOW_MESSAGE_ETHIOPIC, Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_ETHIOPIC, true ) );
 	    checkboxMenuItem.addItemListener( this );
 	    subpopup.add( checkboxMenuItem );
 
-	    checkboxMenuItem = new CheckboxMenuItem( SUBPOPUP_SHOW_MESSAGE_GREGORIAN, Boolean.valueOf( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_GREGORIAN, true ) ) );
+	    checkboxMenuItem = new CheckboxMenuItem( SUBPOPUP_SHOW_MESSAGE_GREGORIAN, Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_GREGORIAN, true ) );
 	    checkboxMenuItem.addItemListener( this );
 	    subpopup.add( checkboxMenuItem );
 
-	    checkboxMenuItem = new CheckboxMenuItem( SUBPOPUP_SHOW_MESSAGE_GREGORIAN_JULIAN, Boolean.valueOf( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_GREGORIAN_JULIAN, true ) ) );
+	    checkboxMenuItem = new CheckboxMenuItem( SUBPOPUP_SHOW_MESSAGE_GREGORIAN_JULIAN, Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_GREGORIAN_JULIAN, true ) );
 	    checkboxMenuItem.addItemListener( this );
 	    subpopup.add( checkboxMenuItem );
 
-	    checkboxMenuItem = new CheckboxMenuItem( SUBPOPUP_SHOW_MESSAGE_ISLAMIC, Boolean.valueOf( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_ISLAMIC, true ) ) );
+	    checkboxMenuItem = new CheckboxMenuItem( SUBPOPUP_SHOW_MESSAGE_ISLAMIC, Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_ISLAMIC, true ) );
 	    checkboxMenuItem.addItemListener( this );
 	    subpopup.add( checkboxMenuItem );
 
-	    checkboxMenuItem = new CheckboxMenuItem( SUBPOPUP_SHOW_MESSAGE_ISO8601, Boolean.valueOf( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_ISO8601, true ) ) );
+	    checkboxMenuItem = new CheckboxMenuItem( SUBPOPUP_SHOW_MESSAGE_ISO8601, Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_ISO8601, true ) );
 	    checkboxMenuItem.addItemListener( this );
 	    subpopup.add( checkboxMenuItem );
 
-	    checkboxMenuItem = new CheckboxMenuItem( SUBPOPUP_SHOW_MESSAGE_JULIAN, Boolean.valueOf( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_JULIAN, true ) ) );
+	    checkboxMenuItem = new CheckboxMenuItem( SUBPOPUP_SHOW_MESSAGE_JULIAN, Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_JULIAN, true ) );
 	    checkboxMenuItem.addItemListener( this );
 	    subpopup.add( checkboxMenuItem );
 
-	    checkboxMenuItem = new CheckboxMenuItem( SUBPOPUP_SHOW_MESSAGE_STARDATE, Boolean.valueOf( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_STARDATE, true ) ) );
+	    checkboxMenuItem = new CheckboxMenuItem( SUBPOPUP_SHOW_MESSAGE_STARDATE, Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_STARDATE, true ) );
 	    checkboxMenuItem.addItemListener( this );
 	    subpopup.add( checkboxMenuItem );
 
@@ -136,7 +139,12 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	    checkboxMenuItem.addItemListener( this );
 	    add( checkboxMenuItem );
 
-	    boolean showStardateIssue = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_ISSUE, Properties.PROPERTY_SHOW_STARDATE_ISSUE_DEFAULT_VALUE );
+	    boolean padStardate = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_PAD_STARDATE, true );
+	    checkboxMenuItem = new CheckboxMenuItem( POPUP_PAD_STARDATE, padStardate );
+	    checkboxMenuItem.addItemListener( this );
+	    add( checkboxMenuItem );
+
+	    boolean showStardateIssue = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_ISSUE, true );
 	    checkboxMenuItem = new CheckboxMenuItem( POPUP_SHOW_STARDATE_ISSUE, showStardateIssue );
 	    checkboxMenuItem.addItemListener( this );
 	    add( checkboxMenuItem );
@@ -160,23 +168,17 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     		final JLabel label = 
     			new JLabel
     			( 
-    				"<html><center>" + 
-    				"<b>" + APPLICATION_NAME + "</b><br>" + APPLICATION_VERSION + " " + APPLICATION_VERSION_NUMBER + "<br><br>" +  
-    				CREDIT_ALGORITHM_LINE1 + "<br>" + CREDIT_ALGORITHM_LINE2 + "<br><br>" +   
-    				CREDIT_CHRONOLOGY + "<br><br>" +  
-    				CREDIT_REGISTRY + "<br><br>" +  
-    				CREDIT_NSIS + "<br><br>" + 
-    				"</center></html>", 
+    				"<html><center>" +  //$NON-NLS-1$
+    				"<b>" + APPLICATION_NAME + "</b><br>" + APPLICATION_VERSION + " " + APPLICATION_VERSION_NUMBER + "<br><br>" +   //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    				CREDIT_ALGORITHM_LINE1 + "<br>" + CREDIT_ALGORITHM_LINE2 + "<br><br>" +    //$NON-NLS-1$ //$NON-NLS-2$
+    				CREDIT_CHRONOLOGY + "<br><br>" +   //$NON-NLS-1$
+    				CREDIT_REGISTRY + "<br><br>" +   //$NON-NLS-1$
+    				CREDIT_NSIS + "<br><br>" +  //$NON-NLS-1$
+    				"</center></html>",  //$NON-NLS-1$
     				SwingConstants.CENTER
     			);
 
-    		final JDialog dialog = new JOptionPane( new Object[] { label } ).createDialog( POPUP_ABOUT );
-    		dialog.setIconImage( TrayIcon.getTrayIconImage() );
-    		int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - dialog.getWidth() ) / 2;
-	        int originY = ( Toolkit.getDefaultToolkit().getScreenSize().height - dialog.getHeight() ) / 2;
-	        dialog.setLocation( originX, originY );
-	        dialog.setVisible( true );
-	        
+    		MessageDialog.showMessageDialog( POPUP_ABOUT, label, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION );
 	        m_popupDisabled = false;
 
 			return;
@@ -199,6 +201,12 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     	if( POPUP_SHOW_STARDATE_ISSUE.equals( label ) )
     	{
     		Properties.getInstance().setProperty( Properties.PROPERTY_SHOW_STARDATE_ISSUE, Boolean.toString( checkboxMenuItem.getState() ) );
+    	}
+
+    	// Toggle the pad Stardate.
+    	else if( POPUP_PAD_STARDATE.equals( label ) )
+    	{
+    		Properties.getInstance().setProperty( Properties.PROPERTY_PAD_STARDATE, Boolean.toString( checkboxMenuItem.getState() ) );
     	}
 
     	// Toggle the run on system start option.

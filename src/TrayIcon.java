@@ -21,20 +21,20 @@ import org.joda.time.format.DateTimeFormatter;
 
 public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseMotionListener
 {
-	private static final String TRAY_ICON_IMAGE = "trayicon.gif"; 
+	private static final String TRAY_ICON_IMAGE = "trayicon.gif";  //$NON-NLS-1$
 
-	private static final String MESSAGE_NO_CHRONOLOGIES = Messages.getString( "TrayIcon.1" ); 
-	private static final String MESSAGE_BUDDHIST = Messages.getString( "TrayIcon.2" ); 
-	private static final String MESSAGE_COPTIC = Messages.getString( "TrayIcon.3" ); 
-	private static final String MESSAGE_ETHIOPIC = Messages.getString( "TrayIcon.4" ); 
-	private static final String MESSAGE_GREGORIAN = Messages.getString( "TrayIcon.5" ); 
-	private static final String MESSAGE_GREGORIAN_JULIAN = Messages.getString( "TrayIcon.6" ); 
-	private static final String MESSAGE_ISLAMIC = Messages.getString( "TrayIcon.7" ); 
-	private static final String MESSAGE_ISO8601 = Messages.getString( "TrayIcon.8" ); 
-	private static final String MESSAGE_JULIAN = Messages.getString( "TrayIcon.9" ); 
-	private static final String MESSAGE_STARDATE = Messages.getString( "TrayIcon.10" ); 
+	private static final String MESSAGE_NO_CHRONOLOGIES = Messages.getString( "TrayIcon.1" );  //$NON-NLS-1$
+	private static final String MESSAGE_BUDDHIST = Messages.getString( "TrayIcon.2" );  //$NON-NLS-1$
+	private static final String MESSAGE_COPTIC = Messages.getString( "TrayIcon.3" );  //$NON-NLS-1$
+	private static final String MESSAGE_ETHIOPIC = Messages.getString( "TrayIcon.4" );  //$NON-NLS-1$
+	private static final String MESSAGE_GREGORIAN = Messages.getString( "TrayIcon.5" );  //$NON-NLS-1$
+	private static final String MESSAGE_GREGORIAN_JULIAN = Messages.getString( "TrayIcon.6" );  //$NON-NLS-1$
+	private static final String MESSAGE_ISLAMIC = Messages.getString( "TrayIcon.7" );  //$NON-NLS-1$
+	private static final String MESSAGE_ISO8601 = Messages.getString( "TrayIcon.8" );  //$NON-NLS-1$
+	private static final String MESSAGE_JULIAN = Messages.getString( "TrayIcon.9" );  //$NON-NLS-1$
+	private static final String MESSAGE_STARDATE = Messages.getString( "TrayIcon.10" );  //$NON-NLS-1$
 
-	private static final String MESSAGE_TOOL_TIP = Messages.getString( "TrayIcon.11" ); 
+	private static final String MESSAGE_TOOL_TIP = Messages.getString( "TrayIcon.11" );  //$NON-NLS-1$
 
 	private PopupMenu m_popupMenu = null;
 
@@ -68,14 +68,14 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_BUDDHIST, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( BuddhistChronology.getInstance() );
-        	message.append( message.length() > 0 ? "\n" : ""); 
+        	message.append( message.length() > 0 ? "\n" : "" );  //$NON-NLS-1$ //$NON-NLS-2$
     		message.append( MESSAGE_BUDDHIST ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_COPTIC, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( CopticChronology.getInstance() );
-        	message.append( message.length() > 0 ? "\n" : ""); 
+        	message.append( message.length() > 0 ? "\n" : "" );   //$NON-NLS-1$//$NON-NLS-2$
     		message.append( MESSAGE_COPTIC ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
@@ -83,42 +83,42 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_ETHIOPIC, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( EthiopicChronology.getInstance() );
-        	message.append( message.length() > 0 ? "\n" : ""); 
+        	message.append( message.length() > 0 ? "\n" : "" );  //$NON-NLS-1$ //$NON-NLS-2$
     		message.append( MESSAGE_ETHIOPIC ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_GREGORIAN, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( GregorianChronology.getInstance() );
-        	message.append( message.length() > 0 ? "\n" : ""); 
+        	message.append( message.length() > 0 ? "\n" : "" );   //$NON-NLS-1$//$NON-NLS-2$
     		message.append( MESSAGE_GREGORIAN ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_GREGORIAN_JULIAN, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( GJChronology.getInstance() );
-        	message.append( message.length() > 0 ? "\n" : ""); 
+        	message.append( message.length() > 0 ? "\n" : "" );   //$NON-NLS-1$//$NON-NLS-2$
     		message.append( MESSAGE_GREGORIAN_JULIAN ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_ISLAMIC, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( IslamicChronology.getInstance() );
-        	message.append( message.length() > 0 ? "\n" : ""); 
+        	message.append( message.length() > 0 ? "\n" : "" );   //$NON-NLS-1$//$NON-NLS-2$
     		message.append( MESSAGE_ISLAMIC ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_ISO8601, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( ISOChronology.getInstance() );
-        	message.append( message.length() > 0 ? "\n" : ""); 
+        	message.append( message.length() > 0 ? "\n" : "" );   //$NON-NLS-1$//$NON-NLS-2$
     		message.append( MESSAGE_ISO8601 ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_JULIAN, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( JulianChronology.getInstance() );
-        	message.append( message.length() > 0 ? "\n" : ""); 
+        	message.append( message.length() > 0 ? "\n" : "" );   //$NON-NLS-1$//$NON-NLS-2$
     		message.append( MESSAGE_JULIAN ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
@@ -126,8 +126,13 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     	{
     		Stardate stardate = new Stardate();
     		stardate.setGregorian( currentDateTime.toGregorianCalendar() );
-        	message.append( message.length() > 0 ? "\n" : ""); 
-    		message.append( MESSAGE_STARDATE ).append( stardate.toStardateString() );
+        	message.append( message.length() > 0 ? "\n" : "" );  //$NON-NLS-1$ //$NON-NLS-2$
+
+    		boolean padStardate = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_PAD_STARDATE, true );
+    		if( padStardate )
+    			message.append( MESSAGE_STARDATE ).append( stardate.toStardateStringPadded() );
+    		else
+    			message.append( MESSAGE_STARDATE ).append( stardate.toStardateString() );
     	}
 
     	if( message.length() == 0 )
@@ -137,7 +142,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     }
     
     
-	public void mouseDragged( MouseEvent mouseEvent ) { }
+	public void mouseDragged( MouseEvent mouseEvent ) { /** Do nothing. */ }
 
 
 	public void mouseMoved( MouseEvent mouseEvent )
@@ -145,17 +150,14 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 		Stardate stardate = new Stardate();
 		stardate.setGregorian(  new GregorianCalendar() );
 
-		boolean showStardateIssue = 
-			Properties.getInstance().getPropertyBoolean
-			( 
-				Properties.PROPERTY_SHOW_STARDATE_ISSUE, 
-				Properties.PROPERTY_SHOW_STARDATE_ISSUE_DEFAULT_VALUE 
-			);
-		
-		if( showStardateIssue )
+		boolean showStardateIssue = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_ISSUE, true );
+		boolean padStardate = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_PAD_STARDATE, true );
+		if( showStardateIssue && padStardate )
+			setToolTip( MESSAGE_TOOL_TIP + stardate.toStardateStringPadded() );
+		else if( showStardateIssue && ! padStardate )
 			setToolTip( MESSAGE_TOOL_TIP + stardate.toStardateString() );
 		else
-			setToolTip( MESSAGE_TOOL_TIP + stardate.getStardateInteger() + "." + stardate.getStardateFraction() ); 
+			setToolTip( MESSAGE_TOOL_TIP + stardate.getStardateInteger() + "." + stardate.getStardateFraction() );  //$NON-NLS-1$
 	}
 
     
@@ -177,16 +179,16 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 	}
 
 
-	public void mouseClicked( MouseEvent mouseEvent ) { }
+	public void mouseClicked( MouseEvent mouseEvent ) { /** Do nothing. */}
 
 
-	public void mouseEntered( MouseEvent mouseEvent ) { }
+	public void mouseEntered( MouseEvent mouseEvent ) { /** Do nothing. */}
 
 
-	public void mouseExited( MouseEvent mouseEvent ) { }
+	public void mouseExited( MouseEvent mouseEvent ) { /** Do nothing. */}
 
 
-	public void mouseReleased( MouseEvent mouseEvent ) { }
+	public void mouseReleased( MouseEvent mouseEvent ) { /** Do nothing. */}
 
 
 	private DateTimeFormatter getDateTimeFormatter()

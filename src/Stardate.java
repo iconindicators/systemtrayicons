@@ -1,3 +1,4 @@
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 
@@ -36,24 +37,18 @@ import java.util.GregorianCalendar;
  */
 public class Stardate
 {
-	/**
-	 * Application version.
-	 */
-	private static final String APPLICATION_VERSION = "Version 1.0 (2007-06-11)";
+	/** API version. */
+	private static final String API_VERSION = "Version 1.1 (2008-06-11)"; //$NON-NLS-1$  //TODO Change this!!!  Should be API version
 
-	
-	/** 
-     * Internal representation for the Gregorian Calendar date/time. 
-     */
+
+	/** Internal representation for the Gregorian Calendar date/time. */
     private GregorianCalendar m_gregorianCalendar = null;
 
 
-    /** 
-     * Internal representation for the stardate. 
-     */
+    /** Internal representation for the stardate. */
     private int m_issue = 0, m_integer = 0, m_fraction = 0;
 
-    
+
     /**
      * Flag indicating that if any part of the current stardate has changed, 
      * the entire Gregorian Calendar needs to be recalculated.
@@ -91,20 +86,18 @@ public class Stardate
         };
 
 
-    /**
-     * Stardate constructor.
-     */
-    public Stardate() { }
+    /** Stardate constructor. */
+    public Stardate() { /** Do nothing. */ }
 
 
     /**
-     * Gets the version.
+     * Gets the API version.
      *
-     * @return The version.
+     * @return The API version.
      */
-    public static String getVersion() { return APPLICATION_VERSION; }
-    
-    
+    public static String getVersion() { return API_VERSION; }
+
+
     /**
 	 * Sets a Gregorian Calendar object for conversion to a stardate.
 	 *
@@ -207,12 +200,60 @@ public class Stardate
         }
 
         return 
-        	"["	+ 
+        	"["	+  //$NON-NLS-1$
         	( Integer.valueOf( m_issue ) ) + 
-        	"] " + 
+        	"] " +  //$NON-NLS-1$
         	( Integer.valueOf( m_integer ) ) +
-        	"." +
+        	"." + //$NON-NLS-1$
         	( Integer.valueOf( m_fraction ) );
+    }
+
+
+    /**
+     * Returns the current value of the stardate in string format, padded if needed with leading zeros.
+     *
+     * @return The current stardate as a properly formatted string, padded if needed with leading zeros.
+     */
+    public String toStardateStringPadded()
+    {
+        if( m_recalculateStardate )
+        {
+            gregorianToStardate();
+            m_recalculateStardate = false;
+        }
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append( "[" ).append( Integer.valueOf( m_issue ) ).append( "] " ); //$NON-NLS-1$ //$NON-NLS-2$
+        if( m_issue >= 21 )
+        {
+        	// Need to pad up to 4 digits.
+            if( m_integer < 10 )
+            	stringBuilder.append( "0000" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
+            else if( m_integer < 100 )
+            	stringBuilder.append( "000" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
+            else if( m_integer < 1000 )
+            	stringBuilder.append( "00" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
+            else if( m_integer < 10000 )
+            	stringBuilder.append( "0" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
+            else
+            	stringBuilder.append( Integer.valueOf( m_integer ) );
+        }
+        else
+        {
+        	// Need to pad up to 3 digits.
+            if( m_integer < 10 )
+            	stringBuilder.append( "000" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
+            else if( m_integer < 100 )
+            	stringBuilder.append( "00" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
+            else if( m_integer < 1000 )
+            	stringBuilder.append( "0" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
+            else
+            	stringBuilder.append( Integer.valueOf( m_integer ) );
+        }
+
+        stringBuilder.append( "." ).append( Integer.valueOf( m_fraction ) ); //$NON-NLS-1$
+
+        return stringBuilder.toString();
     }
 
 
@@ -272,10 +313,8 @@ public class Stardate
      *
      * @return a string representation of this object.
      */
-    public String toString()
-    {
-        return toStardateString() + ", " + getGregorian().toString();
-    }
+    @Override
+	public String toString() { return toStardateString() + ", " + getGregorian().toString(); } //$NON-NLS-1$
 
 
     /**
@@ -307,60 +346,60 @@ public class Stardate
             // Pre-stardate (pre 4/1/2162).
             index = 0;
             fractionLength = Integer.valueOf( m_fraction ).toString().length();
-            fractionDivisor = Math.pow( 10.0, (double)fractionLength );
-            units = m_issue * 10000.0 + (double)m_integer + (double)m_fraction / fractionDivisor;
+            fractionDivisor = Math.pow( 10.0, fractionLength );
+            units = m_issue * 10000.0 + m_integer + m_fraction / fractionDivisor;
         }
         else if( m_issue >= 0 && m_issue < 19 )
         {
             // First period of stardates (4/1/2162 - 26/1/2270).
             index = 1;
             fractionLength = Integer.valueOf( m_fraction ).toString().length();
-            fractionDivisor = Math.pow( 10.0, (double)fractionLength );
-            units = m_issue * 1000.0  + (double)m_integer  + (double)m_fraction / fractionDivisor;
+            fractionDivisor = Math.pow( 10.0, fractionLength );
+            units = m_issue * 1000.0  + m_integer  + m_fraction / fractionDivisor;
         }
         else if( m_issue == 19 && m_integer < 7340 )
         {
             // First period of stardates (4/1/2162 - 26/1/2270).
             index = 1;
             fractionLength = Integer.valueOf( m_fraction ).toString().length();
-            fractionDivisor = Math.pow( 10.0, (double)fractionLength );
-            units = m_issue * 19.0 * 1000.0 +  (double)m_integer  +  (double)m_fraction / fractionDivisor;
+            fractionDivisor = Math.pow( 10.0, fractionLength );
+            units = m_issue * 19.0 * 1000.0 +  m_integer  +  m_fraction / fractionDivisor;
         }
         else if( m_issue == 19 && m_integer >= 7340 && m_integer < 7840 )
         {
             // Second period of stardates (26/1/2270 - 5/10/2283)
             index = 2;
             fractionLength = Integer.valueOf( m_fraction ).toString().length();
-            fractionDivisor = Math.pow( 10.0, (double)fractionLength );
-            units = (double)m_integer + (double)m_fraction / fractionDivisor - 7340;
+            fractionDivisor = Math.pow( 10.0, fractionLength );
+            units = m_integer + m_fraction / fractionDivisor - 7340;
         }
         else if( m_issue == 19 && m_integer >= 7840 )
         {
             // Third period of stardates (5/10/2283 - 1/1/2323)
             index = 3;
             fractionLength = Integer.valueOf( m_fraction ).toString().length();
-            fractionDivisor = Math.pow( 10.0, (double)fractionLength );
-            units = (double)m_integer + (double)m_fraction / fractionDivisor - 7840;
+            fractionDivisor = Math.pow( 10.0, fractionLength );
+            units = m_integer + m_fraction / fractionDivisor - 7840;
         }
         else if( m_issue == 20 && m_integer < 5006 )
         {
             // Third period of stardates (5/10/2283 - 1/1/2323)
             index = 3;
             fractionLength = Integer.valueOf( m_fraction ).toString().length();
-            fractionDivisor = Math.pow( 10.0, (double)fractionLength );
-            units = 1000.0 + (double)m_integer + (double)m_fraction / fractionDivisor;
+            fractionDivisor = Math.pow( 10.0, fractionLength );
+            units = 1000.0 + m_integer + m_fraction / fractionDivisor;
         }
         else if( m_issue >= 21 )
         {
             // Fourth period of stardates (1/1/2323 - )
             index = 4;
             fractionLength = Integer.valueOf( m_fraction ).toString().length();
-            fractionDivisor = Math.pow( 10.0, (double)fractionLength );
-            units = ( m_issue - 21 ) * 10000.0 + (double)m_integer + (double)m_fraction / fractionDivisor;
+            fractionDivisor = Math.pow( 10.0, fractionLength );
+            units = ( m_issue - 21 ) * 10000.0 + m_integer + m_fraction / fractionDivisor;
         }
         else
         {
-        	throw new IllegalStateException( "Invalid stardate: " + toStardateString() );
+        	throw new IllegalStateException( "Invalid stardate: " + toStardateString() ); //$NON-NLS-1$
         }
 
         // Convert the current amount of units to the equivalent Gregorian date.
@@ -375,10 +414,10 @@ public class Stardate
         m_gregorianCalendar = (GregorianCalendar)m_gregorianDates[ index ].clone();
 
         // Add the days, hours, minutes and seconds to the base date to get the current Gregorian date.
-        m_gregorianCalendar.add( GregorianCalendar.DATE, (int)days );
-        m_gregorianCalendar.add( GregorianCalendar.HOUR_OF_DAY, (int)hours );
-        m_gregorianCalendar.add( GregorianCalendar.MINUTE, (int)minutes );
-        m_gregorianCalendar.add( GregorianCalendar.SECOND, (int)seconds );
+        m_gregorianCalendar.add( Calendar.DATE, (int)days );
+        m_gregorianCalendar.add( Calendar.HOUR_OF_DAY, (int)hours );
+        m_gregorianCalendar.add( Calendar.MINUTE, (int)minutes );
+        m_gregorianCalendar.add( Calendar.SECOND, (int)seconds );
 
         m_recalculateGregorian = false;
     }
@@ -397,9 +436,9 @@ public class Stardate
         long milliseconds = 0;
 
         // Determine which era the given Gregorian date falls...
-        int year = m_gregorianCalendar.get( GregorianCalendar.YEAR );
-        int month = m_gregorianCalendar.get( GregorianCalendar.MONTH );
-        int day = m_gregorianCalendar.get( GregorianCalendar.DATE );
+        int year = m_gregorianCalendar.get( Calendar.YEAR );
+        int month = m_gregorianCalendar.get( Calendar.MONTH );
+        int day = m_gregorianCalendar.get( Calendar.DATE );
 
         if( ( year < 2162 ) || ( year == 2162 && month == 1 && day < 4 ) )
         {
@@ -407,18 +446,18 @@ public class Stardate
             // Need to do the conversion here because a negative time is generated and throws out all other cases.
             milliseconds = m_gregorianCalendar.getTime().getTime();
             long baseMilliseconds = m_gregorianDates[ 0 ].getTime().getTime();
-            double numberOfDays = (double)( baseMilliseconds - milliseconds ) / 1000.0 / 60.0 / 60.0 / 24.0;
+            double numberOfDays = ( baseMilliseconds - milliseconds ) / 1000.0 / 60.0 / 60.0 / 24.0;
             numberOfDays = Math.round( 10.0 * numberOfDays ) / 10.0;
             double rate = m_stardateRates[ 0 ];
             double units = numberOfDays * rate;
-            double remainder = units % (double)stardateRange[ 0 ];
+            double remainder = units % stardateRange[ 0 ];
 
             if( (int)remainder == 0 )
                 m_issue = -1 * (int)units / stardateRange[ 0 ];
             else
                 m_issue = -1 * (int)units / stardateRange[ 0 ] + stardateIssues[ 0 ];
 
-            remainder = (double)( -1 * m_issue * stardateRange[ 0 ] ) - units;
+            remainder = ( -1 * m_issue * stardateRange[ 0 ] ) - units;
             m_integer = (int)remainder;
             m_fraction = (int)( remainder * 10.0 ) - ( (int)remainder * 10 );
             m_recalculateStardate = false;
@@ -504,17 +543,17 @@ public class Stardate
         }
         else
         {
-        	throw new IllegalStateException( "Invalid date: " + m_gregorianCalendar );
+        	throw new IllegalStateException( "Invalid date: " + m_gregorianCalendar ); //$NON-NLS-1$
         }
 
         // Now convert...
         long baseMilliseconds = m_gregorianDates[ index ].getTime().getTime();
-        double numberOfDays = (double)( milliseconds - baseMilliseconds ) / 1000.0 / 60.0 / 60.0 / 24.0;
+        double numberOfDays = ( milliseconds - baseMilliseconds ) / 1000.0 / 60.0 / 60.0 / 24.0;
         numberOfDays = Math.round( 10.0 * numberOfDays ) / 10.0;
         double rate = m_stardateRates[ index ];
         double units = numberOfDays * rate;
         m_issue = (int)units / stardateRange[ index ] + stardateIssues[ index ];
-        double remainder = units % (double)stardateRange[ index ];
+        double remainder = units % stardateRange[ index ];
         m_integer = (int)remainder + stardateIntegers[ index ];
         remainder = ( remainder - (int)remainder ) * 10.0;
         remainder = Math.round( remainder );

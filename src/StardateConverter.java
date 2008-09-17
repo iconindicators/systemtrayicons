@@ -4,6 +4,7 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.swing.BorderFactory;
@@ -22,7 +23,9 @@ import javax.swing.SpinnerNumberModel;
 
 public class StardateConverter extends JFrame implements ActionListener
 {
-	private static final String TRAY_ICON_IMAGE = "trayicon.gif"; 
+	private static final long serialVersionUID = 1L;
+
+	private static final String TRAY_ICON_IMAGE = "trayicon.gif";  //$NON-NLS-1$
 
 	private JRadioButton m_radioGregorianToStardate, m_radioStardateToGregorian;
     private JSpinner m_spinnerIssue, m_spinnerInteger, m_spinnerFraction;
@@ -32,7 +35,7 @@ public class StardateConverter extends JFrame implements ActionListener
 
     public StardateConverter()
     {
-        super( "Stardate/Gregorian Converter" );
+        super( "Stardate/Gregorian Converter" ); //$NON-NLS-1$
 
         setIconImage( new ImageIcon( ClassLoader.getSystemResource( TRAY_ICON_IMAGE ) ).getImage() );
         setContentPane( buildMainPanel() );
@@ -49,7 +52,8 @@ public class StardateConverter extends JFrame implements ActionListener
     }
 
 
-    public void dispose()
+    @Override
+	public void dispose()
     {
     	m_convert.removeActionListener( this );
     	m_radioGregorianToStardate.removeActionListener( this );
@@ -78,12 +82,12 @@ public class StardateConverter extends JFrame implements ActionListener
                 (
                 	new GregorianCalendar
                 	(
-                		yyyyMMdd.get( GregorianCalendar.YEAR ),
-	                    yyyyMMdd.get( GregorianCalendar.MONTH ),
-	                    yyyyMMdd.get( GregorianCalendar.DAY_OF_MONTH ),
-	                    hhmmss.get( GregorianCalendar.HOUR_OF_DAY ),
-	                    hhmmss.get( GregorianCalendar.MINUTE ),
-	                    hhmmss.get( GregorianCalendar.SECOND )
+                		yyyyMMdd.get( Calendar.YEAR ),
+	                    yyyyMMdd.get( Calendar.MONTH ),
+	                    yyyyMMdd.get( Calendar.DAY_OF_MONTH ),
+	                    hhmmss.get( Calendar.HOUR_OF_DAY ),
+	                    hhmmss.get( Calendar.MINUTE ),
+	                    hhmmss.get( Calendar.SECOND )
                 	)
                 );
 
@@ -110,13 +114,13 @@ public class StardateConverter extends JFrame implements ActionListener
                 {
                 	String message = null;
                 	if( stardateException.getType() == StardateException.Type.FRACTIONAL_PART_MUST_BE_GREATER_THAN_OR_EQUAL_TO_ZERO )
-                		message = "Fractional part must be greater than or equal to zero.";
+                		message = "Fractional part must be greater than or equal to zero."; //$NON-NLS-1$
                 	else if( stardateException.getType() == StardateException.Type.INTEGER_PART_MUST_BE_BETWEEN_ZERO_AND_99999_INCLUSIVE )
-                		message = "Integer part must be between zero and 9999 (inclusive).";
+                		message = "Integer part must be between zero and 9999 (inclusive)."; //$NON-NLS-1$
                 	else if( stardateException.getType() == StardateException.Type.INTEGER_PART_MUST_BE_BETWEEN_ZERO_AND_9999_INCLUSIVE )
-                		message = "Integer part must be between zero and 99999 (inclusive).";
+                		message = "Integer part must be between zero and 99999 (inclusive)."; //$NON-NLS-1$
                 	else if( stardateException.getType() == StardateException.Type.INTEGER_PART_MUST_BE_LESS_THAN_5006 )
-                		message = "Integer part must be less than 5006.";
+                		message = "Integer part must be less than 5006."; //$NON-NLS-1$
 
                 	JOptionPane.showMessageDialog( this, message );
             	}
@@ -133,9 +137,9 @@ public class StardateConverter extends JFrame implements ActionListener
 
 
     	  if( m_radioGregorianToStardate.isSelected() )
-    		  m_convert.setToolTipText( "Convert from a Gregorian date to a Stardate" );
+    		  m_convert.setToolTipText( "Convert from a Gregorian date to a Stardate" ); //$NON-NLS-1$
     	  else
-    		  m_convert.setToolTipText( "Convert from a Stardate to a Gregorian date" );
+    		  m_convert.setToolTipText( "Convert from a Stardate to a Gregorian date" ); //$NON-NLS-1$
         }
     }
 
@@ -148,57 +152,57 @@ public class StardateConverter extends JFrame implements ActionListener
 
         GridBagConstraints constraints;
 
-        m_radioGregorianToStardate = new JRadioButton( "Convert from a Gregorian date to a Stardate" );
+        m_radioGregorianToStardate = new JRadioButton( "Convert from a Gregorian date to a Stardate" ); //$NON-NLS-1$
         m_radioGregorianToStardate.addActionListener( this );
         constraints = new GridBagConstraints( 0, 0, 2, 1, 0.0D, 0.0D, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets( 0, 0, 0, 0 ), 0, 0 );
         panel.add( m_radioGregorianToStardate, constraints );
 
         constraints = new GridBagConstraints( 0, 1, 1, 1, 0.0D, 0.0D, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets( 0, 20, 0, 0  ), 0, 0 );
-        panel.add( new JLabel( "YYYY-MM-DD :" ), constraints );
+        panel.add( new JLabel( "YYYY-MM-DD :" ), constraints ); //$NON-NLS-1$
 
         m_spinnerYYYYMMDD = new JSpinner( new SpinnerDateModel() );
-        JSpinner.DateEditor dateEditor = new JSpinner.DateEditor( m_spinnerYYYYMMDD, "yyyy-MM-dd" );
+        JSpinner.DateEditor dateEditor = new JSpinner.DateEditor( m_spinnerYYYYMMDD, "yyyy-MM-dd" ); //$NON-NLS-1$
         m_spinnerYYYYMMDD.setEditor( dateEditor );
-        m_spinnerYYYYMMDD.setToolTipText( "Set the date in the format of YYYY-MM-DD" );
+        m_spinnerYYYYMMDD.setToolTipText( "Set the date in the format of YYYY-MM-DD" ); //$NON-NLS-1$
         constraints = new GridBagConstraints( 1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets( 0, 10, 0, 0  ), 0, 0 );
         panel.add( m_spinnerYYYYMMDD, constraints );
 
         constraints = new GridBagConstraints( 0, 2, 1, 1, 0.0D, 0.0D, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets( 0, 20, 0, 0  ), 0, 0 );
-        panel.add( new JLabel( "HH:MM:SS :" ), constraints );
+        panel.add( new JLabel( "HH:MM:SS :" ), constraints ); //$NON-NLS-1$
 
         m_spinnerHHMMSS = new JSpinner( new SpinnerDateModel() );
-        dateEditor = new JSpinner.DateEditor( m_spinnerHHMMSS, "HH:mm:ss" );
+        dateEditor = new JSpinner.DateEditor( m_spinnerHHMMSS, "HH:mm:ss" ); //$NON-NLS-1$
         m_spinnerHHMMSS.setEditor( dateEditor );
-        m_spinnerHHMMSS.setToolTipText( "Set the time in the format of HH:MM:DD (in 24 hour time)" );
+        m_spinnerHHMMSS.setToolTipText( "Set the time in the format of HH:MM:DD (in 24 hour time)" ); //$NON-NLS-1$
         constraints = new GridBagConstraints( 1, 2, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets( 0, 10, 0, 0  ), 0, 0 );
         panel.add( m_spinnerHHMMSS, constraints );
 
-        m_radioStardateToGregorian = new JRadioButton( "Convert from a Stardate to a Gregorian date" );
+        m_radioStardateToGregorian = new JRadioButton( "Convert from a Stardate to a Gregorian date" ); //$NON-NLS-1$
         m_radioStardateToGregorian.addActionListener( this );
         constraints = new GridBagConstraints( 0, 3, 2, 1, 0.0D, 0.0D, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets( 20, 0, 0, 0 ), 0, 0 );
         panel.add( m_radioStardateToGregorian, constraints );
 
         constraints = new GridBagConstraints( 0, 4, 1, 1, 0.0D, 0.0D, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets( 0, 20, 0, 0  ), 0, 0 );
-        panel.add( new JLabel( "Issue:" ), constraints );
+        panel.add( new JLabel( "Issue:" ), constraints ); //$NON-NLS-1$
 
         m_spinnerIssue = new JSpinner( new SpinnerNumberModel() );
-        m_spinnerIssue.setToolTipText( "Set the issue for the stardate (can be zero or negative)" );
+        m_spinnerIssue.setToolTipText( "Set the issue for the stardate (can be zero or negative)" ); //$NON-NLS-1$
         constraints = new GridBagConstraints( 1, 4, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets( 0, 10, 0, 0  ), 0, 0 );
         panel.add( m_spinnerIssue, constraints );
 
         constraints = new GridBagConstraints( 0, 5, 1, 1, 0.0D, 0.0D, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets( 0, 20, 0, 0  ), 0, 0 );
-        panel.add( new JLabel( "Integer:" ), constraints );
+        panel.add( new JLabel( "Integer:" ), constraints ); //$NON-NLS-1$
 
         m_spinnerInteger = new JSpinner( new SpinnerNumberModel() );
-        m_spinnerInteger.setToolTipText( "Set the integer part of the stardate (must be greater than zero)" );
+        m_spinnerInteger.setToolTipText( "Set the integer part of the stardate (must be greater than zero)" ); //$NON-NLS-1$
         constraints = new GridBagConstraints( 1, 5, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets( 0, 10, 0, 0  ), 0, 0 );
         panel.add( m_spinnerInteger, constraints );
 
         constraints = new GridBagConstraints( 0, 6, 1, 1, 0.0D, 0.0D, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets( 0, 20, 0, 0  ), 0, 0 );
-        panel.add( new JLabel( "Fraction:" ), constraints );
+        panel.add( new JLabel( "Fraction:" ), constraints ); //$NON-NLS-1$
 
         m_spinnerFraction = new JSpinner( new SpinnerNumberModel() );
-        m_spinnerFraction.setToolTipText( "Set the fractional part of the stardate (must not be negative)" );
+        m_spinnerFraction.setToolTipText( "Set the fractional part of the stardate (must not be negative)" ); //$NON-NLS-1$
         constraints = new GridBagConstraints( 1, 6, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets( 0, 10, 0, 0  ), 0, 0 );
         panel.add( m_spinnerFraction, constraints );
 
@@ -206,7 +210,7 @@ public class StardateConverter extends JFrame implements ActionListener
         buttonGroup.add( m_radioGregorianToStardate );
         buttonGroup.add( m_radioStardateToGregorian );
 
-        m_convert = new JButton( "Convert" );
+        m_convert = new JButton( "Convert" ); //$NON-NLS-1$
         m_convert.addActionListener( this );
         constraints = new GridBagConstraints( 0, 7, 2, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets( 20, 0, 0, 0  ), 0, 0 );
         panel.add( m_convert, constraints );

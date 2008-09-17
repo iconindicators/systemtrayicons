@@ -1,11 +1,10 @@
-/**
- * Possible exceptions which a Stardate may throw.
- */
+/** Possible exceptions which a Stardate may throw. */
 public class StardateException extends Exception 
 {
-	/**
-	 * Exception types.
-	 */
+	private static final long serialVersionUID = 1L;
+
+
+	/** Exception types. */
 	public enum Type
 	{
 		INTEGER_PART_MUST_BE_BETWEEN_ZERO_AND_9999_INCLUSIVE,
@@ -15,15 +14,11 @@ public class StardateException extends Exception
 	}
 	
 
-	/**
-	 * The type for this exception.
-	 */
+	/** * The type for this exception. */
 	private Type m_type = null;
 	
 	
-	/**
-	 * Constructs a new exception with null as its detail message.
-	 */
+	/** * Constructs a new exception with null as its detail message. */
 	public StardateException() { super(); }
 
 	
