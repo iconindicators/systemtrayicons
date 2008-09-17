@@ -1,4 +1,5 @@
 import java.text.Collator;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import java.util.Vector;
@@ -9,9 +10,9 @@ public class UserTimeZones
 {
 	private static ConcurrentSkipListSet<String> m_availableTimeZones = null;
 
-	private static final String TIME_ZONE_ETC = "Etc/";
-	private static final String TIME_ZONE_SYSTEMV = "SystemV/";
-	private static final String TIME_ZONE_FORWARD_SLASH = "/";
+	private static final String TIME_ZONE_ETC = "Etc/"; //$NON-NLS-1$
+	private static final String TIME_ZONE_SYSTEMV = "SystemV/"; //$NON-NLS-1$
+	private static final String TIME_ZONE_FORWARD_SLASH = "/"; //$NON-NLS-1$
 
 
 	public enum DATE_TIME_SORT_OPTIONS
@@ -56,8 +57,7 @@ public class UserTimeZones
 
     public synchronized static Vector<UserTimeZoneItem> getUserTimeZoneItems( GregorianCalendar gregorianCalendar )
 	{
-    	if( gregorianCalendar == null ) 
-    		throw new IllegalArgumentException( "Gregorian Calendar cannot be null." );
+    	if( gregorianCalendar == null ) throw new IllegalArgumentException( "Gregorian Calendar cannot be null." ); //$NON-NLS-1$
 
 		// Read in the time zones from the properties file.  
 		// The default sort order is by Time Zone.
@@ -96,7 +96,7 @@ public class UserTimeZones
 
 		// Sort either by date/time or display time zone.
 		UserTimeZones.DATE_TIME_SORT_OPTIONS dateTimeSortOption = UserTimeZones.DATE_TIME_SORT_OPTIONS.SORT_BY_DATE_TIME;
-		String sortOption = Properties.getInstance().getProperty( Properties.PROPERTY_SORT_DATE_TIME, Properties.PROPERTY_SORT_DATE_TIME_BY_DATE_TIME );
+		String sortOption = Properties.getInstance().getProperty( Properties.PROPERTY_SORT_DATE_TIME, Properties.PROPERTY_SORT_DATE_TIME_BY_DATE_TIME, false );
 		if( sortOption.equals( Properties.PROPERTY_SORT_DATE_TIME_BY_TIME_ZONE ) )
 			dateTimeSortOption = UserTimeZones.DATE_TIME_SORT_OPTIONS.SORT_BY_TIME_ZONE;
 
@@ -105,7 +105,7 @@ public class UserTimeZones
 		else if( dateTimeSortOption == UserTimeZones.DATE_TIME_SORT_OPTIONS.SORT_BY_TIME_ZONE )
 			return sortByTimeZoneDisplayable( userTimeZoneItems );
 
-		throw new IllegalStateException( "Invalid sort option: " + dateTimeSortOption );
+		throw new IllegalStateException( "Invalid sort option: " + dateTimeSortOption ); //$NON-NLS-1$
 	}
 
 
@@ -126,7 +126,7 @@ public class UserTimeZones
 					{
 						comparison = Collator.getInstance().compare( userTimeZoneItems.get( i ).getTimeZone(), sorted.get( j ).getTimeZone() );
 						if( comparison == 0 )
-							throw new IllegalStateException( "Cannot have the same Time Zone twice." );
+							throw new IllegalStateException( "Cannot have the same Time Zone twice." ); //$NON-NLS-1$
 
 						if( comparison > 0 )
 							continue;
@@ -170,7 +170,7 @@ public class UserTimeZones
 					{
 						comparison = Collator.getInstance().compare( userTimeZoneItems.get( i ).getTimeZone(), sorted.get( j ).getTimeZone() );
 						if( comparison == 0 )
-							throw new IllegalStateException( "Cannot have the same Time Zone twice." );
+							throw new IllegalStateException( "Cannot have the same Time Zone twice." ); //$NON-NLS-1$
 
 						if( comparison > 0 )
 							continue;
@@ -199,22 +199,22 @@ public class UserTimeZones
 
 	public static int compareYearMonthDay( GregorianCalendar gregorianCalendarA, GregorianCalendar gregorianCalendarB )
 	{
-		if( gregorianCalendarA.get( GregorianCalendar.YEAR ) > gregorianCalendarB.get( GregorianCalendar.YEAR ) )
+		if( gregorianCalendarA.get( Calendar.YEAR ) > gregorianCalendarB.get( Calendar.YEAR ) )
 			return 1;
 
-		if( gregorianCalendarA.get( GregorianCalendar.YEAR ) < gregorianCalendarB.get( GregorianCalendar.YEAR ) )
+		if( gregorianCalendarA.get( Calendar.YEAR ) < gregorianCalendarB.get( Calendar.YEAR ) )
 			return -1;
 
-		if( gregorianCalendarA.get( GregorianCalendar.MONTH ) > gregorianCalendarB.get( GregorianCalendar.MONTH ) )
+		if( gregorianCalendarA.get( Calendar.MONTH ) > gregorianCalendarB.get( Calendar.MONTH ) )
 			return 1;
 
-		if( gregorianCalendarA.get( GregorianCalendar.MONTH ) < gregorianCalendarB.get( GregorianCalendar.MONTH ) )
+		if( gregorianCalendarA.get( Calendar.MONTH ) < gregorianCalendarB.get( Calendar.MONTH ) )
 			return -1;
 
-		if( gregorianCalendarA.get( GregorianCalendar.DAY_OF_MONTH ) > gregorianCalendarB.get( GregorianCalendar.DAY_OF_MONTH ) )
+		if( gregorianCalendarA.get( Calendar.DAY_OF_MONTH ) > gregorianCalendarB.get( Calendar.DAY_OF_MONTH ) )
 			return 1;
 
-		if( gregorianCalendarA.get( GregorianCalendar.DAY_OF_MONTH ) < gregorianCalendarB.get( GregorianCalendar.DAY_OF_MONTH ) )
+		if( gregorianCalendarA.get( Calendar.DAY_OF_MONTH ) < gregorianCalendarB.get( Calendar.DAY_OF_MONTH ) )
 			return -1;
 
 		return 0;
@@ -223,40 +223,40 @@ public class UserTimeZones
     
     public static int compareYearMonthDayHourMinuteSecond( GregorianCalendar gregorianCalendarA, GregorianCalendar gregorianCalendarB )
 	{
-		if( gregorianCalendarA.get( GregorianCalendar.YEAR ) > gregorianCalendarB.get( GregorianCalendar.YEAR ) )
+		if( gregorianCalendarA.get( Calendar.YEAR ) > gregorianCalendarB.get( Calendar.YEAR ) )
 			return 1;
 
-		if( gregorianCalendarA.get( GregorianCalendar.YEAR ) < gregorianCalendarB.get( GregorianCalendar.YEAR ) )
+		if( gregorianCalendarA.get( Calendar.YEAR ) < gregorianCalendarB.get( Calendar.YEAR ) )
 			return -1;
 
-		if( gregorianCalendarA.get( GregorianCalendar.MONTH ) > gregorianCalendarB.get( GregorianCalendar.MONTH ) )
+		if( gregorianCalendarA.get( Calendar.MONTH ) > gregorianCalendarB.get( Calendar.MONTH ) )
 			return 1;
 
-		if( gregorianCalendarA.get( GregorianCalendar.MONTH ) < gregorianCalendarB.get( GregorianCalendar.MONTH ) )
+		if( gregorianCalendarA.get( Calendar.MONTH ) < gregorianCalendarB.get( Calendar.MONTH ) )
 			return -1;
 
-		if( gregorianCalendarA.get( GregorianCalendar.DAY_OF_MONTH ) > gregorianCalendarB.get( GregorianCalendar.DAY_OF_MONTH ) )
+		if( gregorianCalendarA.get( Calendar.DAY_OF_MONTH ) > gregorianCalendarB.get( Calendar.DAY_OF_MONTH ) )
 			return 1;
 
-		if( gregorianCalendarA.get( GregorianCalendar.DAY_OF_MONTH ) < gregorianCalendarB.get( GregorianCalendar.DAY_OF_MONTH ) )
+		if( gregorianCalendarA.get( Calendar.DAY_OF_MONTH ) < gregorianCalendarB.get( Calendar.DAY_OF_MONTH ) )
 			return -1;
 
-		if( gregorianCalendarA.get( GregorianCalendar.HOUR_OF_DAY ) > gregorianCalendarB.get( GregorianCalendar.HOUR_OF_DAY ) )
+		if( gregorianCalendarA.get( Calendar.HOUR_OF_DAY ) > gregorianCalendarB.get( Calendar.HOUR_OF_DAY ) )
 			return 1;
 
-		if( gregorianCalendarA.get( GregorianCalendar.HOUR_OF_DAY ) < gregorianCalendarB.get( GregorianCalendar.HOUR_OF_DAY ) )
+		if( gregorianCalendarA.get( Calendar.HOUR_OF_DAY ) < gregorianCalendarB.get( Calendar.HOUR_OF_DAY ) )
 			return -1;
 
-		if( gregorianCalendarA.get( GregorianCalendar.MINUTE ) > gregorianCalendarB.get( GregorianCalendar.MINUTE ) )
+		if( gregorianCalendarA.get( Calendar.MINUTE ) > gregorianCalendarB.get( Calendar.MINUTE ) )
 			return 1;
 
-		if( gregorianCalendarA.get( GregorianCalendar.MINUTE ) < gregorianCalendarB.get( GregorianCalendar.MINUTE ) )
+		if( gregorianCalendarA.get( Calendar.MINUTE ) < gregorianCalendarB.get( Calendar.MINUTE ) )
 			return -1;
 
-		if( gregorianCalendarA.get( GregorianCalendar.SECOND ) > gregorianCalendarB.get( GregorianCalendar.SECOND ) )
+		if( gregorianCalendarA.get( Calendar.SECOND ) > gregorianCalendarB.get( Calendar.SECOND ) )
 			return 1;
 
-		if( gregorianCalendarA.get( GregorianCalendar.SECOND ) < gregorianCalendarB.get( GregorianCalendar.SECOND ) )
+		if( gregorianCalendarA.get( Calendar.SECOND ) < gregorianCalendarB.get( Calendar.SECOND ) )
 			return -1;
 
 		return 0;
@@ -265,8 +265,7 @@ public class UserTimeZones
 
     public synchronized static boolean isValidTimeZone( String timeZone )
     {
-    	if( timeZone == null )
-			throw new IllegalArgumentException( "Time Zone cannot be null." );
+    	if( timeZone == null ) throw new IllegalArgumentException( "Time Zone cannot be null." ); //$NON-NLS-1$
     	
     	return getAvailableTimeZones().contains( timeZone );
     }

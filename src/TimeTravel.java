@@ -1,4 +1,3 @@
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -6,6 +5,7 @@ import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.text.Collator;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.TimeZone;
@@ -28,6 +28,8 @@ import javax.swing.border.EtchedBorder;
 
 public class TimeTravel extends JDialog implements ActionListener, ItemListener, WindowListener
 {
+	private static final long serialVersionUID = 1L;
+
 	private static final int BORDER_INDENT = 10;
 
 	private JComboBox m_timeZoneComboBox = null;
@@ -43,16 +45,19 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
     private JCheckBox m_showAllTimeZonesCheckbox = null;
 
 
+    private TimeTravel() { super( (JDialog)null ); }
+
+
     public static TimeTravel create()
     {
     	TimeTravel timeTravel = new TimeTravel();
 
     	timeTravel.initialiseTimeZoneMapping();
 
-    	JLabel selectTimeZone = new JLabel( Messages.getString( "TimeTravel.0" ) ); 
-    	JLabel setTime = new JLabel( Messages.getString( "TimeTravel.1" ) ); 
-    	JLabel hours = new JLabel( Messages.getString( "TimeTravel.2" ) ); 
-    	JLabel minutes = new JLabel( Messages.getString( "TimeTravel.3" ) ); 
+    	JLabel selectTimeZone = new JLabel( Messages.getString( "TimeTravel.0" ) );  //$NON-NLS-1$
+    	JLabel setTime = new JLabel( Messages.getString( "TimeTravel.1" ) );  //$NON-NLS-1$
+    	JLabel hours = new JLabel( Messages.getString( "TimeTravel.2" ) );  //$NON-NLS-1$
+    	JLabel minutes = new JLabel( Messages.getString( "TimeTravel.3" ) );  //$NON-NLS-1$
 
         timeTravel.m_output = new JLabel();
         timeTravel.m_output.setHorizontalAlignment( SwingConstants.CENTER );
@@ -74,17 +79,17 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
         timeTravel.m_timeZoneComboBox = new JComboBox( (Vector<?>)timeTravel.m_timeZonesDisplayable.clone() ); 
     	timeTravel.m_timeZoneComboBox.addActionListener( timeTravel );
 
-    	timeTravel.m_showAllTimeZonesCheckbox = new JCheckBox( Messages.getString( "TimeTravel.4" ) ); 
+    	timeTravel.m_showAllTimeZonesCheckbox = new JCheckBox( Messages.getString( "TimeTravel.4" ) );  //$NON-NLS-1$
     	timeTravel.m_showAllTimeZonesCheckbox.addItemListener( timeTravel );
 
-        timeTravel.m_hourSpinner = new JSpinner( new SpinnerNumberModel( new GregorianCalendar().get( GregorianCalendar.HOUR_OF_DAY ), 0, 23, 1 ) );
+        timeTravel.m_hourSpinner = new JSpinner( new SpinnerNumberModel( new GregorianCalendar().get( Calendar.HOUR_OF_DAY ), 0, 23, 1 ) );
 
-        timeTravel.m_minuteSpinner = new JSpinner( new SpinnerNumberModel( new GregorianCalendar().get( GregorianCalendar.MINUTE ), 0, 59, 1 ) );
+        timeTravel.m_minuteSpinner = new JSpinner( new SpinnerNumberModel( new GregorianCalendar().get( Calendar.MINUTE ), 0, 59, 1 ) );
 
-    	timeTravel.m_includeLocalCheckbox = new JCheckBox( Messages.getString( "TimeTravel.5" ) );
+    	timeTravel.m_includeLocalCheckbox = new JCheckBox( Messages.getString( "TimeTravel.5" ) ); //$NON-NLS-1$
     	timeTravel.m_includeLocalCheckbox.addItemListener( timeTravel );
 
-        timeTravel.m_calculate = new JButton( Messages.getString( "TimeTravel.6" ) ); 
+        timeTravel.m_calculate = new JButton( Messages.getString( "TimeTravel.6" ) );  //$NON-NLS-1$
         timeTravel.m_calculate.addActionListener( timeTravel );
 
         GroupLayout layout = new GroupLayout( timeTravel.getContentPane() );
@@ -163,21 +168,18 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
 		);
 
 		GregorianCalendar gregorianCalendar = new GregorianCalendar( TimeZone.getTimeZone( timeTravel.m_timeZones.firstElement() ) );
-		gregorianCalendar.set( GregorianCalendar.HOUR_OF_DAY, ( (SpinnerNumberModel)timeTravel.m_hourSpinner.getModel() ).getNumber().intValue() );
-		gregorianCalendar.set( GregorianCalendar.MINUTE, ( (SpinnerNumberModel)timeTravel.m_minuteSpinner.getModel() ).getNumber().intValue() );
+		gregorianCalendar.set( Calendar.HOUR_OF_DAY, ( (SpinnerNumberModel)timeTravel.m_hourSpinner.getModel() ).getNumber().intValue() );
+		gregorianCalendar.set( Calendar.MINUTE, ( (SpinnerNumberModel)timeTravel.m_minuteSpinner.getModel() ).getNumber().intValue() );
 
 		timeTravel.m_output.setText( Message.getMessageString( gregorianCalendar, true ) );
 
-		timeTravel.setTitle( Messages.getString( "TimeTravel.7" ) ); 
+		timeTravel.setTitle( Messages.getString( "TimeTravel.7" ) );  //$NON-NLS-1$
         timeTravel.setIconImage( TrayIcon.getTrayIconImage() );
-        timeTravel.setModalityType( ModalityType.APPLICATION_MODAL );
-        timeTravel.pack();
-		int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - timeTravel.getWidth() ) / 2;
-        int originY = ( Toolkit.getDefaultToolkit().getScreenSize().height - timeTravel.getHeight() ) / 2;
-        timeTravel.setLocation( originX, originY );
-        timeTravel.setResizable( false );
         timeTravel.addWindowListener( timeTravel );
-        timeTravel.setVisible( true );
+        timeTravel.setResizable( false );
+        timeTravel.pack();
+        timeTravel.setLocationRelativeTo( null );
+        timeTravel.setModalityType( ModalityType.APPLICATION_MODAL );
 
         return timeTravel;
     }
@@ -232,8 +234,8 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
 				appendTimeZoneToProperties( TimeZone.getDefault().getID() );
 
 			GregorianCalendar gregorianCalendar = new GregorianCalendar( TimeZone.getTimeZone( timeZone ) );
-			gregorianCalendar.set( GregorianCalendar.HOUR_OF_DAY, ( (SpinnerNumberModel)m_hourSpinner.getModel() ).getNumber().intValue() );
-			gregorianCalendar.set( GregorianCalendar.MINUTE, ( (SpinnerNumberModel)m_minuteSpinner.getModel() ).getNumber().intValue() );
+			gregorianCalendar.set( Calendar.HOUR_OF_DAY, ( (SpinnerNumberModel)m_hourSpinner.getModel() ).getNumber().intValue() );
+			gregorianCalendar.set( Calendar.MINUTE, ( (SpinnerNumberModel)m_minuteSpinner.getModel() ).getNumber().intValue() );
 
 	        m_output.setText( Message.getMessageString( gregorianCalendar, true ) );
 
@@ -266,7 +268,7 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
 					// Secondary sort by time zone.
 					comparison = Collator.getInstance().compare( timeZone, m_timeZones.get( j ) );
 					if( comparison == 0 )
-						throw new IllegalStateException( "Cannot have the same Time Zone repeat: " + timeZone ); 
+						throw new IllegalStateException( "Cannot have the same Time Zone repeat: " + timeZone );  //$NON-NLS-1$
 
 					if( comparison > 0 )
 						continue;
@@ -329,29 +331,20 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
     public void windowClosing( WindowEvent windowEvent ) { resetProperties(); }
 
     
-    public void windowClosed( WindowEvent windowEvent ) { }
+    public void windowClosed( WindowEvent windowEvent ) { /** Do nothing. */ }
 
     
-    public void windowOpened( WindowEvent windowEvent ) { }
+    public void windowOpened( WindowEvent windowEvent ) { /** Do nothing. */ }
 
     
-    public void windowIconified( WindowEvent windowEvent ) { }
+    public void windowIconified( WindowEvent windowEvent ) { /** Do nothing. */ }
 
     
-    public void windowDeiconified( WindowEvent windowEvent ) { }
+    public void windowDeiconified( WindowEvent windowEvent ) { /** Do nothing. */ }
     
     
-    public void windowActivated( WindowEvent windowEvent ) { }
+    public void windowActivated( WindowEvent windowEvent ) { /** Do nothing. */ }
 
     
-    public void windowDeactivated( WindowEvent windowEvent ) { }
-
-    
-    public void windowGainedFocus( WindowEvent windowEvent ) { }
-
-    
-    public void windowLostFocus( WindowEvent windowEvent ) { }
-
-    
-    public void windowStateChanged( WindowEvent windowEvent ) { }
+    public void windowDeactivated( WindowEvent windowEvent ) { /** Do nothing. */ }
 }

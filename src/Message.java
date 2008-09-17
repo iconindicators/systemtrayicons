@@ -9,24 +9,24 @@ public class Message
 {
 	public static String getMessageString( GregorianCalendar gregorianCalendar, boolean html )
     {
-    	StringBuilder message = new StringBuilder();
+		StringBuilder message = new StringBuilder();
 
 		Vector<UserTimeZoneItem> userTimeZoneItems = UserTimeZones.getUserTimeZoneItems( gregorianCalendar );
     	if( userTimeZoneItems.isEmpty() )
-    		return Messages.getString( "Message.0" );
+    		return Messages.getString( "Message.0" ); //$NON-NLS-1$
 
 		combineTimeZones( userTimeZoneItems );
 
-		String newLine = "\n";
+		String newLine = System.getProperty( "line.separator" ); //$NON-NLS-1$
 		if( html )
 		{
-			newLine = "<br>"; 
-			message.append( "<html>"); 
+			newLine = "<br>";  //$NON-NLS-1$
+			message.append( "<html>");  //$NON-NLS-1$
 		}
 
 		DateFormat dateFormat = getDateTimeFormatter();
-		String previousDayIndicator = Properties.getInstance().getProperty( Properties.PROPERTY_DIFFERENT_DAY_INDICATOR_PREVIOUS_DAY, DifferentDayIndicator.PREVIOUS_DAY_INDICATOR );
-		String nextDayIndicator = Properties.getInstance().getProperty( Properties.PROPERTY_DIFFERENT_DAY_INDICATOR_NEXT_DAY, DifferentDayIndicator.NEXT_DAY_INDICATOR );
+		String previousDayIndicator = Properties.getInstance().getProperty( Properties.PROPERTY_DIFFERENT_DAY_INDICATOR_PREVIOUS_DAY, DifferentDayIndicator.PREVIOUS_DAY_INDICATOR, false );
+		String nextDayIndicator = Properties.getInstance().getProperty( Properties.PROPERTY_DIFFERENT_DAY_INDICATOR_NEXT_DAY, DifferentDayIndicator.NEXT_DAY_INDICATOR, false );
 
 		for( int i = 0; i < userTimeZoneItems.size(); i++ )
     	{
@@ -39,14 +39,14 @@ public class Message
     		else if( compare < 0 )
     			message.append( buildSingleLineOfOutput( currentTimeZone, previousDayIndicator, formattedGregorianCalendar ) );
     		else
-    			message.append( buildSingleLineOfOutput( currentTimeZone, "", formattedGregorianCalendar ) );
+    			message.append( buildSingleLineOfOutput( currentTimeZone, "", formattedGregorianCalendar ) ); //$NON-NLS-1$
 
     		if( i < ( userTimeZoneItems.size() - 1 ) )
     			message.append( newLine );
     	}
 
 		if( html )
-			message.append( "</html>"); 
+			message.append( "</html>");  //$NON-NLS-1$
 
 		return message.toString();
     }
@@ -54,47 +54,23 @@ public class Message
 
 	private static void combineTimeZones( Vector<UserTimeZoneItem> userTimeZoneItems )
     {
-	    String combineOption = Properties.getInstance().getProperty( Properties.PROPERTY_COMBINE_TIME_ZONES_OPTION, Properties.PROPERTY_COMBINE_TIME_ZONES_NEVER );
-	    if( Collator.getInstance().equals( combineOption, Properties.PROPERTY_COMBINE_TIME_ZONES_SAME_DATE_TIME_AND_TIME_ZONE ) )
-	    {
-	    	// We need to combine any time zones that have the same date/time and time zone.
-	    	String separator = Properties.getInstance().getProperty( Properties.PROPERTY_COMBINE_TIME_ZONES_SEPARATOR, Properties.PROPERTY_COMBINE_TIME_ZONES_SEPARATOR_DEFAULT );
-			for( int i = 0; i < userTimeZoneItems.size(); i++ )
-	    	{
-				DateFormat dateFormat = DateFormat.getDateTimeInstance( DateFormat.FULL, DateFormat.FULL );
-				dateFormat.setCalendar( userTimeZoneItems.get( i ).getGregorianCalendar() );
-				String gregorianCalendarFullFormat = dateFormat.format( userTimeZoneItems.get( i ).getGregorianCalendar().getTime() );
-
-				for( int j = 0; j < userTimeZoneItems.size(); j++ )
-				{
-					if( j == i ) 
-						continue;
-
-					String currentGregorianCalendarFullFormat = DateFormat.getDateTimeInstance( DateFormat.FULL, DateFormat.FULL ).format( userTimeZoneItems.get( j ).getGregorianCalendar().getTime() );
-					if( Collator.getInstance().equals( gregorianCalendarFullFormat, currentGregorianCalendarFullFormat ) )
-					{
-		    			userTimeZoneItems.get( i ).setTimeZoneDisplayable( userTimeZoneItems.get( i ).getTimeZoneDisplayable() + separator + userTimeZoneItems.get( j ).getTimeZoneDisplayable() );
-						userTimeZoneItems.removeElementAt( j );
-					}
-				}
-	    	}
-	    }
-	    else if( Collator.getInstance().equals( combineOption, Properties.PROPERTY_COMBINE_TIME_ZONES_SAME_DATE_TIME ) )
+		// We used to have another combine option: combine if time zone and date/time were the same.
+		// However it turns out that Java does not give us the time zone (such as EDT or CST or whatever)
+		// unless we ask for it in a time format which is not safe to compare in terms of i18n.
+		// So we now just have combine or not combine.
+	    if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COMBINE_TIME_ZONES_OPTION, false ) )
 	    {
 	    	// We need to combine any time zones that have the same date/time.
-	    	String separator = Properties.getInstance().getProperty( Properties.PROPERTY_COMBINE_TIME_ZONES_SEPARATOR, Properties.PROPERTY_COMBINE_TIME_ZONES_SEPARATOR_DEFAULT );
+	    	String separator = Properties.getInstance().getProperty( Properties.PROPERTY_COMBINE_TIME_ZONES_SEPARATOR, Properties.PROPERTY_COMBINE_TIME_ZONES_SEPARATOR_DEFAULT, false );
 			for( int i = 0; i < userTimeZoneItems.size(); i++ )
 	    	{
-				GregorianCalendar gregorianCalendar = userTimeZoneItems.get( i ).getGregorianCalendar();
-				for( int j = 0; j < userTimeZoneItems.size(); j++ )
+				for( int j = i + 1; j < userTimeZoneItems.size(); j++ )
 				{
-					if( j == i ) 
-						continue;
-
-		    		if( UserTimeZones.compareYearMonthDayHourMinuteSecond( gregorianCalendar, userTimeZoneItems.get( j ).getGregorianCalendar() ) == 0 )
+		    		if( UserTimeZones.compareYearMonthDayHourMinuteSecond( userTimeZoneItems.get( i ).getGregorianCalendar(), userTimeZoneItems.get( j ).getGregorianCalendar() ) == 0 )
 					{
 		    			userTimeZoneItems.get( i ).setTimeZoneDisplayable( userTimeZoneItems.get( i ).getTimeZoneDisplayable() + separator + userTimeZoneItems.get( j ).getTimeZoneDisplayable() );
 						userTimeZoneItems.removeElementAt( j );
+						
 					}
 				}
 	    	}
@@ -104,7 +80,7 @@ public class Message
 
     private static DateFormat getDateTimeFormatter()
     {
-		String dateTimeFormat = Properties.getInstance().getProperty( Properties.PROPERTY_SHOW_OPTION, Properties.PROPERTY_SHOW_TIME_MEDIUM );
+		String dateTimeFormat = Properties.getInstance().getProperty( Properties.PROPERTY_SHOW_OPTION, Properties.PROPERTY_SHOW_TIME_MEDIUM, false );
 
 		if( dateTimeFormat.equalsIgnoreCase( Properties.PROPERTY_SHOW_DATE_AND_TIME_FULL ) )
 			return DateFormat.getDateTimeInstance( DateFormat.FULL, DateFormat.FULL );
@@ -144,7 +120,7 @@ public class Message
 
 		if( dateTimeFormat.equalsIgnoreCase( Properties.PROPERTY_SHOW_USER_DEFINED ) )
 		{
-    		try { return new SimpleDateFormat( Properties.getInstance().getProperty( Properties.PROPERTY_SHOW_USER_DEFINED_PATTERN, "" ) ); }
+    		try { return new SimpleDateFormat( Properties.getInstance().getProperty( Properties.PROPERTY_SHOW_USER_DEFINED_PATTERN, "", false ) ); } //$NON-NLS-1$
     		catch( IllegalArgumentException illegalArgumentException ) 
     		{ return DateFormat.getDateTimeInstance(); }
 		}
@@ -158,13 +134,13 @@ public class Message
     {
     	StringBuilder stringBuilder = new StringBuilder();
 
-    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, Properties.PROPERTY_LAYOUT_LEFT_TEXT_DEFAULT ) );
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, Properties.PROPERTY_LAYOUT_LEFT_TEXT_DEFAULT, false ) );
     	stringBuilder.append( getActualFromProperty( Properties.PROPERTY_LAYOUT_LEFT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME_ZONE, timeZone, differentDayIndicator, dateTime ) );
-    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT_DEFAULT ) );
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT_DEFAULT, false ) );
     	stringBuilder.append( getActualFromProperty( Properties.PROPERTY_LAYOUT_CENTRE_OPTION, Properties.PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR, timeZone, differentDayIndicator, dateTime ) );
-    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT_DEFAULT ) );
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT_DEFAULT, false ) );
     	stringBuilder.append( getActualFromProperty( Properties.PROPERTY_LAYOUT_RIGHT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME, timeZone, differentDayIndicator, dateTime ) );
-    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_TEXT_DEFAULT ) );
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_TEXT_DEFAULT, false ) );
 
     	return stringBuilder.toString();
     }
@@ -172,12 +148,12 @@ public class Message
 
 	private static String getActualFromProperty( String property, String defaultValue, String timeZone, String differentDayIndicator, String dateTime )
 	{
-		String value = Properties.getInstance().getProperty( property, defaultValue );
+		String value = Properties.getInstance().getProperty( property, defaultValue, false );
 
 		if( Collator.getInstance().equals( Properties.PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR, value ) )
 			return differentDayIndicator;
 		else if( Collator.getInstance().equals( Properties.PROPERTY_LAYOUT_OPTION_NONE, value ) )
-			return "";
+			return ""; //$NON-NLS-1$
 		else if( Collator.getInstance().equals( Properties.PROPERTY_LAYOUT_OPTION_TIME, value ) )
 			return dateTime;
 		else

@@ -10,11 +10,11 @@ public class UserTimeZoneItem
 
 	public UserTimeZoneItem( String timeZone, String timeZoneDisplayable )
 	{
-		if( timeZone == null ) throw new IllegalArgumentException( "Time Zone cannot be null." );
+		if( timeZone == null ) throw new IllegalArgumentException( "Time Zone cannot be null." ); //$NON-NLS-1$
 
-		if( ! UserTimeZones.isValidTimeZone( timeZone ) ) throw new IllegalArgumentException( "Invalid Time Zone." );
+		if( ! UserTimeZones.isValidTimeZone( timeZone ) ) throw new IllegalArgumentException( "Invalid Time Zone." ); //$NON-NLS-1$
 		
-		if( timeZoneDisplayable == null ) throw new IllegalArgumentException( "Time Zone display name cannot be null." );
+		if( timeZoneDisplayable == null ) throw new IllegalArgumentException( "Time Zone display name cannot be null." ); //$NON-NLS-1$
 			
 		m_timeZone = timeZone;
 		m_timeZoneDisplayable = timeZoneDisplayable;
@@ -32,7 +32,7 @@ public class UserTimeZoneItem
 
 	public void setGregorianCalendar( GregorianCalendar gregorianCalendar ) 
 	{ 
-		if( gregorianCalendar == null ) throw new IllegalArgumentException( "Gregorian Calendar cannot be null." );
+		if( gregorianCalendar == null ) throw new IllegalArgumentException( "Gregorian Calendar cannot be null." ); //$NON-NLS-1$
 
 		m_gregorianCalendar = gregorianCalendar; 
 	} 
@@ -40,9 +40,9 @@ public class UserTimeZoneItem
 
 	public void setTimeZone( String timeZone ) 
 	{ 
-		if( timeZone == null ) throw new IllegalArgumentException( "Time Zone cannot be null." );
+		if( timeZone == null ) throw new IllegalArgumentException( "Time Zone cannot be null." ); //$NON-NLS-1$
 
-		if( ! UserTimeZones.isValidTimeZone( timeZone ) ) throw new IllegalArgumentException( "Invalid Time Zone." );
+		if( ! UserTimeZones.isValidTimeZone( timeZone ) ) throw new IllegalArgumentException( "Invalid Time Zone." ); //$NON-NLS-1$
 		
 		m_timeZone = timeZone; 
 	} 
@@ -50,7 +50,7 @@ public class UserTimeZoneItem
 
 	public void setTimeZoneDisplayable( String timeZoneDisplayable ) 
 	{ 
-		if( timeZoneDisplayable == null ) throw new IllegalArgumentException( "Time Zone display name cannot be null." );
+		if( timeZoneDisplayable == null ) throw new IllegalArgumentException( "Time Zone display name cannot be null." ); //$NON-NLS-1$
 			
 		m_timeZoneDisplayable = timeZoneDisplayable; 
 	} 

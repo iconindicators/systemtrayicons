@@ -20,10 +20,15 @@ import javax.swing.border.EtchedBorder;
 
 public class ShowDateTime extends JDialog implements ClipboardOwner
 {
+	private static final long serialVersionUID = 1L;
+
 	private static final int BORDER_INDENT = 10;
 	
-	private GregorianCalendar m_gregorianCalendar = new GregorianCalendar();
+	protected GregorianCalendar m_gregorianCalendar = new GregorianCalendar();
 	
+
+    private ShowDateTime() { super( (JDialog)null ); }
+
 
 	public static ShowDateTime create()
     {
@@ -45,8 +50,8 @@ public class ShowDateTime extends JDialog implements ClipboardOwner
     		)
         );
 
-        JButton copy = new JButton( Messages.getString( "ShowDateTime.0" ) );
-        copy.setToolTipText( Messages.getString( "ShowDateTime.1" ) );
+        JButton copy = new JButton( Messages.getString( "ShowDateTime.0" ) ); //$NON-NLS-1$
+        copy.setToolTipText( Messages.getString( "ShowDateTime.1" ) ); //$NON-NLS-1$
         copy.addActionListener
         ( 
     		new ActionListener() 
@@ -58,7 +63,7 @@ public class ShowDateTime extends JDialog implements ClipboardOwner
 			}
 		);
 
-        JButton close = new JButton( Messages.getString( "ShowDateTime.2" ) ); 
+        JButton close = new JButton( Messages.getString( "ShowDateTime.2" ) );  //$NON-NLS-1$
         close.addActionListener( new ActionListener() { public void actionPerformed( ActionEvent actionEvent ) { showDateTime.dispose(); } } );
 
         GroupLayout layout = new GroupLayout( showDateTime.getContentPane() );
@@ -92,19 +97,15 @@ public class ShowDateTime extends JDialog implements ClipboardOwner
     			)
 		);
 
-		showDateTime.setTitle( Messages.getString( "ShowDateTime.3" ) ); 
+		showDateTime.setTitle( Messages.getString( "ShowDateTime.3" ) );  //$NON-NLS-1$
         showDateTime.setIconImage( TrayIcon.getTrayIconImage() );
-        showDateTime.setModalityType( ModalityType.APPLICATION_MODAL );
         showDateTime.pack();
-		int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - showDateTime.getWidth() ) / 2;
-        int originY = ( Toolkit.getDefaultToolkit().getScreenSize().height - showDateTime.getHeight() ) / 2;
-        showDateTime.setResizable( false );
-        showDateTime.setLocation( originX, originY );
-        showDateTime.setVisible( true );
+        showDateTime.setLocationRelativeTo( null );
+        showDateTime.setModalityType( ModalityType.APPLICATION_MODAL );
 
         return showDateTime;
     }
 
 
-    public void lostOwnership( Clipboard clipboard, Transferable transferable ) { } // Do nothing.  Keeps the compiler happy!
+    public void lostOwnership( Clipboard clipboard, Transferable transferable ) { /** Do nothing. */ }
 }

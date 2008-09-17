@@ -1,4 +1,3 @@
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -14,27 +13,31 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class DifferentDayIndicator extends JDialog
 {
+	private static final long serialVersionUID = 1L;
 	private static final int NUMBER_OF_COLUMNS = 10;
 	
-	public static final String PREVIOUS_DAY_INDICATOR = "-";
-	public static final String NEXT_DAY_INDICATOR = "+";
+	public static final String PREVIOUS_DAY_INDICATOR = "-"; //$NON-NLS-1$
+	public static final String NEXT_DAY_INDICATOR = "+"; //$NON-NLS-1$
 
 
-	public static DifferentDayIndicator create()
+    private DifferentDayIndicator() { super( (JDialog)null ); }
+
+
+    public static DifferentDayIndicator create()
     {
     	final DifferentDayIndicator differentDayIndicator = new DifferentDayIndicator();
 
-    	JLabel previousDayLabel = new JLabel( Messages.getString( "DifferentDayIndicator.0" ) );
+    	JLabel previousDayLabel = new JLabel( Messages.getString( "DifferentDayIndicator.0" ) ); //$NON-NLS-1$
     	
-    	final JTextField previousDayTextfield = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_DIFFERENT_DAY_INDICATOR_PREVIOUS_DAY, PREVIOUS_DAY_INDICATOR ) );
+    	final JTextField previousDayTextfield = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_DIFFERENT_DAY_INDICATOR_PREVIOUS_DAY, PREVIOUS_DAY_INDICATOR, false ) );
     	previousDayTextfield.setColumns( NUMBER_OF_COLUMNS );
 
-    	JLabel nextDayLabel = new JLabel( Messages.getString( "DifferentDayIndicator.1" ) );
+    	JLabel nextDayLabel = new JLabel( Messages.getString( "DifferentDayIndicator.1" ) ); //$NON-NLS-1$
 
-    	final JTextField nextDayTextfield = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_DIFFERENT_DAY_INDICATOR_NEXT_DAY, NEXT_DAY_INDICATOR ) );
+    	final JTextField nextDayTextfield = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_DIFFERENT_DAY_INDICATOR_NEXT_DAY, NEXT_DAY_INDICATOR, false ) );
     	nextDayTextfield.setColumns( NUMBER_OF_COLUMNS );
 
-    	JButton ok = new JButton( Messages.getString( "DifferentDayIndicator.2" ) );
+    	JButton ok = new JButton( Messages.getString( "DifferentDayIndicator.2" ) ); //$NON-NLS-1$
     	ok.addActionListener
     	( 
 			new ActionListener() 
@@ -50,7 +53,7 @@ public class DifferentDayIndicator extends JDialog
 			} 
 		);
 
-    	JButton cancel = new JButton( Messages.getString( "DifferentDayIndicator.3" ) );
+    	JButton cancel = new JButton( Messages.getString( "DifferentDayIndicator.3" ) ); //$NON-NLS-1$
     	cancel.addActionListener( new ActionListener() { public void actionPerformed( ActionEvent actionEvent ) { differentDayIndicator.dispose(); } } );
     	
     	GroupLayout layout = new GroupLayout( differentDayIndicator.getContentPane() );
@@ -113,15 +116,12 @@ public class DifferentDayIndicator extends JDialog
     			)
 		);
 
-		differentDayIndicator.setTitle( Messages.getString( "DifferentDayIndicator.4" ) ); 
+		differentDayIndicator.setTitle( Messages.getString( "DifferentDayIndicator.4" ) );  //$NON-NLS-1$
         differentDayIndicator.setIconImage( TrayIcon.getTrayIconImage() );
-        differentDayIndicator.setModalityType( ModalityType.APPLICATION_MODAL );
         differentDayIndicator.pack();
-		int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - differentDayIndicator.getWidth() ) / 2;
-        int originY = ( Toolkit.getDefaultToolkit().getScreenSize().height - differentDayIndicator.getHeight() ) / 2;
-        differentDayIndicator.setLocation( originX, originY );
+        differentDayIndicator.setLocationRelativeTo( null );
+        differentDayIndicator.setModalityType( ModalityType.APPLICATION_MODAL );
         differentDayIndicator.addComponentListener( new ComponentListener( differentDayIndicator, false, true ) );
-        differentDayIndicator.setVisible( true );
 
         return differentDayIndicator;
     }

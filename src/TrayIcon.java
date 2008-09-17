@@ -9,8 +9,8 @@ import javax.swing.ImageIcon;
 
 public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseMotionListener
 {
-	private static final String TRAY_ICON_IMAGE = "trayicon.gif"; 
-	private static final String MESSAGE_TOOL_TIP = Messages.getString( "TrayIcon.1" ); 
+	private static final String TRAY_ICON_IMAGE = "trayicon.gif";  //$NON-NLS-1$
+	private static final String MESSAGE_TOOL_TIP = Messages.getString( "TrayIcon.1" );  //$NON-NLS-1$
 
 	private PopupMenu m_popupMenu = null;
 	
@@ -38,7 +38,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 	private String getMessageString() { return Message.getMessageString( new GregorianCalendar(), false ); }
 
 
-    public void mouseDragged( MouseEvent mouseEvent ) { }
+    public void mouseDragged( MouseEvent mouseEvent ) { /** Do nothing. */ }
 
 
 	public void mouseMoved( MouseEvent mouseEvent ) 
@@ -51,31 +51,34 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 
 
     public void mousePressed( MouseEvent mouseEvent )
-	{
-		if( mouseEvent.getButton() == MouseEvent.BUTTON1 )
+	{   	
+    	if( m_popupMenu.popupIsDisabled() )
+    	{
+    		if( mouseEvent.getButton() == MouseEvent.BUTTON1 || mouseEvent.getButton() == MouseEvent.BUTTON2 || mouseEvent.getButton() == MouseEvent.BUTTON3 )
+    		{
+    			setPopupMenu( null );
+    			m_popupMenu.getCurrentDialog().toFront();
+    		}
+    	}
+    	else if( mouseEvent.getButton() == MouseEvent.BUTTON1 )
 		{
-        	TrayIcon trayIcon = (TrayIcon)mouseEvent.getSource();
-			trayIcon.displayMessage( PopupMenu.APPLICATION_NAME, getMessageString(), TrayIcon.MessageType.NONE );
+    		( (TrayIcon)mouseEvent.getSource() ).displayMessage( PopupMenu.APPLICATION_NAME, getMessageString(), TrayIcon.MessageType.NONE );
 		}
 		else if( mouseEvent.getButton() == MouseEvent.BUTTON3 )
 		{
-			// Disable the pop up menu when we put up another dialog.
-			if( m_popupMenu.popupIsDisabled() )
-				setPopupMenu( null );
-			else
-				setPopupMenu( m_popupMenu );
+			setPopupMenu( m_popupMenu );
 		}
 	}
 
 
-	public void mouseClicked( MouseEvent mouseEvent ) { }
+	public void mouseClicked( MouseEvent mouseEvent ) { /** Do nothing. */ }
 
 
-	public void mouseEntered( MouseEvent mouseEvent ) { }
+	public void mouseEntered( MouseEvent mouseEvent ) { /** Do nothing. */ }
 
 
-	public void mouseExited( MouseEvent mouseEvent ) { }
+	public void mouseExited( MouseEvent mouseEvent ) { /** Do nothing. */ }
 
 
-	public void mouseReleased( MouseEvent mouseEvent ) { }
+	public void mouseReleased( MouseEvent mouseEvent ) { /** Do nothing. */ }
 }

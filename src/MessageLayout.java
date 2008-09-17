@@ -1,4 +1,3 @@
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.GregorianCalendar;
@@ -19,23 +18,27 @@ import javax.swing.border.EtchedBorder;
 
 public class MessageLayout extends JDialog
 {
+	private static final long serialVersionUID = 1L;
 	private static final int BORDER_INDENT = 10;
 	private static final int NUMBER_OF_COLUMNS = 5;
 
-	private static String m_leftText, m_leftOption, m_leftCentreText, m_centreOption, m_rightCentreText, m_rightOption, m_rightText;
+	protected static String m_leftText, m_leftOption, m_leftCentreText, m_centreOption, m_rightCentreText, m_rightOption, m_rightText;
 
 
-	public static MessageLayout create()
+    private MessageLayout() { super( (JDialog)null ); }
+
+
+    public static MessageLayout create()
     {
     	final MessageLayout messageLayout = new MessageLayout();
 
-    	m_leftText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, Properties.PROPERTY_LAYOUT_LEFT_TEXT_DEFAULT );
-    	m_leftOption = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME_ZONE );
-    	m_leftCentreText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT_DEFAULT );
-    	m_centreOption = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_CENTRE_OPTION, Properties.PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR );
-    	m_rightCentreText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT_DEFAULT );
-    	m_rightOption = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME );
-    	m_rightText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_TEXT_DEFAULT );
+    	m_leftText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, Properties.PROPERTY_LAYOUT_LEFT_TEXT_DEFAULT, false );
+    	m_leftOption = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME_ZONE, false );
+    	m_leftCentreText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT_DEFAULT, false );
+    	m_centreOption = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_CENTRE_OPTION, Properties.PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR, false );
+    	m_rightCentreText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT_DEFAULT, false );
+    	m_rightOption = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME, false );
+    	m_rightText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_TEXT_DEFAULT, false );
 
     	Vector<String> comboValues = new Vector<String>();
     	comboValues.add( Properties.PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR );
@@ -43,28 +46,28 @@ public class MessageLayout extends JDialog
     	comboValues.add( Properties.PROPERTY_LAYOUT_OPTION_TIME_ZONE );
     	comboValues.add( Properties.PROPERTY_LAYOUT_OPTION_NONE );
 
-    	final JTextField leftTextfield = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, Properties.PROPERTY_LAYOUT_LEFT_TEXT_DEFAULT ) );
+    	final JTextField leftTextfield = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, Properties.PROPERTY_LAYOUT_LEFT_TEXT_DEFAULT, false ) );
     	leftTextfield.setColumns( NUMBER_OF_COLUMNS );
 
     	final JComboBox leftCombo = new JComboBox( comboValues );
-    	leftCombo.setSelectedItem(  Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME_ZONE ) ) ;
+    	leftCombo.setSelectedItem(  Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME_ZONE, false ) ) ;
 
-    	final JTextField leftCentreTextfield = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT_DEFAULT ) );
+    	final JTextField leftCentreTextfield = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT_DEFAULT, false ) );
     	leftCentreTextfield.setColumns( NUMBER_OF_COLUMNS );
 
     	final JComboBox centreCombo = new JComboBox( comboValues );
-    	centreCombo.setSelectedItem(  Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_CENTRE_OPTION, Properties.PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR ) ) ;
+    	centreCombo.setSelectedItem(  Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_CENTRE_OPTION, Properties.PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR, false ) ) ;
 
-    	final JTextField rightCentreTextfield = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT_DEFAULT ) );
+    	final JTextField rightCentreTextfield = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT_DEFAULT, false ) );
     	rightCentreTextfield.setColumns( NUMBER_OF_COLUMNS );
 
     	final JComboBox rightCombo = new JComboBox( comboValues );
-    	rightCombo.setSelectedItem(  Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME ) ) ;
+    	rightCombo.setSelectedItem(  Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME, false ) ) ;
 
-    	final JTextField rightTextfield = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_TEXT_DEFAULT ) );
+    	final JTextField rightTextfield = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_TEXT_DEFAULT, false ) );
     	rightTextfield.setColumns( NUMBER_OF_COLUMNS );
 
-    	JButton sampleButton = new JButton( Messages.getString( "MessageLayout.0" ) );
+    	JButton sampleButton = new JButton( Messages.getString( "MessageLayout.0" ) ); //$NON-NLS-1$
 
     	final JLabel sampleLabel = new JLabel( Message.getMessageString( new GregorianCalendar(), true ) );
     	sampleLabel.setHorizontalAlignment( SwingConstants.CENTER );
@@ -103,7 +106,7 @@ public class MessageLayout extends JDialog
 			}
 		);
 
-    	JButton ok = new JButton( Messages.getString( "MessageLayout.1" ) );
+    	JButton ok = new JButton( Messages.getString( "MessageLayout.1" ) ); //$NON-NLS-1$
     	ok.addActionListener
     	(
 			new ActionListener()
@@ -125,7 +128,7 @@ public class MessageLayout extends JDialog
 			} 
 		);
 
-    	JButton cancel = new JButton( Messages.getString( "MessageLayout.2" ) );
+    	JButton cancel = new JButton( Messages.getString( "MessageLayout.2" ) ); //$NON-NLS-1$
     	cancel.addActionListener
     	(
 			new ActionListener()
@@ -217,15 +220,12 @@ public class MessageLayout extends JDialog
     			)
 		);
 
-		messageLayout.setTitle( Messages.getString( "MessageLayout.3" ) ); 
+		messageLayout.setTitle( Messages.getString( "MessageLayout.3" ) );  //$NON-NLS-1$
         messageLayout.setIconImage( TrayIcon.getTrayIconImage() );
-        messageLayout.setModalityType( ModalityType.APPLICATION_MODAL );
         messageLayout.pack();
-		int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - messageLayout.getWidth() ) / 2;
-        int originY = ( Toolkit.getDefaultToolkit().getScreenSize().height - messageLayout.getHeight() ) / 2;
-        messageLayout.setLocation( originX, originY );
+        messageLayout.setLocationRelativeTo( null );
+        messageLayout.setModalityType( ModalityType.APPLICATION_MODAL );
         messageLayout.addComponentListener( new ComponentListener( messageLayout, false, true ) );
-        messageLayout.setVisible( true );
 
         return messageLayout;
     }

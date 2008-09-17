@@ -1,4 +1,3 @@
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Collator;
@@ -13,11 +12,13 @@ import javax.swing.GroupLayout.Alignment;
 
 public class AddRemoveTimeZones extends JDialog implements ActionListener
 {
+	private static final long serialVersionUID = 1L;
+
 	private CheckboxList m_addRemoveCheckboxList = null;
     private JButton m_close = null;
 
 
-    private AddRemoveTimeZones() { super(); }
+    private AddRemoveTimeZones() { super( (JDialog)null ); }
 
 
     public static AddRemoveTimeZones create()
@@ -29,7 +30,7 @@ public class AddRemoveTimeZones extends JDialog implements ActionListener
         addRemoveTimeZones.m_addRemoveCheckboxList.setSelectedIndex( 0 );
         JScrollPane scrollPane = new JScrollPane( addRemoveTimeZones.m_addRemoveCheckboxList );
 
-        addRemoveTimeZones.m_close = new JButton( Messages.getString( "AddRemoveTimeZones.0" ) ); 
+        addRemoveTimeZones.m_close = new JButton( Messages.getString( "AddRemoveTimeZones.0" ) ); //$NON-NLS-1$
         addRemoveTimeZones.m_close.addActionListener( addRemoveTimeZones );
 
         GroupLayout layout = new GroupLayout( addRemoveTimeZones.getContentPane() );
@@ -51,28 +52,25 @@ public class AddRemoveTimeZones extends JDialog implements ActionListener
     			.addComponent( addRemoveTimeZones.m_close )
 		);
 
-        addRemoveTimeZones.setTitle( Messages.getString( "AddRemoveTimeZones.1" ) ); 
+        addRemoveTimeZones.setTitle( Messages.getString( "AddRemoveTimeZones.1" ) ); //$NON-NLS-1$
 		addRemoveTimeZones.setIconImage( TrayIcon.getTrayIconImage() );
-		addRemoveTimeZones.setModalityType( ModalityType.APPLICATION_MODAL );
 		addRemoveTimeZones.pack();
-		int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - addRemoveTimeZones.getWidth() ) / 2;
-        int originY = ( Toolkit.getDefaultToolkit().getScreenSize().height - addRemoveTimeZones.getHeight() ) / 2;
-        addRemoveTimeZones.setLocation( originX, originY );
-        addRemoveTimeZones.setVisible( true );
-        
+        addRemoveTimeZones.setLocationRelativeTo( null );
+        addRemoveTimeZones.setModalityType( ModalityType.APPLICATION_MODAL );
+
 		return addRemoveTimeZones;
     }
 
 
     public void actionPerformed( ActionEvent actionEvent )
 	{
-    	if( actionEvent.getSource() == m_close )
+    	if( actionEvent.getSource() == this.m_close )
 		{
 			m_close.removeActionListener( this );
 
 			Vector<String> existingTimeZones = Properties.getInstance().getPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED );
 			Vector<String> existingTimeZonesDisplayable = Properties.getInstance().getPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED_DISPLAY_NAMES );
-			Vector<String> newTimeZones = m_addRemoveCheckboxList.getSelectedItems();
+			Vector<String> newTimeZones = this.m_addRemoveCheckboxList.getSelectedItems();
 			Vector<String> newTimeZonesDisplayable = new Vector<String>( newTimeZones.size() );
 
 			// We need to retain the display names of the existing time zones.

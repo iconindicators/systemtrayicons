@@ -5,7 +5,6 @@ import java.awt.Window;
 import java.awt.event.ComponentEvent;
 
 
-
 public class ComponentListener implements java.awt.event.ComponentListener
 {
     private boolean m_restrictWidth = false;
@@ -60,18 +59,18 @@ public class ComponentListener implements java.awt.event.ComponentListener
     }
 
 
-    public void componentHidden( ComponentEvent componentEvent ) { }
+    public void componentHidden( ComponentEvent componentEvent ) { /** Do nothing. */ }
 
 
-    public void componentMoved( ComponentEvent componentEvent ) { }
+    public void componentMoved( ComponentEvent componentEvent ) { /** Do nothing. */ }
 
 
-    public void componentShown( ComponentEvent componentEvent ) { }
+    public void componentShown( ComponentEvent componentEvent ) { /** Do nothing. */ }
     
     
     private static void centreWindowAboutScreen( Container container )
     {
-        if( container == null ) throw new IllegalArgumentException( "Container cannot be null." );
+        if( container == null ) throw new IllegalArgumentException( "Container cannot be null." ); //$NON-NLS-1$
 
         int width = container.getWidth();
         if( width <= 0 ) width = container.getSize().width;

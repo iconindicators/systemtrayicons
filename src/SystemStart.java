@@ -7,12 +7,12 @@ import ca.beq.util.win32.registry.ValueType;
 public class SystemStart
 {
 	// Various types of operating system as per System property "os.name" (see http://tolstoy.com/samizdat/sysprops.html).
-	private static final String OS_NAME = "os.name";
-	private static final String OS_NAME_MICROSOFT_WINDOWS = "Windows";
+	private static final String OS_NAME = "os.name"; //$NON-NLS-1$
+	private static final String OS_NAME_MICROSOFT_WINDOWS = "Windows"; //$NON-NLS-1$
 
-	private static final String MICROSOFT_WINDOWS_REGISTRY_KEY = "Software\\Microsoft\\Windows\\CurrentVersion\\Run";
-	private static final String MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME = "WorldTimeSystemTray";
-	private static final String MICROSOFT_WINDOWS_REGISTRY_VALUE_DATA = System.getProperties().get( "user.dir" ) + "\\WorldTimeSystemTray.exe";
+	private static final String MICROSOFT_WINDOWS_REGISTRY_KEY = "Software\\Microsoft\\Windows\\CurrentVersion\\Run"; //$NON-NLS-1$
+	private static final String MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME = "WorldTimeSystemTray"; //$NON-NLS-1$
+	private static final String MICROSOFT_WINDOWS_REGISTRY_VALUE_DATA = System.getProperties().get( "user.dir" ) + "\\WorldTimeSystemTray.exe"; //$NON-NLS-1$ //$NON-NLS-2$
 
 
     public static boolean isMicrosoftWindows()

@@ -22,9 +22,11 @@ import javax.swing.event.ListSelectionListener;
  */
 public class CheckboxList extends JList
 {
-    private Hashtable<String, Object> m_itemsChecked = null; // We only want the key; don't care about the value.
-    private Vector<String> m_listData = null;
-    private int m_currentRow = -1;
+	private static final long serialVersionUID = 1L;
+
+    protected Hashtable<String, Object> m_itemsChecked = null; // We only want the key; don't care about the value.
+    protected Vector<String> m_listData = null;
+    protected int m_currentRow = -1;
 
 
     /**
@@ -37,17 +39,15 @@ public class CheckboxList extends JList
     {
         super();
 
-    	if( listData == null )
-        	throw new IllegalArgumentException( "List data cannot be null." );
+    	if( listData == null ) throw new IllegalArgumentException( "List data cannot be null." ); //$NON-NLS-1$
 
-        if( itemsChecked == null )
-        	throw new IllegalArgumentException( "Items checked cannot be null." );
+        if( itemsChecked == null ) throw new IllegalArgumentException( "Items checked cannot be null." ); //$NON-NLS-1$
 
         m_listData = listData;
         
         m_itemsChecked = new Hashtable<String, Object>( listData.size() );
         for( int i = 0; i < itemsChecked.size(); i++ )
-        	m_itemsChecked.put( itemsChecked.get( i ), "" );
+        	m_itemsChecked.put( itemsChecked.get( i ), "" ); //$NON-NLS-1$
 
         setSelectionMode( ListSelectionModel.SINGLE_SELECTION );
         setListData( listData );
@@ -72,7 +72,7 @@ public class CheckboxList extends JList
     }
 
     
-    private class CheckboxListener implements ListSelectionListener
+    protected class CheckboxListener implements ListSelectionListener
     {
         public void valueChanged( ListSelectionEvent listSelectionEvent )
         {
@@ -98,13 +98,13 @@ public class CheckboxList extends JList
 				if( m_itemsChecked.containsKey( selectedItem ) )
             		m_itemsChecked.remove( selectedItem );
             	else
-            		m_itemsChecked.put( selectedItem, "" );
+            		m_itemsChecked.put( selectedItem, "" ); //$NON-NLS-1$
             }
         }
     }
 
 
-    private class CheckboxRenderer implements ListCellRenderer
+    protected class CheckboxRenderer implements ListCellRenderer
     {
         public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
         {

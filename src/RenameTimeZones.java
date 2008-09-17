@@ -1,4 +1,3 @@
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.Collator;
@@ -19,11 +18,13 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class RenameTimeZones extends JDialog
 {
+	private static final long serialVersionUID = 1L;
+
 	private JButton m_ok = null;
-    private Vector<JTextField> m_timeZoneTextfields = null;
+    protected Vector<JTextField> m_timeZoneTextfields = null;
 
 
-    private RenameTimeZones() { super(); }
+    private RenameTimeZones() { super( (JDialog)null ); }
 
 
     public static RenameTimeZones create()
@@ -36,14 +37,14 @@ public class RenameTimeZones extends JDialog
         renameTimeZones.m_timeZoneTextfields = new Vector<JTextField>( timeZones.size() );
         for( int i = 0; i < timeZones.size(); i++ )
         {
-        	timeZoneLabels.add( new JLabel( timeZones.get( i ) + ":" ) ); 
+        	timeZoneLabels.add( new JLabel( timeZones.get( i ) + ":" ) );  //$NON-NLS-1$
         	renameTimeZones.m_timeZoneTextfields.add( new JTextField( timeZonesDisplay.get( i ) ) );
         }
 
-        renameTimeZones.m_ok = new JButton( Messages.getString( "RenameTimeZones.1" ) ); 
+        renameTimeZones.m_ok = new JButton( Messages.getString( "RenameTimeZones.1" ) );  //$NON-NLS-1$
         renameTimeZones.m_ok.addActionListener( renameTimeZones.new OKActionListener() );
 
-        JButton cancel = new JButton( Messages.getString( "RenameTimeZones.2" ) ); 
+        JButton cancel = new JButton( Messages.getString( "RenameTimeZones.2" ) );  //$NON-NLS-1$
     	cancel.addActionListener( new ActionListener() { public void actionPerformed( ActionEvent actionEvent ) { renameTimeZones.dispose(); } } );
         
         GroupLayout layout = new GroupLayout( renameTimeZones.getContentPane() );
@@ -109,21 +110,18 @@ public class RenameTimeZones extends JDialog
 
         layout.setVerticalGroup( sequentialGroup );
 
-        renameTimeZones.setTitle( Messages.getString( "RenameTimeZones.3" ) ); 
+        renameTimeZones.setTitle( Messages.getString( "RenameTimeZones.3" ) );  //$NON-NLS-1$
 		renameTimeZones.setIconImage( TrayIcon.getTrayIconImage() );
-		renameTimeZones.setModalityType( ModalityType.APPLICATION_MODAL );
 		renameTimeZones.pack();
-		int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - renameTimeZones.getWidth() ) / 2;
-        int originY = ( Toolkit.getDefaultToolkit().getScreenSize().height - renameTimeZones.getHeight() ) / 2;
-        renameTimeZones.setLocation( originX, originY );
+        renameTimeZones.setLocationRelativeTo( null );
+		renameTimeZones.setModalityType( ModalityType.APPLICATION_MODAL );
         renameTimeZones.addComponentListener( new ComponentListener( renameTimeZones, false, true ) );
-        renameTimeZones.setVisible( true );
 
 		return renameTimeZones;
     }
 
     
-    private class OKActionListener implements ActionListener
+    protected class OKActionListener implements ActionListener
     {
     	public void actionPerformed( ActionEvent actionEvent )
     	{
@@ -132,14 +130,14 @@ public class RenameTimeZones extends JDialog
 			{
 				if( m_timeZoneTextfields.get( i ).getText().length() == 0 )
 				{
-        			JOptionPane.showMessageDialog
-        			( 
-        				null, 
-        				Messages.getString( "RenameTimeZones.4" ),  
-        				Messages.getString( "RenameTimeZones.5" ), 
-        				JOptionPane.ERROR_MESSAGE
+					MessageDialog.showMessageDialog
+					(
+						Messages.getString( "RenameTimeZones.5" ),  //$NON-NLS-1$
+        				Messages.getString( "RenameTimeZones.4" ),   //$NON-NLS-1$
+        				JOptionPane.ERROR_MESSAGE,
+        				JOptionPane.DEFAULT_OPTION
         			);
-        			
+
         			return;
 				}
 			}
@@ -151,12 +149,12 @@ public class RenameTimeZones extends JDialog
 				for( int j = i + 1; j < m_timeZoneTextfields.size(); j++ )
 					if( Collator.getInstance().equals( currentValue, m_timeZoneTextfields.get( j ).getText() )  )
 					{
-	        			JOptionPane.showMessageDialog
+	        			MessageDialog.showMessageDialog
 	        			( 
-	        				null, 
-	        				Messages.getString( "RenameTimeZones.6" ), 
-	        				Messages.getString( "RenameTimeZones.7" ), 
-	        				JOptionPane.ERROR_MESSAGE
+	        				Messages.getString( "RenameTimeZones.7" ),  //$NON-NLS-1$
+	        				Messages.getString( "RenameTimeZones.6" ),  //$NON-NLS-1$
+	        				JOptionPane.ERROR_MESSAGE,
+	        				JOptionPane.DEFAULT_OPTION
 	        			);
 	        			
 	        			return;
