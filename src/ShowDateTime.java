@@ -97,11 +97,12 @@ public class ShowDateTime extends JDialog implements ClipboardOwner
     			)
 		);
 
-		showDateTime.setTitle( Messages.getString( "ShowDateTime.3" ) );  //$NON-NLS-1$
+        showDateTime.setTitle( Messages.getString( "ShowDateTime.3" ) );  //$NON-NLS-1$
         showDateTime.setIconImage( TrayIcon.getTrayIconImage() );
         showDateTime.pack();
         showDateTime.setLocationRelativeTo( null );
         showDateTime.setModalityType( ModalityType.APPLICATION_MODAL );
+        close.requestFocusInWindow();
 
         return showDateTime;
     }
