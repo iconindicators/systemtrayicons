@@ -33,7 +33,7 @@ public class CheckboxList extends JList
      * Constructor for a list of check boxes.
      *
      * @param listData A vector of the item names that will be used for each check box.
-     * @param itemChecked An array (of the same length as the item names) which indicates if an item is checked/unchecked.
+     * @param itemChecked A vector of the items which are checked.
      */
     public CheckboxList( Vector<String> listData, Vector<String> itemsChecked )
     {
