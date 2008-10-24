@@ -2,20 +2,38 @@ World Time System Tray Release Notes
 ------------------------------------
 
 
-2008-XX-YY Version 1.4
+2008-10-24 Version 1.4
 
-* Dialogs now show in the task bar and will also come to the front if the 
-  tray icon is clicked.
+* First Debian/Ubuntu release.
+  
+  NOTE: The tooltip and balloon text do not observe the new line character.
+  See Sun bug http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6440297.
+
+* Now supports multiple users.
+  The user preferences are now saved to the "user home" directory.
+  On Microsoft Windows this is typically the directory
+  'Documents and Settings/{UserName}/.worldtimesystemtray' or 
+  'Users/{UserName}/.worldtimesystemtray'.
+  On Linux this is /home/{UserName}.
+  
+  NOTE for Microsoft Windows users: Your user preferences from the previous 
+  version will NOT be loaded...sorry about that.  However, you can copy the
+  'Program Files/World Time System Tray/properties' file to your 
+  "user home" directory.
+
+* Icons redesigned for multiple platforms and size requirements.
+
+* Dialogs now show in the task bar.
 
 * Updated to use jRegistryKey 1.4.5.0
 
-* Removed the option to combine when date/time and time zones matched.  Java
-  does not provide a way to compare time zones without resorting to using
+* Removed the option to combine when date/time and time zones matched.  
+  Java does not provide a way to compare time zones without resorting to using
   user formatted strings.  For example, for Rome, Java will not give "CEST"
   or "+0200" as the time zone, either of which is universally comparable to 
   other time zones.
 
-  Therefore, the combine option has been changed to on or off.  
+  Therefore, the combine option has been changed to simply on or off.  
 
   You may have to select/unselect this option as a result of the menu change.
 
