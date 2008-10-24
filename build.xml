@@ -1,71 +1,139 @@
 <project name="WorldTimeSystemTray" default="CompileAndJar" basedir=".">
 
-	<description>World Time System Tray project build file.</description>
-
 	<property name="version" value="1.4" />
+	<property environment="env" />
 
-	<property environment="env"/>
-
-	<property name="bin" location="bin" />
+	<!-- Compile properties -->
+	<property name="classes" location="classes" />
+	<property name="doc" location="doc" />
 	<property name="i18n" location="i18n" />
 	<property name="img" location="img" />
-	<property name="installer" location="installer" />
-	<property name="launcher" location="launcher" />
+	<property name="jar-filename" value="worldtimesystemtray.jar" />
 	<property name="lib" location="lib" />
+	<property name="packaging" location="packaging" />
 	<property name="release" location="release" />
 	<property name="src" location="src" />
 
-	<condition property="IsWindows" value="true">
-		<os family="winnt" />
-	</condition>
+	<!-- Microsoft Windows properties -->
+	<property name="win32" location="packaging/win32" />
+
+	<!-- Debian properties -->
+	<property name="deb" value="packaging/debian" />
+	<property name="deb-filename" value="worldtimesystemtray" />
 
 
-	<target name="CompileAndJar" description="Compiles and JARs.">
-		<delete dir="${bin}" />
-		<mkdir dir="${bin}" />
+	<!-- Compile class files and JAR -->
+	<target name="CompileAndJar">
+		<delete dir="${classes}" />
+		<mkdir dir="${classes}" />
 
-		<javac srcdir="${src}" destdir="${bin}" nowarn="${nowarn}">
+		<delete file="${release}/${jar-filename}" />
+		<mkdir dir="${release}" />
+
+		<javac srcdir="${src}" destdir="${classes}">
 			<classpath>
 				<pathelement location="${lib}/win32/jRegistryKey.jar" />
 			</classpath>
-			<compilerarg value="-Xlint:unchecked" />
+			<compilerarg value="-Xlint:deprecation,fallthrough,finally,path,serial,unchecked" />
 		</javac>
 
-		<copy todir="${bin}/i18n">
+		<copy todir="${classes}/i18n">
 			<fileset dir="${i18n}"/>
 		</copy>
 
-		<copy file="${img}/trayicon.gif" todir="${bin}" />
+		<copy file="${img}/worldtimesystemtray16x16.gif" todir="${classes}" />
+		<copy file="${img}/worldtimesystemtray20x20.gif" todir="${classes}" />
 
-		<manifest file="${bin}/MANIFEST.MF">
+		<manifest file="${classes}/MANIFEST.MF">
 			<attribute name="Class-Path" value=". jRegistryKey.jar" />
 			<attribute name="Main-Class" value="WorldTimeSystemTray" />
 		</manifest>
-		<jar jarfile="${bin}/world-time-system-tray.jar" basedir="${bin}" manifest="${bin}/MANIFEST.MF" />
+		<jar jarfile="${release}/${jar-filename}" basedir="${classes}" manifest="${classes}/MANIFEST.MF" />
+
+		<delete dir="${classes}" />
 	</target>
 
 
-	<target name="LauncherAndInstaller" if="IsWindows" depends="CompileAndJar" description="Build the Microsoft Windows installer executable using NSIS.">
+	<!-- Use NSIS to build Windows installer and setup executables -->
+	<target name="Win32" depends="CompileAndJar" description="Build the Microsoft Windows installer and executable using NSIS.">
 		<exec executable="${env.NSIS_HOME}/Makensis.exe">
-			<arg line="${launcher}/win32/Launcher.nsi"/>
+			<arg line="${win32}/Launcher.nsi"/>
 		</exec>
 
 		<exec executable="${env.NSIS_HOME}/Makensis.exe">
-			<arg line="${installer}/win32/Installer.nsi"/>
+			<arg line="${win32}/Installer.nsi"/>
 		</exec>
-		<mkdir dir="${release}" />
-		<move file="${installer}/win32/WorldTimeSystemTraySetup.exe" tofile="${release}/WorldTimeSystemTraySetup-${version}.exe" /> 
 
-		<delete file="${launcher}/win32/WorldTimeSystemTray.exe" />
+		<move file="${win32}/WorldTimeSystemTraySetup.exe" tofile="${release}/WorldTimeSystemTraySetup-${version}.exe" />
+		<delete file="${win32}/WorldTimeSystemTray.exe" />
 	</target>
 
 
-	<target name="Release" depends="LauncherAndInstaller" description="Releases the Jar file and source code.">
+	<!-- Create a Debian package -->
+	<target name="Debian" depends="CompileAndJar">
+		<echo message="" />
+		<echo message="****************************************************************************" />
+		<echo message="This task must be run as root.  For example, on Ubuntu: 'sudo ant Debian'" />
+		<echo message="After this task, run 'lintian' on the deb file to check for errors/warnings." />
+		<echo message="****************************************************************************" />
+		<echo message="" />
+		<copy file="${release}/${jar-filename}" todir="${deb}/usr/share/worldtimesystemtray" preservelastmodified="true" />
+
+		<copy file="TODO.txt" tofile="${deb}/usr/share/doc/worldtimesystemtray/TODO" preservelastmodified="true" />
+		<copy file="${doc}/License.txt" tofile="${deb}/usr/share/doc/worldtimesystemtray/copyright" preservelastmodified="true" />
+
+		<copy file="changelog.Debian" tofile="${deb}/usr/share/doc/worldtimesystemtray/changelog" preservelastmodified="true" />
+		<exec executable="gzip">
+			<arg line="-9 ${deb}/usr/share/doc/worldtimesystemtray/changelog" />
+		</exec>
+
+		<chgrp file="${deb}/DEBIAN/postinst" group="root"/>
+		<chown file="${deb}/DEBIAN/postinst" owner="root"/>
+
+		<chgrp file="${deb}/DEBIAN/postrm" group="root"/>
+		<chown file="${deb}/DEBIAN/postrm" owner="root"/>
+
+		<exec executable="dpkg">
+			<arg line="--build ${deb} ${release}/${deb-filename}_${version}_all.deb" />
+		</exec>
+
+		<delete dir="${deb}/usr/share/doc" />
+		<delete dir="${deb}/usr/share/worldtimesystemtray" />
+	</target>
+
+
+	<!-- Do a full release, including source code -->
+	<available file="${release}/${jar-filename}" property="JarReady" />
+	<available file="${release}/WorldTimeSystemTraySetup-${version}.exe" property="Win32Ready" />
+	<available file="${release}/${deb-filename}_${version}_all.deb" property="DebReady" />
+
+	<condition property="ReadyForRelease">
+		<and>
+			<available file="${release}/${jar-filename}" />
+			<available file="${release}/WorldTimeSystemTraySetup-${version}.exe" />
+			<available file="${release}/${deb-filename}_${version}_all.deb" />
+		</and>
+	</condition>
+
+	<target name="ReportJarReady" unless="JarReady">
+		<echo>message="To do a release, the JAR file must be built!"</echo>
+    </target>
+
+	<target name="ReportWin32Ready" unless="Win32Ready">
+		<echo>message="To do a release, the Windows executable must be built!"</echo>
+    </target>
+
+	<target name="ReportDebReady" unless="DebReady">
+		<echo>message="To do a release, the Debian package must be built!"</echo>
+    </target>
+
+	<target name="Release" depends="ReportJarReady, ReportWin32Ready, ReportDebReady" if="ReadyForRelease">
         <zip destfile="${release}/WorldTimeSystemTrayJAR-${version}.zip">
-            <fileset file="${bin}/world-time-system-tray.jar"/>
+            <fileset file="${release}/${jar-filename}"/>
         </zip>
+		<delete file="${release}/${jar-filename}" />
 
-        <zip destfile="${release}/Source-${version}.zip" basedir="${src}" includes="*.java" />		
+        <zip destfile="${release}/WorldTimeSystemTraySource-${version}.zip" basedir="${src}" includes="*.java" />		
     </target>
 
 </project>
