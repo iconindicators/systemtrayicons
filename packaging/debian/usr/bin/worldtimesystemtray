@@ -1,0 +1,3 @@
+#!/bin/sh
+cd /usr/share/worldtimesystemtray
+/usr/lib/jvm/java-6-sun/jre/bin/java -jar worldtimesystemtray.jar
