@@ -174,12 +174,13 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
 		timeTravel.m_output.setText( Message.getMessageString( gregorianCalendar, true ) );
 
 		timeTravel.setTitle( Messages.getString( "TimeTravel.7" ) );  //$NON-NLS-1$
-        timeTravel.setIconImage( TrayIcon.getTrayIconImage() );
+        timeTravel.setIconImage( TrayIcon.getApplicationIconImage() );
         timeTravel.addWindowListener( timeTravel );
         timeTravel.setResizable( false );
         timeTravel.pack();
         timeTravel.setLocationRelativeTo( null );
         timeTravel.setModalityType( ModalityType.APPLICATION_MODAL );
+        timeTravel.setVisible( true );
 
         return timeTravel;
     }

@@ -221,11 +221,12 @@ public class MessageLayout extends JDialog
 		);
 
 		messageLayout.setTitle( Messages.getString( "MessageLayout.3" ) );  //$NON-NLS-1$
-        messageLayout.setIconImage( TrayIcon.getTrayIconImage() );
+        messageLayout.setIconImage( TrayIcon.getApplicationIconImage() );
         messageLayout.pack();
         messageLayout.setLocationRelativeTo( null );
         messageLayout.setModalityType( ModalityType.APPLICATION_MODAL );
         messageLayout.addComponentListener( new ComponentListener( messageLayout, false, true ) );
+        messageLayout.setVisible( true );
 
         return messageLayout;
     }

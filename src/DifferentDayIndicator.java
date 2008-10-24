@@ -117,11 +117,12 @@ public class DifferentDayIndicator extends JDialog
 		);
 
 		differentDayIndicator.setTitle( Messages.getString( "DifferentDayIndicator.4" ) );  //$NON-NLS-1$
-        differentDayIndicator.setIconImage( TrayIcon.getTrayIconImage() );
+        differentDayIndicator.setIconImage( TrayIcon.getApplicationIconImage() );
         differentDayIndicator.pack();
         differentDayIndicator.setLocationRelativeTo( null );
         differentDayIndicator.setModalityType( ModalityType.APPLICATION_MODAL );
         differentDayIndicator.addComponentListener( new ComponentListener( differentDayIndicator, false, true ) );
+        differentDayIndicator.setVisible( true );
 
         return differentDayIndicator;
     }

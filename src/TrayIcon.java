@@ -9,30 +9,34 @@ import javax.swing.ImageIcon;
 
 public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseMotionListener
 {
-	private static final String TRAY_ICON_IMAGE = "trayicon.gif";  //$NON-NLS-1$
+	private static String APPLICATION_ICON_IMAGE = "worldtimesystemtray16x16.gif";  //$NON-NLS-1$
+	private static String TRAY_ICON_IMAGE = SystemStart.isMicrosoftWindows() ? "worldtimesystemtray16x16.gif" : "worldtimesystemtray20x20.gif";  //$NON-NLS-1$ //$NON-NLS-2$
 	private static final String MESSAGE_TOOL_TIP = Messages.getString( "TrayIcon.1" );  //$NON-NLS-1$
 
-	private PopupMenu m_popupMenu = null;
-	
+	private static final PopupMenu ms_popupMenu = new PopupMenu();
 
-	private TrayIcon( PopupMenu popupMenu )
+
+	private TrayIcon()
 	{
-		super( getTrayIconImage(), null, popupMenu );
-
+		super( TrayIcon.getTrayIconImage(), null, ms_popupMenu );
+		
 		setImageAutoSize( true );
 		addMouseListener( this );
 		addMouseMotionListener( this );
-		m_popupMenu = popupMenu;
+		setImageAutoSize( false );
 	}
 
 
-	public static TrayIcon createTrayIcon( PopupMenu popupMenu ) { return new TrayIcon( popupMenu ); }
+	public static TrayIcon createTrayIcon() { return new TrayIcon(); }
 
 
 	public void displayStartupBalloon() { displayMessage( PopupMenu.APPLICATION_NAME, getMessageString(), TrayIcon.MessageType.NONE ); }
 
 
 	public static final Image getTrayIconImage() { return new ImageIcon( ClassLoader.getSystemResource( TRAY_ICON_IMAGE ) ).getImage(); }
+
+
+	public static final Image getApplicationIconImage() { return new ImageIcon( ClassLoader.getSystemResource( APPLICATION_ICON_IMAGE ) ).getImage(); }
 
 
 	private String getMessageString() { return Message.getMessageString( new GregorianCalendar(), false ); }
@@ -42,7 +46,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 
 
 	public void mouseMoved( MouseEvent mouseEvent ) 
-	{ 
+	{
 		if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_TIMES_IN_TOOL_TIP, true ) )
 			setToolTip( getMessageString() );
 		else
@@ -51,23 +55,21 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 
 
     public void mousePressed( MouseEvent mouseEvent )
-	{   	
-    	if( m_popupMenu.popupIsDisabled() )
+	{
+    	if( mouseEvent.getButton() == MouseEvent.BUTTON1 )
     	{
-    		if( mouseEvent.getButton() == MouseEvent.BUTTON1 || mouseEvent.getButton() == MouseEvent.BUTTON2 || mouseEvent.getButton() == MouseEvent.BUTTON3 )
-    		{
-    			setPopupMenu( null );
-    			m_popupMenu.getCurrentDialog().toFront();
-    		}
-    	}
-    	else if( mouseEvent.getButton() == MouseEvent.BUTTON1 )
-		{
     		( (TrayIcon)mouseEvent.getSource() ).displayMessage( PopupMenu.APPLICATION_NAME, getMessageString(), TrayIcon.MessageType.NONE );
-		}
-		else if( mouseEvent.getButton() == MouseEvent.BUTTON3 )
-		{
-			setPopupMenu( m_popupMenu );
-		}
+    	}
+    	else if( mouseEvent.getButton() == MouseEvent.BUTTON3 && SystemStart.isMicrosoftWindows() )
+    	{
+    		// To block the right click action we check here if the right mouse button is clicked.
+    		// If a dialog is already showing, then we don't want to show the popup.
+    		// This only works for Microsoft Windows...we have another "hack" in PopupMenu::show().
+    		if( ms_popupMenu.isPopupDisabled() )
+    			setPopupMenu( null );
+    		else
+    			setPopupMenu( ms_popupMenu );
+    	}
 	}
 
 

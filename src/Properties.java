@@ -7,9 +7,14 @@ import java.util.Vector;
 
 public class Properties
 {
-    private static java.util.Properties ms_properties = null;
-	private static final String PROPERTY_FILE = System.getProperty( "user.dir" ) + File.separator + "properties" ; //$NON-NLS-1$ //$NON-NLS-2$
+	public static final String PROPERTY_DIRECTORY = System.getProperty( "user.home" ) + File.separator + ".worldtimesystemtray"; //$NON-NLS-1$ //$NON-NLS-2$
+	public static final String PROPERTY_FILE = PROPERTY_DIRECTORY + File.separator + "properties" ; //$NON-NLS-1$
+
+	private static java.util.Properties ms_properties = new java.util.Properties();
     private static Properties ms_instance = new Properties();
+    private static boolean ms_canCreatePropertyDirectory = true;
+    private static boolean ms_canReadPropertiesFile = true;
+    private static boolean ms_canWritePropertiesFile = true;
 
     /** Options for combo portions of the layout */
     public static final String PROPERTY_LAYOUT_LEFT_OPTION = "LayoutLeftOption";  //$NON-NLS-1$
@@ -80,7 +85,29 @@ public class Properties
     {
         try
 		{
-            ms_properties = new java.util.Properties();
+        	File propertyDirectory = new File( PROPERTY_DIRECTORY );
+        	if( ! propertyDirectory.exists() )
+        	{
+        		if( ! propertyDirectory.mkdir() )
+        		{
+        			ms_canCreatePropertyDirectory = false;
+        			return;
+        		}
+        	}
+
+        	File propertyFile = new File( PROPERTY_FILE );
+        	if( ! propertyFile.canRead() )
+        	{
+        		ms_canReadPropertiesFile = false;
+        		return;
+        	}
+
+        	if( ! propertyFile.canWrite() )
+        	{
+        		ms_canWritePropertiesFile = false;
+        		return;
+        	}
+
             ms_properties.load( new FileInputStream( PROPERTY_FILE ) );
         }
         catch( Throwable throwable ) { ms_properties = new java.util.Properties(); }
@@ -88,6 +115,15 @@ public class Properties
 
 
     public static Properties getInstance() { return ms_instance; }
+
+    
+    public boolean canCreatePropertyDirectory() { return ms_canCreatePropertyDirectory; }
+
+
+    public boolean canReadPropertyFile() { return ms_canReadPropertiesFile; }
+
+
+    public boolean canWritePropertyFile() { return ms_canWritePropertiesFile; }
 
 
     public String getProperty( String key, String defaultValue, boolean allowEmptyValue )

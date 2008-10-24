@@ -53,10 +53,11 @@ public class AddRemoveTimeZones extends JDialog implements ActionListener
 		);
 
         addRemoveTimeZones.setTitle( Messages.getString( "AddRemoveTimeZones.1" ) ); //$NON-NLS-1$
-		addRemoveTimeZones.setIconImage( TrayIcon.getTrayIconImage() );
+		addRemoveTimeZones.setIconImage( TrayIcon.getApplicationIconImage() );
 		addRemoveTimeZones.pack();
         addRemoveTimeZones.setLocationRelativeTo( null );
         addRemoveTimeZones.setModalityType( ModalityType.APPLICATION_MODAL );
+        addRemoveTimeZones.setVisible( true );
 
 		return addRemoveTimeZones;
     }

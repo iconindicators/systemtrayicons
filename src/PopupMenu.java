@@ -1,4 +1,5 @@
 import java.awt.CheckboxMenuItem;
+import java.awt.Component;
 import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +21,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	public static final String APPLICATION_NAME = Messages.getString( "PopupMenu.0" ); //$NON-NLS-1$
 
 	private static final String APPLICATION_VERSION = Messages.getString( "PopupMenu.1" ); //$NON-NLS-1$
-	private static final String APPLICATION_VERSION_NUMBER = "1.4 (2007-11-07)"; //$NON-NLS-1$
+	private static final String APPLICATION_VERSION_NUMBER = "1.4 (2008-10-24)"; //$NON-NLS-1$
 
 	private static final String CREDIT_REGISTRY = Messages.getString( "PopupMenu.4" ); //$NON-NLS-1$
 	private static final String CREDIT_NSIS = Messages.getString( "PopupMenu.5" ); //$NON-NLS-1$
@@ -80,8 +81,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     private CheckboxMenuItem m_checkboxMenuItemSortDateTimeByDateTime = null;
     private CheckboxMenuItem m_checkboxMenuItemSortDateTimeByTimeZone = null;
 
-    private static boolean m_popupDisabled = false;
-    private JDialog m_currentDialog = null;
+    private static boolean ms_popupDisabled = false;
 
 
     public PopupMenu()
@@ -204,7 +204,21 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	}
 
 
-    private void add( java.awt.PopupMenu popup, CheckboxMenuItem checkboxMenuItem, String checkboxName, String propertyName )
+    public boolean isPopupDisabled() { return ms_popupDisabled; }
+
+
+    @Override
+	public void show( Component origin, int x, int y ) 
+    {
+		// To block the right click action we check here if the right mouse button is clicked.
+		// If a dialog is already showing, then we don't want to show the popup.
+		// This method is not called when executing on Microsoft Windows...it only works here for Linux...or non-Windows.
+    	if( ! isPopupDisabled() )
+    		super.show(origin, x, y);
+	}
+
+
+	private void add( java.awt.PopupMenu popup, CheckboxMenuItem checkboxMenuItem, String checkboxName, String propertyName )
     {
 	    String dateTimeFormat = Properties.getInstance().getProperty( Properties.PROPERTY_SHOW_OPTION, Properties.PROPERTY_SHOW_TIME_MEDIUM, false );
     	checkboxMenuItem.setLabel( checkboxName );
@@ -212,12 +226,6 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     	checkboxMenuItem.addItemListener( this );
     	popup.add( checkboxMenuItem );
     }
-
-
-    public boolean popupIsDisabled() { return m_popupDisabled; }
-
-    
-    public JDialog getCurrentDialog() { return m_currentDialog; }
 
 
     public void actionPerformed( ActionEvent actionEvent )
@@ -244,12 +252,9 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 
     	if( source instanceof MenuItem && POPUP_ADD_REMOVE_TIME_ZONES.equals( ( (MenuItem)source ).getLabel() ) )
     	{
-    		m_popupDisabled = true;
-    		m_currentDialog = AddRemoveTimeZones.create();
-    		m_currentDialog.setVisible( true );
-
-    		m_popupDisabled = false;
-    		m_currentDialog = null;
+    		ms_popupDisabled = true;
+    		AddRemoveTimeZones.create();
+    		ms_popupDisabled = false;
     		return;
     	}
 
@@ -262,12 +267,9 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
         		return;
     		}
 
-        	m_popupDisabled = true;
-    		m_currentDialog = RenameTimeZones.create();
-    		m_currentDialog.setVisible( true );
-
-    		m_popupDisabled = false;
-    		m_currentDialog = null;
+        	ms_popupDisabled = true;
+    		RenameTimeZones.create();
+    		ms_popupDisabled = false;
     		return;
     	}
 
@@ -281,12 +283,9 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
         		return;
     		}
 
-    		m_popupDisabled = true;
-    		m_currentDialog = ShowDateTime.create();
-    		m_currentDialog.setVisible( true );
-
-    		m_popupDisabled = false;
-    		m_currentDialog = null;
+    		ms_popupDisabled = true;
+        	ShowDateTime.create();
+    		ms_popupDisabled = false;
     		return;
     	}
 
@@ -300,39 +299,32 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
         		return;
     		}
 
-    		m_popupDisabled = true;
-    		m_currentDialog = TimeTravel.create();
-    		m_currentDialog.setVisible( true );
-
-    		m_popupDisabled = false;
-    		m_currentDialog = null;
+    		ms_popupDisabled = true;
+    		TimeTravel.create();
+    		ms_popupDisabled = false;
     		return;
     	}
 
 
     	if( source instanceof MenuItem && POPUP_SET_DIFFERENT_DAY_INDICATOR.equals( ( (MenuItem)source ).getLabel() ) )
     	{
-    		m_popupDisabled = true;
-    		m_currentDialog = DifferentDayIndicator.create();
-    		m_currentDialog.setVisible( true );
-
-    		m_popupDisabled = false;
-    		m_currentDialog = null;
+    		ms_popupDisabled = true;
+    		DifferentDayIndicator.create();
+    		ms_popupDisabled = false;
     		return;
     	}
 
 
     	if( source instanceof MenuItem && POPUP_SET_TIME_ZONE_SEPARATOR.equals( ( (MenuItem)source ).getLabel() ) )
     	{
-    		m_popupDisabled = true;
+    		ms_popupDisabled = true;
     		String inputValue = Properties.getInstance().getProperty( Properties.PROPERTY_COMBINE_TIME_ZONES_SEPARATOR, Properties.PROPERTY_COMBINE_TIME_ZONES_SEPARATOR_DEFAULT, false );
     		String outputValue = showInputDialog( Messages.getString( "PopupMenu.60" ), Messages.getString( "PopupMenu.58" ), inputValue );  //$NON-NLS-1$//$NON-NLS-2$
     		if( outputValue != null )
     			// We don't check for an empty value as this is legal...the user may well want an empty value!
     			Properties.getInstance().setProperty( Properties.PROPERTY_COMBINE_TIME_ZONES_SEPARATOR, inputValue );
 
-    		m_popupDisabled = false;
-    		m_currentDialog = null;
+    		ms_popupDisabled = false;
     		return;
     	}
 
@@ -345,12 +337,9 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
         		return;
     		}
 
-    		m_popupDisabled = true;
-    		m_currentDialog = MessageLayout.create();
-    		m_currentDialog.setVisible( true );
-
-    		m_popupDisabled = false;
-    		m_currentDialog = null;
+    		ms_popupDisabled = true;
+    		MessageLayout.create();
+    		ms_popupDisabled = false;
     		return;
     	}
 
@@ -480,7 +469,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     	}
     	else if( SUBPOPUP_FORMAT_USER_DEFINED.equals( label ) )
     	{
-    		m_popupDisabled = true;
+    		ms_popupDisabled = true;
 
     		clearAllFormatCheckboxes();
     		m_checkboxMenuItemFormatUserDefined.setState( true );
@@ -507,8 +496,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
         		}
     		}
 
-    		m_popupDisabled = false;
-    		m_currentDialog = null;
+    		ms_popupDisabled = false;
     	}
 
     	Properties.getInstance().store();
@@ -534,32 +522,31 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 
 	    m_checkboxMenuItemFormatUserDefined.setState( false );
 	}
-	
+
 
 	private void showMessageDialog( String title, Object message, int messageType, int optionType )
 	{
-		m_popupDisabled = true;
-		m_currentDialog = new JOptionPane( message, messageType, optionType ).createDialog( title ); 
-		m_currentDialog.setIconImage( TrayIcon.getTrayIconImage() );
-		m_currentDialog.setLocationRelativeTo( null );
-		m_currentDialog.setVisible( true );
+		ms_popupDisabled = true;
+		JDialog messageDialog = new JOptionPane( message, messageType, optionType ).createDialog( title ); 
+		messageDialog.setIconImage( TrayIcon.getApplicationIconImage() );
+		messageDialog.setLocationRelativeTo( null );
+		messageDialog.setVisible( true );
 
-		m_popupDisabled = false;
-		m_currentDialog = null;
+		ms_popupDisabled = false;
 	}
-	
-	
+
+
 	private String showInputDialog( String title, Object message, String initialValue )
 	{	
-		JOptionPane optionPane = new JOptionPane( message, JOptionPane.QUESTION_MESSAGE, JOptionPane.OK_CANCEL_OPTION, null, null, initialValue );
+		JOptionPane optionPane = new JOptionPane( message, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION, null, null, initialValue );
 		optionPane.setWantsInput( true );
 		optionPane.setInitialSelectionValue( initialValue );
         optionPane.selectInitialValue();
         optionPane.updateUI();
 
-        m_currentDialog = optionPane.createDialog( title );
-		m_currentDialog.setIconImage( TrayIcon.getTrayIconImage() );
-        m_currentDialog.setVisible( true );
+        JDialog messageDialog = optionPane.createDialog( title );
+        messageDialog.setIconImage( TrayIcon.getApplicationIconImage() );
+        messageDialog.setVisible( true );
 
         Object value = optionPane.getInputValue();
 

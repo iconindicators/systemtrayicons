@@ -111,11 +111,12 @@ public class RenameTimeZones extends JDialog
         layout.setVerticalGroup( sequentialGroup );
 
         renameTimeZones.setTitle( Messages.getString( "RenameTimeZones.3" ) );  //$NON-NLS-1$
-		renameTimeZones.setIconImage( TrayIcon.getTrayIconImage() );
+		renameTimeZones.setIconImage( TrayIcon.getApplicationIconImage() );
 		renameTimeZones.pack();
         renameTimeZones.setLocationRelativeTo( null );
 		renameTimeZones.setModalityType( ModalityType.APPLICATION_MODAL );
         renameTimeZones.addComponentListener( new ComponentListener( renameTimeZones, false, true ) );
+        renameTimeZones.setVisible( true );
 
 		return renameTimeZones;
     }
