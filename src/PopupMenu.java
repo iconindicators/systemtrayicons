@@ -1,4 +1,5 @@
 import java.awt.CheckboxMenuItem;
+import java.awt.Component;
 import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,8 +38,10 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	static final String SUBPOPUP_DATE_TIME_FORMAT_SHORT = Messages.getString( "PopupMenu.17" );  //$NON-NLS-1$
 
 	public static final String APPLICATION_NAME = Messages.getString( "PopupMenu.18" );  //$NON-NLS-1$
+	private static final String APPLICATION_AUTHOR = "Bernard Giannetti"; //$NON-NLS-1$
+	private static final String APPLICATION_SITE = "http://sourceforge.net/projects/wrldtimesystray"; //$NON-NLS-1$
 	public static final String APPLICATION_VERSION = Messages.getString( "PopupMenu.19" );  //$NON-NLS-1$
-	public static final String APPLICATION_VERSION_NUMBER = "1.4 (2008-04-20)"; //TODO Change this! //$NON-NLS-1$
+	public static final String APPLICATION_VERSION_NUMBER = "1.5 (2008-10-xx)"; //TODO Change this! //$NON-NLS-1$
 
 	private static final String CREDIT_ALGORITHM_LINE1 = Messages.getString( "PopupMenu.21" );  //$NON-NLS-1$
 	private static final String CREDIT_ALGORITHM_LINE2 = Messages.getString( "PopupMenu.22" );  //$NON-NLS-1$
@@ -50,7 +53,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     private CheckboxMenuItem m_checkboxMenuItemDateFormatMedium = null;
     private CheckboxMenuItem m_checkboxMenuItemDateFormatShort = null;
 
-    private static boolean m_popupDisabled = false;
+    private static boolean ms_popupDisabled = false;
 
     
     public PopupMenu()
@@ -133,9 +136,12 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	    
 	    add( subpopup );
 
-	    checkboxMenuItem = new CheckboxMenuItem( POPUP_RUN_ON_SYSTEM_START, SystemStart.runOnSystemStart() );
-	    checkboxMenuItem.addItemListener( this );
-	    add( checkboxMenuItem );
+	    if( SystemStart.isMicrosoftWindows() )
+	    {
+		    checkboxMenuItem = new CheckboxMenuItem( POPUP_RUN_ON_SYSTEM_START, SystemStart.runOnSystemStart() );
+		    checkboxMenuItem.addItemListener( this );
+		    add( checkboxMenuItem );
+	    }
 
 	    boolean padStardate = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_PAD_STARDATE, true );
 	    checkboxMenuItem = new CheckboxMenuItem( POPUP_PAD_STARDATE, padStardate );
@@ -152,32 +158,44 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	    add( menuItem );
 	}
 
-    
-    public boolean popupIsDisabled() { return m_popupDisabled; }
-    
-    
+
+    public boolean isPopupDisabled() { return ms_popupDisabled; }
+
+
+    @Override
+	public void show( Component origin, int x, int y ) 
+    {
+		// To block the right click action we check here if the right mouse button is clicked.
+		// If a dialog is already showing, then we don't want to show the popup.
+		// This method is not called when executing on Microsoft Windows...it only works here for Linux...or non-Windows.
+    	if( ! isPopupDisabled() )
+    		super.show(origin, x, y);
+	}
+
+
     public void actionPerformed( ActionEvent actionEvent )
 	{
     	String menuItem = ( (MenuItem)actionEvent.getSource() ).getLabel();
 
     	if( POPUP_ABOUT.equals( menuItem ) )
     	{
-    		m_popupDisabled = true;
+    		ms_popupDisabled = true;
     		final JLabel label = 
     			new JLabel
     			( 
     				"<html><center>" +  //$NON-NLS-1$
-    				"<b>" + APPLICATION_NAME + "</b><br>" + APPLICATION_VERSION + " " + APPLICATION_VERSION_NUMBER + "<br><br>" +   //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    				"<b>" + APPLICATION_NAME + "</b><br>" + APPLICATION_VERSION + " " + APPLICATION_VERSION_NUMBER + "<br><br>" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    				APPLICATION_AUTHOR + "<br>" + APPLICATION_SITE + "<br><br>" + //$NON-NLS-1$ //$NON-NLS-2$
     				CREDIT_ALGORITHM_LINE1 + "<br>" + CREDIT_ALGORITHM_LINE2 + "<br><br>" +    //$NON-NLS-1$ //$NON-NLS-2$
     				CREDIT_CHRONOLOGY + "<br><br>" +   //$NON-NLS-1$
-    				CREDIT_REGISTRY + "<br><br>" +   //$NON-NLS-1$
-    				CREDIT_NSIS + "<br><br>" +  //$NON-NLS-1$
+    				( SystemStart.isMicrosoftWindows() ? CREDIT_REGISTRY + "<br><br>" : "" ) + //$NON-NLS-1$ //$NON-NLS-2$
+    				( SystemStart.isMicrosoftWindows() ? CREDIT_NSIS + "<br><br>" : "" ) + //$NON-NLS-1$ //$NON-NLS-2$
     				"</center></html>",  //$NON-NLS-1$
     				SwingConstants.CENTER
     			);
 
     		MessageDialog.showMessageDialog( POPUP_ABOUT, label, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION );
-	        m_popupDisabled = false;
+	        ms_popupDisabled = false;
 
 			return;
     	}

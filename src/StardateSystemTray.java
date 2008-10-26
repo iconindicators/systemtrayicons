@@ -1,19 +1,26 @@
+//TODO IN both WTST and SST remove pixmaps dir and copy the 3 images from img in build.xml
+
+//TODO Update in control Installed-Size: 113
+
+//TODO Put in date into changelog.Debian (date -R) and ReleaseNotes.txt
+
+//TODO Change APPLICATION_VERSION_NUMBER ... the DATE!!! In popupmenu
+
+
 import java.awt.SystemTray;
 
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 
 public class StardateSystemTray
 {
     public StardateSystemTray()
 	{
-        try { UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() ); }
-        catch( IllegalAccessException illegalAccessException ) { /** Do nothing. */  }
-        catch( InstantiationException instantiationException ) { /** Do nothing. */ }
-        catch( ClassNotFoundException classNotFoundException ) { /** Do nothing. */ }
-        catch( UnsupportedLookAndFeelException unsupportedLookAndFeelException ) { /** Do nothing. */ }
+    	UIManager.put( "swing.boldMetal", Boolean.FALSE ); //$NON-NLS-1$
+    	try { UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() ); }
+        catch( Throwable throwable ) { /** Do nothing. */ }
 
         if( ! SystemTray.isSupported() )
         {
@@ -28,24 +35,70 @@ public class StardateSystemTray
         	return;
         }
 
-    	TrayIcon trayIcon = TrayIcon.createTrayIcon( new PopupMenu() );
-    	SystemTray systemTray = SystemTray.getSystemTray();
-
-    	try { systemTray.add( trayIcon ); }
-		catch( Throwable throwable ) 
-		{
-			MessageDialog.showMessageDialog
-			(
-					Messages.getString( "StardateSystemTray.2" ), //$NON-NLS-1$ 
-				throwable.getMessage(), 
-				JOptionPane.ERROR_MESSAGE, 
+        if( ! Properties.getInstance().canCreatePropertyDirectory() )
+        {
+	    	MessageDialog.showMessageDialog
+	    	( 
+	    		Messages.getString( "StardateSystemTray.3" ), //$NON-NLS-1$
+	    		Messages.getString( "StardateSystemTray.4" ) + Properties.PROPERTY_DIRECTORY, //$NON-NLS-1$
+				JOptionPane.ERROR_MESSAGE,
 				JOptionPane.DEFAULT_OPTION
-			); 
-
+	    	);
+	
 			return;
-		}
-
-		trayIcon.displayStartupBalloon();
+        }
+		
+        if( ! Properties.getInstance().canReadPropertyFile() )
+        {
+	    	MessageDialog.showMessageDialog
+	    	( 
+	    		Messages.getString( "StardateSystemTray.5" ), //$NON-NLS-1$
+	    		Messages.getString( "StardateSystemTray.6" ) + Properties.PROPERTY_FILE, //$NON-NLS-1$
+				JOptionPane.ERROR_MESSAGE,
+				JOptionPane.DEFAULT_OPTION
+	    	);
+	
+			return;
+        }
+		
+        if( ! Properties.getInstance().canWritePropertyFile() )
+        {
+	    	MessageDialog.showMessageDialog
+	    	( 
+	    		Messages.getString( "StardateSystemTray.7" ), //$NON-NLS-1$
+	    		Messages.getString( "StardateSystemTray.8" ) + Properties.PROPERTY_FILE, //$NON-NLS-1$
+				JOptionPane.ERROR_MESSAGE,
+				JOptionPane.DEFAULT_OPTION
+	    	);
+	
+			return;
+        }
+        
+        SwingUtilities.invokeLater
+        (
+        	new Runnable() 
+        	{
+        		public void run() 
+        		{
+        			TrayIcon trayIcon = TrayIcon.createTrayIcon();
+	            	try 
+	            	{ 
+	            		SystemTray.getSystemTray().add( trayIcon ); 
+	            		trayIcon.displayStartupBalloon();
+	            	}
+	        		catch( Throwable throwable ) 
+	        		{
+	        			MessageDialog.showMessageDialog
+	        			(
+	        				Messages.getString( "StardateSystemTray.2" ), //$NON-NLS-1$ 
+	        				throwable.getMessage(), 
+	        				JOptionPane.ERROR_MESSAGE, 
+	        				JOptionPane.DEFAULT_OPTION
+	        			); 
+	        		}
+        		}
+        	}
+        );
 	}
 
 

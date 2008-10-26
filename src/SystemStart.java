@@ -15,6 +15,12 @@ public class SystemStart
 	private static final String MICROSOFT_WINDOWS_REGISTRY_VALUE_DATA = System.getProperties().get( "user.dir" ) + "\\StardateSystemTray.exe"; //$NON-NLS-1$ //$NON-NLS-2$
 
 
+    public static boolean isMicrosoftWindows()
+    {
+    	return System.getProperty( OS_NAME ).toLowerCase().contains( OS_NAME_MICROSOFT_WINDOWS.toLowerCase() );
+    }
+
+
     public static boolean runOnSystemStart()
     {
     	String osName = System.getProperty( OS_NAME );
