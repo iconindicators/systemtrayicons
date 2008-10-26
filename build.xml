@@ -68,6 +68,13 @@
 		<delete file="${win32}/WorldTimeSystemTray.exe" />
 	</target>
 
+	<target name="test" >
+		 <copy todir="${release}/working">
+		    <fileset dir="${deb}" excludes="**/*.svn"/>
+		  </copy>
+	
+	</target>
+	
 
 	<!-- Create a Debian package -->
 	<target name="Debian" depends="CompileAndJar">
@@ -77,28 +84,39 @@
 		<echo message="After this task, run 'lintian' on the deb file to check for errors/warnings." />
 		<echo message="****************************************************************************" />
 		<echo message="" />
-		<copy file="${release}/${jar-filename}" todir="${deb}/usr/share/worldtimesystemtray" preservelastmodified="true" />
 
-		<copy file="TODO.txt" tofile="${deb}/usr/share/doc/worldtimesystemtray/TODO" preservelastmodified="true" />
-		<copy file="${doc}/License.txt" tofile="${deb}/usr/share/doc/worldtimesystemtray/copyright" preservelastmodified="true" />
+		<copy todir="${release}/working" preservelastmodified="true">
+			<fileset dir="${deb}" excludes="**/*.svn"/>
+		</copy>
 
-		<copy file="changelog.Debian" tofile="${deb}/usr/share/doc/worldtimesystemtray/changelog" preservelastmodified="true" />
+		<chmod file="${release}/working/DEBIAN/postinst" perm="755"/>
+		<chgrp file="${release}/working/DEBIAN/postinst" group="root"/>
+		<chown file="${release}/working/DEBIAN/postinst" owner="root"/>
+
+		<chmod file="${release}/working/DEBIAN/postrm" perm="755"/>
+		<chgrp file="${release}/working/DEBIAN/postrm" group="root"/>
+		<chown file="${release}/working/DEBIAN/postrm" owner="root"/>
+
+		<chmod file="${release}/working/usr/bin/worldtimesystemtray" perm="ugo+x"/>
+
+		<copy file="${release}/${jar-filename}" todir="${release}/working/usr/share/worldtimesystemtray" preservelastmodified="true" />
+
+		<copy file="TODO.txt" tofile="${release}/working/usr/share/doc/worldtimesystemtray/TODO" preservelastmodified="true" />
+		<copy file="${doc}/License.txt" tofile="${release}/working/usr/share/doc/worldtimesystemtray/copyright" preservelastmodified="true" />
+
+		<copy file="changelog.Debian" tofile="${release}/working/usr/share/doc/worldtimesystemtray/changelog" preservelastmodified="true" />
 		<exec executable="gzip">
-			<arg line="-9 ${deb}/usr/share/doc/worldtimesystemtray/changelog" />
+			<arg line="-9 ${release}/working/usr/share/doc/worldtimesystemtray/changelog" />
 		</exec>
 
-		<chgrp file="${deb}/DEBIAN/postinst" group="root"/>
-		<chown file="${deb}/DEBIAN/postinst" owner="root"/>
-
-		<chgrp file="${deb}/DEBIAN/postrm" group="root"/>
-		<chown file="${deb}/DEBIAN/postrm" owner="root"/>
+		<copy file="${img}/worldtimesystemtray16x16.xpm" todir="${release}/working/usr/share/pixmaps" preservelastmodified="true" />
+		<copy file="${img}/worldtimesystemtray32x32.xpm" todir="${release}/working/usr/share/pixmaps" preservelastmodified="true" />	
 
 		<exec executable="dpkg">
-			<arg line="--build ${deb} ${release}/${deb-filename}_${version}_all.deb" />
+			<arg line="--build ${release}/working ${release}/${deb-filename}_${version}_all.deb" />
 		</exec>
 
-		<delete dir="${deb}/usr/share/doc" />
-		<delete dir="${deb}/usr/share/worldtimesystemtray" />
+		<delete dir="${release}/working" />
 	</target>
 
 
