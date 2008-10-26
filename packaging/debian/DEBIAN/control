@@ -1,0 +1,10 @@
+Package: stardatesystemtray
+Version: 1.5
+Section: misc
+Priority: optional
+Architecture: all
+Depends: sun-java6-jre
+Installed-Size: 113
+Maintainer: Bernard Giannetti <bernmeister@users.sourceforge.net>
+Homepage: http://sourceforge.net/projects/stardatesystray/
+Description: Show the current stardate and dates from other calendars.
