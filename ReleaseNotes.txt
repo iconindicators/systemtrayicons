@@ -4,6 +4,29 @@ Stardate and Stardate System Tray Release Notes
 
 2008-XX-YY Version 1.5
 
+* New Debian/Ubuntu release!
+  
+  NOTE: The tooltip and balloon text do not observe the new line character.
+  See Sun bug http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6440297.
+
+* Now supports multiple users.
+  The user preferences are now saved to the "user home" directory.
+  On Microsoft Windows this is typically the directory
+  'Documents and Settings/{UserName}/.stardatesystemtray' or 
+  'Users/{UserName}/.stardatesystemtray'.
+  On Linux this is /home/{UserName}.
+  
+  NOTE for Microsoft Windows users: Your user preferences from the previous 
+  version will NOT be loaded...sorry about that.  However, you can copy the
+  'Program Files/Stardate System Tray/properties' file to your 
+  "user home" directory.
+
+* Icons redesigned for multiple platforms and size requirements.
+
+* Dialogs now show in the task bar.
+
+* Only shows the menu item "Run on system start" on Microsoft Windows.
+
 * Updated to use jRegistryKey 1.4.5.0
 
 * Added an option to pad out the integer part of the stardate.

@@ -1,7 +1,11 @@
-* Waiting on http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6440297 to be
-  resolved...then can release to Linux!
+* Debian/Ubuntu tooltip and balloon do not observe new line character.
+  See Sun bug http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6440297.
 
 * On Windows Vista, the UAC will prompt for administrator password on start up.
+  Is there anything we can do about it?
 
-* Update icons for higher resolution.
-
+* When Java 1.6 update 10 is officially released consider using:
+    http://weblogs.java.net/blog/alexfromsun/archive/2008/02/jtrayicon_updat.html
+    JPopupTrayIcon.java - https://fishfarm.dev.java.net
+    
+* Clean up icons to look a little more professional!        
