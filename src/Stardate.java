@@ -38,7 +38,7 @@ import java.util.GregorianCalendar;
 public class Stardate
 {
 	/** API version. */
-	private static final String API_VERSION = "Version 1.1 (2008-06-11)"; //$NON-NLS-1$  //TODO Change this!!!  Should be API version
+	private static final String API_VERSION = "Version 1.1 (2008-06-11)"; //$NON-NLS-1$
 
 
 	/** Internal representation for the Gregorian Calendar date/time. */
@@ -189,32 +189,20 @@ public class Stardate
     /**
      * Returns the current value of the stardate in string format.
      *
-     * @return The current stardate as a properly formatted string.
+     * @return The current stardate as a formatted string.
      */
-    public String toStardateString()
-    {
-        if( m_recalculateStardate )
-        {
-            gregorianToStardate();
-            m_recalculateStardate = false;
-        }
-
-        return 
-        	"["	+  //$NON-NLS-1$
-        	( Integer.valueOf( m_issue ) ) + 
-        	"] " +  //$NON-NLS-1$
-        	( Integer.valueOf( m_integer ) ) +
-        	"." + //$NON-NLS-1$
-        	( Integer.valueOf( m_fraction ) );
-    }
+    public String toStardateString() { return toStardateString( false, true ); }
 
 
     /**
      * Returns the current value of the stardate in string format, padded if needed with leading zeros.
      *
-     * @return The current stardate as a properly formatted string, padded if needed with leading zeros.
+     * @param padded If true, leading zeros will be inserted into the integer part of the stardate. 
+     * @param showIssue If true, the issue part of the stardate will be included. 
+     *
+     * @return The current stardate as formatted string.
      */
-    public String toStardateStringPadded()
+    public String toStardateString( boolean padded, boolean showIssue )
     {
         if( m_recalculateStardate )
         {
@@ -223,32 +211,41 @@ public class Stardate
         }
 
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append( "[" ).append( Integer.valueOf( m_issue ) ).append( "] " ); //$NON-NLS-1$ //$NON-NLS-2$
-        if( m_issue >= 21 )
+        if( showIssue )
+        	stringBuilder.append( "[" ).append( Integer.valueOf( m_issue ) ).append( "] " ); //$NON-NLS-1$ //$NON-NLS-2$
+
+        if( padded )
         {
-        	// Need to pad up to 4 digits.
-            if( m_integer < 10 )
-            	stringBuilder.append( "0000" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
-            else if( m_integer < 100 )
-            	stringBuilder.append( "000" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
-            else if( m_integer < 1000 )
-            	stringBuilder.append( "00" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
-            else if( m_integer < 10000 )
-            	stringBuilder.append( "0" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
+            if( m_issue >= 21 )
+            {
+            	// Need to pad up to 4 digits.
+                if( m_integer < 10 )
+                	stringBuilder.append( "0000" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
+                else if( m_integer < 100 )
+                	stringBuilder.append( "000" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
+                else if( m_integer < 1000 )
+                	stringBuilder.append( "00" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
+                else if( m_integer < 10000 )
+                	stringBuilder.append( "0" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
+                else
+                	stringBuilder.append( Integer.valueOf( m_integer ) );
+            }
             else
-            	stringBuilder.append( Integer.valueOf( m_integer ) );
+            {
+            	// Need to pad up to 3 digits.
+                if( m_integer < 10 )
+                	stringBuilder.append( "000" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
+                else if( m_integer < 100 )
+                	stringBuilder.append( "00" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
+                else if( m_integer < 1000 )
+                	stringBuilder.append( "0" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
+                else
+                	stringBuilder.append( Integer.valueOf( m_integer ) );
+            }
         }
         else
         {
-        	// Need to pad up to 3 digits.
-            if( m_integer < 10 )
-            	stringBuilder.append( "000" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
-            else if( m_integer < 100 )
-            	stringBuilder.append( "00" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
-            else if( m_integer < 1000 )
-            	stringBuilder.append( "0" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
-            else
-            	stringBuilder.append( Integer.valueOf( m_integer ) );
+        	stringBuilder.append( Integer.valueOf( m_integer ) );
         }
 
         stringBuilder.append( "." ).append( Integer.valueOf( m_fraction ) ); //$NON-NLS-1$
