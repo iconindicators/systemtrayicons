@@ -1,12 +1,8 @@
 [Desktop Entry]
-Name=World Time System Tray
-Version=1.4
-Comment=Show Date/Time in Multiple Time Zones
-Exec=worldtimesystemtray
-Terminal=false
 Type=Application
+Name=World Time System Tray
+Comment=Show date/time in multiple time zones
+Icon=worldtimesystemtray32x32.xpm
+OnlyShowIn=GNOME;KDE;ROX;XFCE;
+Exec=worldtimesystemtray
 Categories=TrayIcon
-OnlyShowIn=GNOME;KDE
-StartupNotify=true
-Icon=/usr/share/pixmaps/worldtimesystemtray24x24.xpm
-Encoding=UTF-8
