@@ -154,4 +154,9 @@
         <zip destfile="${release}/WorldTimeSystemTraySource-${version}.zip" basedir="${src}" includes="*.java" />		
     </target>
 
+
+	<target name="Clean">
+		<delete dir="${release}" />
+	</target>
+
 </project>
