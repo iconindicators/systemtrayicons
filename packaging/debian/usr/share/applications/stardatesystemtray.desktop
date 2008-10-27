@@ -1,8 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=Stardate System Tray
-Comment=Show current Stardate and other calendar dates
-Icon=stardatesystemtray32x32.xpm
-OnlyShowIn=GNOME;KDE;ROX;XFCE;
-Exec=stardatesystemtray
-Categories=TrayIcon
