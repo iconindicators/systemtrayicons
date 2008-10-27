@@ -25,7 +25,7 @@ public class StardateConverter extends JFrame implements ActionListener
 {
 	private static final long serialVersionUID = 1L;
 
-	private static final String TRAY_ICON_IMAGE = "trayicon.gif";  //$NON-NLS-1$
+	private static String APPLICATION_ICON_IMAGE = "stardatesystemtray16x16.gif";  //$NON-NLS-1$
 
 	private JRadioButton m_radioGregorianToStardate, m_radioStardateToGregorian;
     private JSpinner m_spinnerIssue, m_spinnerInteger, m_spinnerFraction;
@@ -37,7 +37,7 @@ public class StardateConverter extends JFrame implements ActionListener
     {
         super( "Stardate/Gregorian Converter" ); //$NON-NLS-1$
 
-        setIconImage( new ImageIcon( ClassLoader.getSystemResource( TRAY_ICON_IMAGE ) ).getImage() );
+        setIconImage( new ImageIcon( ClassLoader.getSystemResource( APPLICATION_ICON_IMAGE ) ).getImage() );
         setContentPane( buildMainPanel() );
         pack();
 
