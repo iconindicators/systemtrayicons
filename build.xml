@@ -153,6 +153,7 @@
 
 		<copy file="${release}/${jar-filename}" todir="${release}/working/usr/share/stardatesystemtray" preservelastmodified="true" />
 		<copy file="${release}/${systemtray-jar-filename}" todir="${release}/working/usr/share/stardatesystemtray" preservelastmodified="true" />
+		<copy file="${lib}/joda-time-1.5.2.jar" todir="${release}/working/usr/share/stardatesystemtray" preservelastmodified="true" />
 
 		<copy file="TODO.txt" tofile="${release}/working/usr/share/doc/stardatesystemtray/TODO" preservelastmodified="true" />
 		<copy file="${doc}/License.txt" tofile="${release}/working/usr/share/doc/stardatesystemtray/copyright" preservelastmodified="true" />
