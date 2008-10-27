@@ -211,11 +211,6 @@
             <fileset file="${release}/${application-jar-filename}"/>
         </zip>
 
-        <zip destfile="${release}/StardateSystemTray-${version}.zip">
-            <fileset file="${release}/${jar-filename}"/>
-            <fileset file="${release}/${systemtray-jar-filename}"/>
-        </zip>
-
         <zip destfile="${release}/StardateSystemTraySource-${version}.zip" basedir="${src}" includes="*.java" />		
 
 		<delete dir="${javadoc}" />
