@@ -60,26 +60,35 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 	public static TrayIcon createTrayIcon() { return new TrayIcon(); }
 
 
-	public void displayStartupBalloon() { displayMessage( PopupMenu.APPLICATION_NAME, getMessageString(), TrayIcon.MessageType.NONE ); }
+	public void displayStartupBalloon() 
+	{
+		String messageString = getMessageString( false );
+		if( messageString.length() == 0 )
+			displayMessage( PopupMenu.APPLICATION_NAME, MESSAGE_NO_CHRONOLOGIES, TrayIcon.MessageType.NONE ); 
+		else
+			displayMessage( PopupMenu.APPLICATION_NAME, messageString, TrayIcon.MessageType.NONE ); 
+	}
 
 
-    private String getMessageString()
+    public static String getMessageString( boolean html )
     {
     	StringBuilder message = new StringBuilder();
     	DateTime currentDateTime = new DateTime();
     	DateTime conversionDateTime = null;
 
+		String newLine = html ? "<br>" : System.getProperty( "line.separator" ); //$NON-NLS-1$ //$NON-NLS-2$
+
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_BUDDHIST, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( BuddhistChronology.getInstance() );
-        	message.append( message.length() > 0 ? "\n" : "" );  //$NON-NLS-1$ //$NON-NLS-2$
+        	message.append( message.length() > 0 ? newLine : "" );  //$NON-NLS-1$
     		message.append( MESSAGE_BUDDHIST ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_COPTIC, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( CopticChronology.getInstance() );
-        	message.append( message.length() > 0 ? "\n" : "" );   //$NON-NLS-1$//$NON-NLS-2$
+        	message.append( message.length() > 0 ? newLine : "" );   //$NON-NLS-1$
     		message.append( MESSAGE_COPTIC ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
@@ -87,42 +96,42 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_ETHIOPIC, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( EthiopicChronology.getInstance() );
-        	message.append( message.length() > 0 ? "\n" : "" );  //$NON-NLS-1$ //$NON-NLS-2$
+        	message.append( message.length() > 0 ? newLine : "" );  //$NON-NLS-1$
     		message.append( MESSAGE_ETHIOPIC ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_GREGORIAN, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( GregorianChronology.getInstance() );
-        	message.append( message.length() > 0 ? "\n" : "" );   //$NON-NLS-1$//$NON-NLS-2$
+        	message.append( message.length() > 0 ? newLine : "" );   //$NON-NLS-1$
     		message.append( MESSAGE_GREGORIAN ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_GREGORIAN_JULIAN, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( GJChronology.getInstance() );
-        	message.append( message.length() > 0 ? "\n" : "" );   //$NON-NLS-1$//$NON-NLS-2$
+        	message.append( message.length() > 0 ? newLine : "" );   //$NON-NLS-1$
     		message.append( MESSAGE_GREGORIAN_JULIAN ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_ISLAMIC, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( IslamicChronology.getInstance() );
-        	message.append( message.length() > 0 ? "\n" : "" );   //$NON-NLS-1$//$NON-NLS-2$
+        	message.append( message.length() > 0 ? newLine : "" );   //$NON-NLS-1$
     		message.append( MESSAGE_ISLAMIC ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_ISO8601, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( ISOChronology.getInstance() );
-        	message.append( message.length() > 0 ? "\n" : "" );   //$NON-NLS-1$//$NON-NLS-2$
+        	message.append( message.length() > 0 ? newLine : "" );   //$NON-NLS-1$
     		message.append( MESSAGE_ISO8601 ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_JULIAN, true ) )
     	{
         	conversionDateTime = currentDateTime.withChronology( JulianChronology.getInstance() );
-        	message.append( message.length() > 0 ? "\n" : "" );   //$NON-NLS-1$//$NON-NLS-2$
+        	message.append( message.length() > 0 ? newLine : "" );   //$NON-NLS-1$
     		message.append( MESSAGE_JULIAN ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
 
@@ -130,17 +139,18 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     	{
     		Stardate stardate = new Stardate();
     		stardate.setGregorian( currentDateTime.toGregorianCalendar() );
-        	message.append( message.length() > 0 ? "\n" : "" );  //$NON-NLS-1$ //$NON-NLS-2$
+        	message.append( message.length() > 0 ? newLine : "" );  //$NON-NLS-1$ 
 
+    		boolean showStardateIssue = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_ISSUE, true );
     		boolean padStardate = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_PAD_STARDATE, true );
-    		if( padStardate )
-    			message.append( MESSAGE_STARDATE ).append( stardate.toStardateStringPadded() );
-    		else
-    			message.append( MESSAGE_STARDATE ).append( stardate.toStardateString() );
+    		message.append( MESSAGE_STARDATE ).append( stardate.toStardateString( padStardate, showStardateIssue ) );
     	}
 
-    	if( message.length() == 0 )
-    		message = new StringBuilder( MESSAGE_NO_CHRONOLOGIES );
+		if( html )
+		{
+			message.insert( 0, "<html>" ); //$NON-NLS-1$
+			message.append( "</html>");  //$NON-NLS-1$
+		}
 
     	return message.toString();
     }
@@ -156,12 +166,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 
 		boolean showStardateIssue = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_ISSUE, true );
 		boolean padStardate = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_PAD_STARDATE, true );
-		if( showStardateIssue && padStardate )
-			setToolTip( MESSAGE_TOOL_TIP + stardate.toStardateStringPadded() );
-		else if( showStardateIssue && ! padStardate )
-			setToolTip( MESSAGE_TOOL_TIP + stardate.toStardateString() );
-		else
-			setToolTip( MESSAGE_TOOL_TIP + stardate.getStardateInteger() + "." + stardate.getStardateFraction() );  //$NON-NLS-1$
+		setToolTip( MESSAGE_TOOL_TIP + stardate.toStardateString( padStardate, showStardateIssue ) );
 	}
 
     
@@ -170,7 +175,11 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 		if( mouseEvent.getButton() == MouseEvent.BUTTON1 )
 		{
         	TrayIcon trayIcon = (TrayIcon)mouseEvent.getSource();
-			trayIcon.displayMessage( PopupMenu.APPLICATION_NAME, getMessageString(), TrayIcon.MessageType.NONE );
+			String messageString = getMessageString( false );
+			if( messageString.length() == 0 )
+				trayIcon.displayMessage( PopupMenu.APPLICATION_NAME, MESSAGE_NO_CHRONOLOGIES, TrayIcon.MessageType.NONE );
+			else
+				trayIcon.displayMessage( PopupMenu.APPLICATION_NAME, messageString, TrayIcon.MessageType.NONE );
 		}
     	if( mouseEvent.getButton() == MouseEvent.BUTTON3 && SystemStart.isMicrosoftWindows() )
     	{
@@ -197,7 +206,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 	public void mouseReleased( MouseEvent mouseEvent ) { /** Do nothing. */}
 
 
-	private DateTimeFormatter getDateTimeFormatter()
+	private static DateTimeFormatter getDateTimeFormatter()
     {
 		DateTimeFormatter dateTimeFormatter = DateTimeFormat.longDate(); // Default.
 		String dateFormat = Properties.getInstance().getProperty( Properties.PROPERTY_DATE_FORMAT, Properties.PROPERTY_DATE_FORMAT_LONG );
