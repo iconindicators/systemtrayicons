@@ -224,4 +224,9 @@
 		</delete>
 	</target>
 
+
+	<target name="Clean">
+		<delete dir="${release}" />
+	</target>
+
 </project>
