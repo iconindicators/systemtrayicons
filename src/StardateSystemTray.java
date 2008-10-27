@@ -90,7 +90,9 @@ public class StardateSystemTray
 	        				throwable.getMessage(), 
 	        				JOptionPane.ERROR_MESSAGE, 
 	        				JOptionPane.DEFAULT_OPTION
-	        			); 
+	        			);
+	        			
+	        			System.exit( 1 );
 	        		}
         		}
         	}
