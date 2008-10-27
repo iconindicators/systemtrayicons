@@ -2,7 +2,7 @@ Stardate and Stardate System Tray Release Notes
 -----------------------------------------------
 
 
-2008-XX-YY Version 1.5
+2008-10-27 Version 1.5
 
 * New Debian/Ubuntu release!
   
@@ -20,6 +20,8 @@ Stardate and Stardate System Tray Release Notes
   version will NOT be loaded...sorry about that.  However, you can copy the
   'Program Files/Stardate System Tray/properties' file to your 
   "user home" directory.
+
+* Added option to show selected calendars in a new window.
 
 * Icons redesigned for multiple platforms and size requirements.
 

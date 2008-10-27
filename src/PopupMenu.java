@@ -20,6 +20,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	static final String POPUP_CHRONOLOGY = Messages.getString( "PopupMenu.2" );  //$NON-NLS-1$
 	static final String POPUP_DATE_FORMAT = Messages.getString( "PopupMenu.3" );  //$NON-NLS-1$
 	static final String POPUP_RUN_ON_SYSTEM_START = Messages.getString( "PopupMenu.4" );  //$NON-NLS-1$
+	static final String POPUP_SHOW_CALENDARS = Messages.getString( "PopupMenu.27" );  //$NON-NLS-1$
 	static final String POPUP_SHOW_STARDATE_ISSUE = Messages.getString( "PopupMenu.5" );  //$NON-NLS-1$
 	static final String POPUP_PAD_STARDATE = Messages.getString( "PopupMenu.26" );  //$NON-NLS-1$
 
@@ -39,9 +40,9 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 
 	public static final String APPLICATION_NAME = Messages.getString( "PopupMenu.18" );  //$NON-NLS-1$
 	private static final String APPLICATION_AUTHOR = "Bernard Giannetti"; //$NON-NLS-1$
-	private static final String APPLICATION_SITE = "http://sourceforge.net/projects/wrldtimesystray"; //$NON-NLS-1$
+	private static final String APPLICATION_SITE = "http://sourceforge.net/projects/stardatesystray"; //$NON-NLS-1$
 	public static final String APPLICATION_VERSION = Messages.getString( "PopupMenu.19" );  //$NON-NLS-1$
-	public static final String APPLICATION_VERSION_NUMBER = "1.5 (2008-10-xx)"; //TODO Change this! //$NON-NLS-1$
+	public static final String APPLICATION_VERSION_NUMBER = "1.5 (2008-10-27)"; //TODO Change this! //$NON-NLS-1$
 
 	private static final String CREDIT_ALGORITHM_LINE1 = Messages.getString( "PopupMenu.21" );  //$NON-NLS-1$
 	private static final String CREDIT_ALGORITHM_LINE2 = Messages.getString( "PopupMenu.22" );  //$NON-NLS-1$
@@ -153,6 +154,10 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	    checkboxMenuItem.addItemListener( this );
 	    add( checkboxMenuItem );
 
+	    menuItem = new MenuItem( POPUP_SHOW_CALENDARS );
+	    menuItem.addActionListener( this );
+	    add( menuItem );
+
 	    menuItem = new MenuItem( POPUP_EXIT );
 	    menuItem.addActionListener( this );
 	    add( menuItem );
@@ -198,6 +203,20 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	        ms_popupDisabled = false;
 
 			return;
+    	}
+
+    	if( POPUP_SHOW_CALENDARS.equals( menuItem ) )
+    	{
+        	if( TrayIcon.getMessageString( false ).length() == 0 )
+    		{
+        		MessageDialog.showMessageDialog( Messages.getString( "PopupMenu.28" ), Messages.getString( "PopupMenu.29" ), JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION ); //$NON-NLS-1$ //$NON-NLS-2$
+        		return;
+    		}
+
+    		ms_popupDisabled = true;
+        	ShowCalendars.create();
+    		ms_popupDisabled = false;
+    		return;
     	}
 
     	if( POPUP_EXIT.equals( menuItem ) )

@@ -1,12 +1,3 @@
-//TODO IN both WTST and SST remove pixmaps dir and copy the 3 images from img in build.xml
-
-//TODO Update in control Installed-Size: 113
-
-//TODO Put in date into changelog.Debian (date -R) and ReleaseNotes.txt
-
-//TODO Change APPLICATION_VERSION_NUMBER ... the DATE!!! In popupmenu
-
-
 import java.awt.SystemTray;
 
 import javax.swing.JOptionPane;
