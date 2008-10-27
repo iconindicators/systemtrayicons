@@ -11,7 +11,7 @@ public class StardateApplet extends Applet
 
 
 	public static final String PARAM_NAME_SHOW_ISSUE = "SHOW_ISSUE";  //$NON-NLS-1$
-	public static final String PARAM_NAME_FRACTIONAL_DIGITS = "FRACTIONAL_DIGITS";  //$NON-NLS-1$
+	public static final String PARAM_NAME_PAD_INTEGER = "PAD_INTEGER";  //$NON-NLS-1$
 	public static final String PARAM_NAME_UPDATE_PERIOD_MILLIS = "UPDATE_PERIOD";  //$NON-NLS-1$
 	public static final String PARAM_NAME_BACKGROUND_RED = "BACKGROUND_RED";  //$NON-NLS-1$
 	public static final String PARAM_NAME_BACKGROUND_GREEN = "BACKGROUND_GREEN";  //$NON-NLS-1$
@@ -29,8 +29,7 @@ public class StardateApplet extends Applet
 	public static final String PARAM_NAME_TEXT_AFTER = "TEXT_AFTER";  //$NON-NLS-1$
 	
 	public static final boolean PARAM_VALUE_SHOW_ISSUE_DEFAULT = true; 
-	public static final int PARAM_VALUE_FRACTIONAL_DIGITS_MINIMUM = 1; 
-	public static final int PARAM_VALUE_FRACTIONAL_DIGITS_DEFAULT = 2; 
+	public static final boolean PARAM_VALUE_PAD_INTEGER_DEFAULT = true; 
 	public static final int PARAM_VALUE_UPDATE_PERIOD_MILLIS_MINIMUM = 100; // 100 milliseconds
 	public static final int PARAM_VALUE_UPDATE_PERIOD_MILLIS_DEFAULT = 60000;  // 1 minute
 	public static final int PARAM_VALUE_BACKGROUND_RED_DEFAULT = 255; 
@@ -56,7 +55,7 @@ public class StardateApplet extends Applet
 	protected transient Stardate m_stardate = null;
 	private transient UpdaterThread m_updaterThread = null;
 	private boolean m_showIssue = PARAM_VALUE_SHOW_ISSUE_DEFAULT;
-	private int m_fractionalDigits = PARAM_VALUE_FRACTIONAL_DIGITS_DEFAULT;
+	private boolean m_padInteger = PARAM_VALUE_PAD_INTEGER_DEFAULT;
 	protected int m_updatePeriod = PARAM_VALUE_UPDATE_PERIOD_MILLIS_DEFAULT;
 	private Color m_backgroundColour = new Color( PARAM_VALUE_BACKGROUND_RED_DEFAULT, PARAM_VALUE_BACKGROUND_GREEN_DEFAULT, PARAM_VALUE_BACKGROUND_BLUE_DEFAULT );
 	private Color m_foregroundColour = new Color( PARAM_VALUE_FOREGROUND_RED_DEFAULT, PARAM_VALUE_FOREGROUND_GREEN_DEFAULT, PARAM_VALUE_FOREGROUND_BLUE_DEFAULT );
@@ -94,7 +93,7 @@ public class StardateApplet extends Applet
 		String parameterInfo[][] = 
 		{
 			{ PARAM_NAME_SHOW_ISSUE, "boolean", "Toggle display of the issue." },  //$NON-NLS-1$//$NON-NLS-2$
-			{ PARAM_NAME_FRACTIONAL_DIGITS, "integer", "Number of fractional digits to display, greater than zero." }, //$NON-NLS-1$ //$NON-NLS-2$
+			{ PARAM_NAME_PAD_INTEGER, "boolean", "Pad the integer part with leading zeros." },  //$NON-NLS-1$//$NON-NLS-2$
 			{ PARAM_NAME_UPDATE_PERIOD_MILLIS, "integer", "The period in milliseconds between screen updates." },  //$NON-NLS-1$//$NON-NLS-2$
 			{ PARAM_NAME_BACKGROUND_RED, "integer", "The red colour component of the background colour." },  //$NON-NLS-1$//$NON-NLS-2$
 			{ PARAM_NAME_BACKGROUND_GREEN, "integer", "The green colour component of the background colour." }, //$NON-NLS-1$ //$NON-NLS-2$
@@ -119,24 +118,17 @@ public class StardateApplet extends Applet
 	@Override
 	public void paint( Graphics graphics ) 
 	{
-		String issue = Integer.toString( m_stardate.getStardateIssue() );
-		String integer = Integer.toString( m_stardate.getStardateInteger() );
-
-		String fraction = Integer.toString( m_stardate.getStardateFraction() );
-		fraction = fraction.substring( 0, Math.min( m_fractionalDigits, fraction.length() ) );
-
 		graphics.drawRect( 0, 0, getWidth() - 1, getHeight() - 1 );
 		graphics.setColor( m_penColour );
 		if( m_font != null )
 			graphics.setFont( new Font( m_font, m_fontStyle, m_fontSize ) );
 
-		String output = null;
-		if( m_showIssue )
-			output = m_textBefore + "[ " + issue + " ] " + integer + "." + fraction + m_textAfter; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		else
-			output = m_textBefore + integer + "." + fraction + m_textAfter; //$NON-NLS-1$
-
-		graphics.drawString( output, graphics.getFontMetrics().charWidth( ' ' ), graphics.getFontMetrics().getHeight() );
+		graphics.drawString
+		(
+			m_textBefore + m_stardate.toStardateString( m_padInteger, m_showIssue ) + m_textAfter,
+			graphics.getFontMetrics().charWidth( ' ' ),
+			graphics.getFontMetrics().getHeight() 
+		);
 	}
 
 	
@@ -145,10 +137,8 @@ public class StardateApplet extends Applet
 		try { m_showIssue = Boolean.valueOf( getParameter( PARAM_NAME_SHOW_ISSUE ) ).booleanValue(); }
 		catch( Throwable throwable ) { /** Do nothing. */ }
 
-		try { m_fractionalDigits = Integer.valueOf( getParameter( PARAM_NAME_FRACTIONAL_DIGITS ) ).intValue(); }
+		try { m_padInteger = Boolean.valueOf( getParameter( PARAM_NAME_PAD_INTEGER ) ).booleanValue(); }
 		catch( Throwable throwable ) { /** Do nothing. */ }
-		if( m_fractionalDigits < PARAM_VALUE_FRACTIONAL_DIGITS_MINIMUM )
-			m_fractionalDigits = PARAM_VALUE_FRACTIONAL_DIGITS_DEFAULT;
 
 		try { m_updatePeriod = Integer.valueOf( getParameter( PARAM_NAME_UPDATE_PERIOD_MILLIS ) ).intValue(); }
 		catch( Throwable throwable ) { /** Do nothing. */ }
@@ -189,7 +179,7 @@ public class StardateApplet extends Applet
 		catch( Throwable throwable ) { /** Do nothing. */ }
 
 		try { m_font = getParameter( PARAM_NAME_FONT_NAME ); }
-		catch( Exception e ) { m_font = null; }
+		catch( Throwable throwable ) { m_font = null; }
 
 		try
 		{
@@ -201,7 +191,7 @@ public class StardateApplet extends Applet
 			else if( fontStyle.equalsIgnoreCase( PARAM_VALUE_FONT_STYLE_BOLDITALIC ) )
 				m_fontStyle = Font.BOLD | Font.ITALIC; 
 		}
-		catch( Exception e ) { m_fontStyle = PARAM_VALUE_FONT_STYLE_DEFAULT; }
+		catch( Throwable throwable ) { m_fontStyle = PARAM_VALUE_FONT_STYLE_DEFAULT; }
 		
 		if( m_fontSize < PARAM_VALUE_FONT_SIZE_MINIMUM )
 			m_updatePeriod = PARAM_VALUE_FONT_SIZE_DEFAULT; 
