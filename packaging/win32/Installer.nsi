@@ -80,8 +80,8 @@ Section "Default Section"
   File ..\..\ReleaseNotes.txt
   File ..\..\TODO.txt
   File ..\..\doc\License.txt
-  File ..\..\bin\stardate.jar
-  File ..\..\bin\stardatesystemtray.jar
+  File ..\..\release\stardate.jar
+  File ..\..\release\stardatesystemtray.jar
   File ..\..\lib\joda-time-1.5.2.jar
   File ..\..\lib\win32\jRegistryKey.jar
   File ..\..\lib\win32\jRegistryKey.dll
