@@ -12,6 +12,11 @@ public class WorldTimeSystemTray implements ClipboardOwner
 {
     public WorldTimeSystemTray()
 	{
+    	// On Ubuntu, running the application on startup failed as the system tray was not ready
+		// So we sleep for 5 seconds first...    	
+    	try { Thread.sleep( 5000 ); }
+		catch( InterruptedException interruptedException ) { /** Do nothing. */ }
+
     	UIManager.put( "swing.boldMetal", Boolean.FALSE ); //$NON-NLS-1$
     	try { UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() ); }
         catch( Throwable throwable ) { /** Do nothing. */ }
