@@ -93,7 +93,9 @@ public class WorldTimeSystemTray implements ClipboardOwner
 	        				throwable.getMessage(), 
 	        				JOptionPane.ERROR_MESSAGE, 
 	        				JOptionPane.DEFAULT_OPTION
-	        			); 
+	        			);
+	        			
+	        			System.exit( 1 );
 	        		}
         		}
         	}
