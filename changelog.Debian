@@ -37,5 +37,6 @@ worldtimesystemtray (1.4) hardy; urgency=low
 
   * Cleaned up various compiler warnings.
 
- -- Bernard Giannetti <bernmeister@users.sourceforge.net>  Fri, 24 Oct 2008 18:11:21 +1100
+ -- Bernard Giannetti <bernmeister@users.sourceforge.net>  Mon, 27 Oct 2008 12:13:14 +1100
+
 

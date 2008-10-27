@@ -1,11 +1,3 @@
-//TODO Install and Launcher directories need to be removed/deleted from SVN.
-
-//TODO Put in date into changelog.Debian (date -R) and ReleaseNotes.txt
-
-//TODO Add new stuff to SVN.
-
-//TODO Change APPLICATION_VERSION_NUMBER ... the DATE!!! In popupmenu
-
 import java.awt.SystemTray;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;

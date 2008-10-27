@@ -120,7 +120,7 @@
 	</target>
 
 
-	<!-- Do a full release, including source code -->
+	<!-- Do a full release -->
 	<available file="${release}/${jar-filename}" property="JarReady" />
 	<available file="${release}/WorldTimeSystemTraySetup-${version}.exe" property="Win32Ready" />
 	<available file="${release}/${deb-filename}_${version}_all.deb" property="DebReady" />

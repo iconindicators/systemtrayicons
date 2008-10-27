@@ -18,10 +18,11 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 {
 	private static final long serialVersionUID = 1L;
 
+	private static final String APPLICATION_AUTHOR = "Bernard Giannetti"; //$NON-NLS-1$
 	public static final String APPLICATION_NAME = Messages.getString( "PopupMenu.0" ); //$NON-NLS-1$
-
+	private static final String APPLICATION_SITE = "http://sourceforge.net/projects/wrldtimesystray"; //$NON-NLS-1$
 	private static final String APPLICATION_VERSION = Messages.getString( "PopupMenu.1" ); //$NON-NLS-1$
-	private static final String APPLICATION_VERSION_NUMBER = "1.4 (2008-10-24)"; //$NON-NLS-1$
+	private static final String APPLICATION_VERSION_NUMBER = "1.4 (2008-10-27)"; //$NON-NLS-1$
 
 	private static final String CREDIT_REGISTRY = Messages.getString( "PopupMenu.4" ); //$NON-NLS-1$
 	private static final String CREDIT_NSIS = Messages.getString( "PopupMenu.5" ); //$NON-NLS-1$
@@ -239,8 +240,9 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     			(
     				"<html><center>" + //$NON-NLS-1$
     				"<b>" + APPLICATION_NAME + "</b><br>" + APPLICATION_VERSION + " " + APPLICATION_VERSION_NUMBER + "<br><br>" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    				CREDIT_REGISTRY + "<br><br>" + //$NON-NLS-1$
-    				CREDIT_NSIS + "<br><br>" + //$NON-NLS-1$
+    				APPLICATION_AUTHOR + "<br>" + APPLICATION_SITE + "<br><br>" + //$NON-NLS-1$ //$NON-NLS-2$
+    				( SystemStart.isMicrosoftWindows() ? CREDIT_REGISTRY + "<br><br>" : "" ) + //$NON-NLS-1$ //$NON-NLS-2$
+    				( SystemStart.isMicrosoftWindows() ? CREDIT_NSIS + "<br><br>" : "" ) + //$NON-NLS-1$ //$NON-NLS-2$
     				"</center></html>", //$NON-NLS-1$
     				SwingConstants.CENTER
     			);

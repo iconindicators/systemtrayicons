@@ -2,7 +2,7 @@ World Time System Tray Release Notes
 ------------------------------------
 
 
-2008-10-24 Version 1.4
+2008-10-27 Version 1.4
 
 * First Debian/Ubuntu release.
   
