@@ -48,7 +48,7 @@
 			<attribute name="Class-Path" value=". jRegistryKey.jar" />
 			<attribute name="Main-Class" value="WorldTimeSystemTray" />
 		</manifest>
-		<jar jarfile="${release}/${jar-filename}" basedir="${classes}" manifest="${classes}/MANIFEST.MF" />
+		<jar jarfile="${release}/${jar-filename}" basedir="${classes}" manifest="${classes}/MANIFEST.MF" excludes="MANIFEST.MF" />
 
 		<delete dir="${classes}" />
 	</target>
