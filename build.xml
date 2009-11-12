@@ -1,6 +1,6 @@
 <project name="StardateSystemTray" default="CompileAndJar" basedir=".">
 
-	<property name="version" value="1.5" />
+	<property name="version" value="1.6" />
 	<property environment="env" />
 
 	<!-- Compile properties -->
@@ -84,9 +84,9 @@
 
 	<!-- JavaDoc -->
 	<target name="JavaDoc" description="Create Javadoc for the Stardate API.">
-		<property name="windowtitle" value="Stardate v1.1 API Specification" />
-		<property name="doctitle" value="Stardate v1.1 API Specification" />
-		<property name="header" value="Stardate v1.1 API Specification" />
+		<property name="windowtitle" value="Stardate v1.2 API Specification" />
+		<property name="doctitle" value="Stardate v1.2 API Specification" />
+		<property name="header" value="Stardate v1.2 API Specification" />
 		<delete dir="${javadoc}" />
 		<mkdir dir="${javadoc}" />
 		<javadoc 
