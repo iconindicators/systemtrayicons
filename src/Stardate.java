@@ -38,7 +38,7 @@ import java.util.GregorianCalendar;
 public class Stardate
 {
 	/** API version. */
-	private static final String API_VERSION = "Version 1.1 (2008-06-11)"; //$NON-NLS-1$
+	private static final String API_VERSION = "Version 1.2 (2009-11-13)"; //$NON-NLS-1$
 
 
 	/** Internal representation for the Gregorian Calendar date/time. */
@@ -49,23 +49,15 @@ public class Stardate
     private int m_issue = 0, m_integer = 0, m_fraction = 0;
 
 
-    /**
-     * Flag indicating that if any part of the current stardate has changed, 
-     * the entire Gregorian Calendar needs to be recalculated.
-     */
+    /** If any part of the current stardate has changed, the entire Gregorian Calendar needs to be recalculated. */
     private boolean m_recalculateGregorian = false;
 
 
-    /**
-     * Flag indicating that if any part of the current Gregorian Calendar has changed, 
-     * the entire star date needs to be recalculated.
-     */
+    /** If any part of the current Gregorian Calendar has changed, the entire star date needs to be recalculated. */
     private boolean m_recalculateStardate = false;
 
 
-    /**
-     * Rates (in stardate units per day) for each stardate era.
-     */
+    /** Rates (in stardate units per day) for each stardate era. */
     private static final double[] m_stardateRates = { 5.0, 5.0, 0.1, 0.5, 1000.0 / 365.2425 };
 
 
@@ -420,9 +412,7 @@ public class Stardate
     }
 
 
-    /**
-     * Converts the current Gregorian calendar to the equivalent stardate.
-     */
+    /** Converts the current Gregorian calendar to the equivalent stardate. */
     private void gregorianToStardate()
     {
         int stardateIssues[] = { -1, 0, 19, 19, 21 };
@@ -444,7 +434,6 @@ public class Stardate
             milliseconds = m_gregorianCalendar.getTime().getTime();
             long baseMilliseconds = m_gregorianDates[ 0 ].getTime().getTime();
             double numberOfDays = ( baseMilliseconds - milliseconds ) / 1000.0 / 60.0 / 60.0 / 24.0;
-            numberOfDays = Math.round( 10.0 * numberOfDays ) / 10.0;
             double rate = m_stardateRates[ 0 ];
             double units = numberOfDays * rate;
             double remainder = units % stardateRange[ 0 ];
@@ -460,7 +449,9 @@ public class Stardate
             m_recalculateStardate = false;
             return;
         }
-        else if( year == 2162 && month == 1 && day >= 4 )
+
+        // Remainder of time periods can be treated equally...
+        if( year == 2162 && month == 1 && day >= 4 )
         {
             // First period of stardates (4/1/2162 - 26/1/2270).
             index = 1;
