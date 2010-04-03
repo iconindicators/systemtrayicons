@@ -46,7 +46,7 @@ public class RenameTimeZones extends JDialog
 
         JButton cancel = new JButton( Messages.getString( "RenameTimeZones.2" ) );  //$NON-NLS-1$
     	cancel.addActionListener( new ActionListener() { public void actionPerformed( ActionEvent actionEvent ) { renameTimeZones.dispose(); } } );
-        
+
         GroupLayout layout = new GroupLayout( renameTimeZones.getContentPane() );
         renameTimeZones.getContentPane().setLayout( layout );
         layout.setAutoCreateGaps( true );
@@ -77,7 +77,7 @@ public class RenameTimeZones extends JDialog
     	parallelGroup = layout.createParallelGroup();
 
     	parallelGroup.addGroup( sequentialGroup );
-    	
+
     	parallelGroup.addGroup
 		(
 			Alignment.CENTER,	
@@ -121,7 +121,7 @@ public class RenameTimeZones extends JDialog
 		return renameTimeZones;
     }
 
-    
+
     protected class OKActionListener implements ActionListener
     {
     	public void actionPerformed( ActionEvent actionEvent )
@@ -157,7 +157,7 @@ public class RenameTimeZones extends JDialog
 	        				JOptionPane.ERROR_MESSAGE,
 	        				JOptionPane.DEFAULT_OPTION
 	        			);
-	        			
+
 	        			return;
 					}
 			}
