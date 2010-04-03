@@ -116,7 +116,7 @@ public class Properties
 
     public static Properties getInstance() { return ms_instance; }
 
-    
+
     public boolean canCreatePropertyDirectory() { return ms_canCreatePropertyDirectory; }
 
 
@@ -174,10 +174,26 @@ public class Properties
         if( value == null || value.length() == 0 )
         	return new Vector<String>();
 
+        // Read in each value, separated by a comma.
+        // Some tokens are part of a larger token, so we need to read subsequent token(s) before the entire token is complete.
         Vector<String> v = new Vector<String>();
         StringTokenizer tokenizer = new StringTokenizer( value, "," ); //$NON-NLS-1$
+        String oldToken = "";
         while( tokenizer.hasMoreElements() )
-            v.add( tokenizer.nextToken().replace( "\\,", "," ) );  //$NON-NLS-1$//$NON-NLS-2$
+        {
+        	String token = tokenizer.nextToken();
+        	if( token.contains( "\\" ) )
+        	{
+        		// This token is part of a larger token containing "," so keep building it.
+        		oldToken = oldToken + token.replace( "\\", "," );
+        		continue;
+        	}
+
+        	// This token does not contain any "," but may be part of a preceding token...
+        	oldToken = oldToken + token;
+        	v.add( oldToken );
+        	oldToken = "";
+        }
 
         return v;
     }
@@ -199,8 +215,8 @@ public class Properties
         else
         	ms_properties.setProperty( key, value.toString() );
     }
-    
-    
+
+
     public void setProperty( String key, String value )
     {
         if( key == null ) throw new IllegalArgumentException( "Key cannot be null." ); //$NON-NLS-1$
