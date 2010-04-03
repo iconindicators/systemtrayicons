@@ -80,6 +80,28 @@ public class Properties
 	/** Show the times in the tool tip. */
 	public static final String PROPERTY_SHOW_TIMES_IN_TOOL_TIP = "ShowTimesInToolTip"; //$NON-NLS-1$
 
+	/** Determine if we combine columns with each other. */
+	public static final String PROPERTY_COLUMNS_LEFT_TEXT_AND_LEFT_OPTION_ARE_SEPARATE = "ColumnsLeftTextAndLeftOptionAreSeparate"; //$NON-NLS-1$
+	public static final String PROPERTY_COLUMNS_LEFT_OPTION_AND_CENTRE_TEXT_ARE_SEPARATE = "ColumnsLeftOptionAndLeftCentreTextAreSeparate"; //$NON-NLS-1$
+	public static final String PROPERTY_COLUMNS_LEFT_CENTRE_TEXT_AND_CENTRE_OPTION_ARE_SEPARATE = "ColumnsLeftCentreTextAndCentreOptionAreSeparate"; //$NON-NLS-1$
+	public static final String PROPERTY_COLUMNS_CENTRE_OPTION_AND_RIGHT_CENTRE_TEXT_ARE_SEPARATE = "ColumnsCentreOptionAndRightCentreTextAreSeparate"; //$NON-NLS-1$
+	public static final String PROPERTY_COLUMNS_RIGHT_CENTRE_TEXT_AND_RIGHT_OPTION_ARE_SEPARATE = "ColumnsRightCentreTextAndRightOptionAreSeparate"; //$NON-NLS-1$
+	public static final String PROPERTY_COLUMNS_RIGHT_OPTION_AND_RIGHT_TEXT_ARE_SEPARATE = "ColumnsRightOptionAndRightTextAreSeparate"; //$NON-NLS-1$
+
+	/** Column alignments. */
+	public static final String PROPERTY_COLUMN_LEFT_TEXT_ALIGNMENT = "ColumnLeftTextAlignment"; //$NON-NLS-1$
+	public static final String PROPERTY_COLUMN_LEFT_OPTION_ALIGNMENT = "ColumnLeftOptionAlignment"; //$NON-NLS-1$
+	public static final String PROPERTY_COLUMN_LEFT_CENTRE_TEXT_ALIGNMENT = "ColumnLeftCentreTextAlignment"; //$NON-NLS-1$
+	public static final String PROPERTY_COLUMN_CENTRE_OPTION_ALIGNMENT = "ColumnCentreOptionAlignment"; //$NON-NLS-1$
+	public static final String PROPERTY_COLUMN_RIGHT_CENTRE_TEXT_ALIGNMENT = "ColumnRightCentreTextAlignment"; //$NON-NLS-1$
+	public static final String PROPERTY_COLUMN_RIGHT_OPTION_ALIGNMENT = "ColumnRightOptionAlignment"; //$NON-NLS-1$
+	public static final String PROPERTY_COLUMN_RIGHT_TEXT_ALIGNMENT = "ColumnRightTextAlignment"; //$NON-NLS-1$
+
+	/** Column alignment values. */
+	public static final String PROPERTY_COLUMN_ALIGNMENT_LEFT = "left"; //$NON-NLS-1$
+	public static final String PROPERTY_COLUMN_ALIGNMENT_CENTRE = "center"; //$NON-NLS-1$
+	public static final String PROPERTY_COLUMN_ALIGNMENT_RIGHT = "right"; //$NON-NLS-1$
+
 
 	private Properties()
     {
@@ -178,21 +200,21 @@ public class Properties
         // Some tokens are part of a larger token, so we need to read subsequent token(s) before the entire token is complete.
         Vector<String> v = new Vector<String>();
         StringTokenizer tokenizer = new StringTokenizer( value, "," ); //$NON-NLS-1$
-        String oldToken = "";
+        String oldToken = ""; //$NON-NLS-1$
         while( tokenizer.hasMoreElements() )
         {
         	String token = tokenizer.nextToken();
-        	if( token.contains( "\\" ) )
+        	if( token.contains( "\\" ) ) //$NON-NLS-1$
         	{
         		// This token is part of a larger token containing "," so keep building it.
-        		oldToken = oldToken + token.replace( "\\", "," );
+        		oldToken = oldToken + token.replace( "\\", "," ); //$NON-NLS-1$  //$NON-NLS-2$
         		continue;
         	}
 
         	// This token does not contain any "," but may be part of a preceding token...
         	oldToken = oldToken + token;
         	v.add( oldToken );
-        	oldToken = "";
+        	oldToken = ""; //$NON-NLS-1$
         }
 
         return v;

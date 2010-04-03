@@ -17,12 +17,8 @@ public class Message
 
 		combineTimeZones( userTimeZoneItems );
 
-		String newLine = System.getProperty( "line.separator" ); //$NON-NLS-1$
 		if( html )
-		{
-			newLine = "<br>";  //$NON-NLS-1$
-			message.append( "<html>");  //$NON-NLS-1$
-		}
+			message.append( "<html><table>");  //$NON-NLS-1$
 
 		DateFormat dateFormat = getDateTimeFormatter();
 		String previousDayIndicator = Properties.getInstance().getProperty( Properties.PROPERTY_DIFFERENT_DAY_INDICATOR_PREVIOUS_DAY, DifferentDayIndicator.PREVIOUS_DAY_INDICATOR, false );
@@ -35,18 +31,18 @@ public class Message
     		String formattedGregorianCalendar =  dateFormat.format( userTimeZoneItems.get( i ).getGregorianCalendar().getTime() );
     		int compare = UserTimeZones.compareYearMonthDay( userTimeZoneItems.get( i ).getGregorianCalendar(), gregorianCalendar );
     		if( compare > 0 )
-    			message.append( buildSingleLineOfOutput( currentTimeZone, nextDayIndicator, formattedGregorianCalendar ) );
+    			message.append( buildSingleLineOfOutput( html, currentTimeZone, nextDayIndicator, formattedGregorianCalendar ) );
     		else if( compare < 0 )
-    			message.append( buildSingleLineOfOutput( currentTimeZone, previousDayIndicator, formattedGregorianCalendar ) );
+    			message.append( buildSingleLineOfOutput( html, currentTimeZone, previousDayIndicator, formattedGregorianCalendar ) );
     		else
-    			message.append( buildSingleLineOfOutput( currentTimeZone, "", formattedGregorianCalendar ) ); //$NON-NLS-1$
+    			message.append( buildSingleLineOfOutput( html, currentTimeZone, "", formattedGregorianCalendar ) ); //$NON-NLS-1$
 
-    		if( i < ( userTimeZoneItems.size() - 1 ) )
-    			message.append( newLine );
+    		if( ! html && i < ( userTimeZoneItems.size() - 1 ) )
+    			message.append( System.getProperty( "line.separator" ) ); //$NON-NLS-1$
     	}
 
 		if( html )
-			message.append( "</html>");  //$NON-NLS-1$
+			message.append( "</table></html>");  //$NON-NLS-1$
 
 		return message.toString();
     }
@@ -70,7 +66,6 @@ public class Message
 					{
 		    			userTimeZoneItems.get( i ).setTimeZoneDisplayable( userTimeZoneItems.get( i ).getTimeZoneDisplayable() + separator + userTimeZoneItems.get( j ).getTimeZoneDisplayable() );
 						userTimeZoneItems.removeElementAt( j );
-						
 					}
 				}
 	    	}
@@ -130,23 +125,72 @@ public class Message
     }
 
 
-    private static String buildSingleLineOfOutput( String timeZone, String differentDayIndicator, String dateTime )
+    private static String buildSingleLineOfOutput( boolean html, String timeZone, String differentDayIndicator, String dateTime )
+    {
+    	if( html )
+    		return buildSingleLineOfOutputInHTML( timeZone, differentDayIndicator, dateTime );
+    	
+    	return buildSingleLineOfOutputInPlaintext( timeZone, differentDayIndicator, dateTime );
+    }
+
+
+    private static String buildSingleLineOfOutputInPlaintext( String timeZone, String differentDayIndicator, String dateTime )
     {
     	StringBuilder stringBuilder = new StringBuilder();
 
     	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, Properties.PROPERTY_LAYOUT_LEFT_TEXT_DEFAULT, false ) );
-    	stringBuilder.append( getActualFromProperty( Properties.PROPERTY_LAYOUT_LEFT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME_ZONE, timeZone, differentDayIndicator, dateTime ) );
+    	stringBuilder.append( getValueFromLayoutOption( Properties.PROPERTY_LAYOUT_LEFT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME_ZONE, timeZone, differentDayIndicator, dateTime ) );
     	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT_DEFAULT, false ) );
-    	stringBuilder.append( getActualFromProperty( Properties.PROPERTY_LAYOUT_CENTRE_OPTION, Properties.PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR, timeZone, differentDayIndicator, dateTime ) );
+    	stringBuilder.append( getValueFromLayoutOption( Properties.PROPERTY_LAYOUT_CENTRE_OPTION, Properties.PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR, timeZone, differentDayIndicator, dateTime ) );
     	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT_DEFAULT, false ) );
-    	stringBuilder.append( getActualFromProperty( Properties.PROPERTY_LAYOUT_RIGHT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME, timeZone, differentDayIndicator, dateTime ) );
+    	stringBuilder.append( getValueFromLayoutOption( Properties.PROPERTY_LAYOUT_RIGHT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME, timeZone, differentDayIndicator, dateTime ) );
     	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_TEXT_DEFAULT, false ) );
 
     	return stringBuilder.toString();
     }
 
 
-	private static String getActualFromProperty( String property, String defaultValue, String timeZone, String differentDayIndicator, String dateTime )
+    private static String buildSingleLineOfOutputInHTML( String timeZone, String differentDayIndicator, String dateTime )
+    {
+    	StringBuilder stringBuilder = new StringBuilder();
+
+    	stringBuilder.append( "<tr>" ); //$NON-NLS-1$
+
+    	stringBuilder.append( "<td align=\"" + getColumnAlignmentFromProperty( Properties.PROPERTY_COLUMN_LEFT_TEXT_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, Properties.PROPERTY_LAYOUT_LEFT_TEXT_DEFAULT, false ) );
+    	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_LEFT_TEXT_AND_LEFT_OPTION_ARE_SEPARATE, false ) )
+    		stringBuilder.append( "</td><td align=\"" + getColumnAlignmentFromProperty( Properties.PROPERTY_COLUMN_LEFT_OPTION_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    	stringBuilder.append( getValueFromLayoutOption( Properties.PROPERTY_LAYOUT_LEFT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME_ZONE, timeZone, differentDayIndicator, dateTime ) );
+    	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_LEFT_OPTION_AND_CENTRE_TEXT_ARE_SEPARATE, false ) )
+    		stringBuilder.append( "</td><td align=\"" + getColumnAlignmentFromProperty( Properties.PROPERTY_COLUMN_LEFT_CENTRE_TEXT_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT_DEFAULT, false ) );
+    	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_LEFT_CENTRE_TEXT_AND_CENTRE_OPTION_ARE_SEPARATE, false ) )
+    		stringBuilder.append( "</td><td align=\"" + getColumnAlignmentFromProperty( Properties.PROPERTY_COLUMN_CENTRE_OPTION_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    	stringBuilder.append( getValueFromLayoutOption( Properties.PROPERTY_LAYOUT_CENTRE_OPTION, Properties.PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR, timeZone, differentDayIndicator, dateTime ) );
+    	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_CENTRE_OPTION_AND_RIGHT_CENTRE_TEXT_ARE_SEPARATE, false ) )
+    		stringBuilder.append( "</td><td align=\"" + getColumnAlignmentFromProperty( Properties.PROPERTY_COLUMN_RIGHT_CENTRE_TEXT_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT_DEFAULT, false ) );
+    	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_RIGHT_CENTRE_TEXT_AND_RIGHT_OPTION_ARE_SEPARATE, false ) )
+    		stringBuilder.append( "</td><td align=\"" + getColumnAlignmentFromProperty( Properties.PROPERTY_COLUMN_RIGHT_OPTION_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    	stringBuilder.append( getValueFromLayoutOption( Properties.PROPERTY_LAYOUT_RIGHT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME, timeZone, differentDayIndicator, dateTime ) );
+    	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_RIGHT_OPTION_AND_RIGHT_TEXT_ARE_SEPARATE, false ) )
+    		stringBuilder.append( "</td><td align=\"" + getColumnAlignmentFromProperty( Properties.PROPERTY_COLUMN_RIGHT_TEXT_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
+
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_TEXT_DEFAULT, false ) );
+    	stringBuilder.append( "</td>" ); //$NON-NLS-1$
+
+    	stringBuilder.append( "</tr>" ); //$NON-NLS-1$
+
+    	return stringBuilder.toString();
+    }
+
+
+	private static String getValueFromLayoutOption( String property, String defaultValue, String timeZone, String differentDayIndicator, String dateTime )
 	{
 		String value = Properties.getInstance().getProperty( property, defaultValue, false );
 
@@ -158,5 +202,15 @@ public class Message
 			return dateTime;
 		else
 			return timeZone;
+	}
+
+
+	private static String getColumnAlignmentFromProperty( String property )
+	{
+		String value = Properties.getInstance().getProperty( property, "", true ); //$NON-NLS-1$
+		if( Properties.PROPERTY_COLUMN_ALIGNMENT_LEFT.equals( value ) || Properties.PROPERTY_COLUMN_ALIGNMENT_CENTRE.equals( value ) || Properties.PROPERTY_COLUMN_ALIGNMENT_RIGHT.equals( value ) )
+			return value;
+
+		return  Properties.PROPERTY_COLUMN_ALIGNMENT_LEFT;
 	}
 }
