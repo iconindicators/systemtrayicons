@@ -82,7 +82,7 @@ public class Properties
 
 	/** Determine if we combine columns with each other. */
 	public static final String PROPERTY_COLUMNS_LEFT_TEXT_AND_LEFT_OPTION_ARE_SEPARATE = "ColumnsLeftTextAndLeftOptionAreSeparate"; //$NON-NLS-1$
-	public static final String PROPERTY_COLUMNS_LEFT_OPTION_AND_CENTRE_TEXT_ARE_SEPARATE = "ColumnsLeftOptionAndLeftCentreTextAreSeparate"; //$NON-NLS-1$
+	public static final String PROPERTY_COLUMNS_LEFT_OPTION_AND_LEFT_CENTRE_TEXT_ARE_SEPARATE = "ColumnsLeftOptionAndLeftCentreTextAreSeparate"; //$NON-NLS-1$
 	public static final String PROPERTY_COLUMNS_LEFT_CENTRE_TEXT_AND_CENTRE_OPTION_ARE_SEPARATE = "ColumnsLeftCentreTextAndCentreOptionAreSeparate"; //$NON-NLS-1$
 	public static final String PROPERTY_COLUMNS_CENTRE_OPTION_AND_RIGHT_CENTRE_TEXT_ARE_SEPARATE = "ColumnsCentreOptionAndRightCentreTextAreSeparate"; //$NON-NLS-1$
 	public static final String PROPERTY_COLUMNS_RIGHT_CENTRE_TEXT_AND_RIGHT_OPTION_ARE_SEPARATE = "ColumnsRightCentreTextAndRightOptionAreSeparate"; //$NON-NLS-1$
