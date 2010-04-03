@@ -162,7 +162,7 @@ public class Message
     		stringBuilder.append( "</td><td align=\"" + getColumnAlignmentFromProperty( Properties.PROPERTY_COLUMN_LEFT_OPTION_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
 
     	stringBuilder.append( getValueFromLayoutOption( Properties.PROPERTY_LAYOUT_LEFT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME_ZONE, timeZone, differentDayIndicator, dateTime ) );
-    	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_LEFT_OPTION_AND_CENTRE_TEXT_ARE_SEPARATE, false ) )
+    	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_LEFT_OPTION_AND_LEFT_CENTRE_TEXT_ARE_SEPARATE, false ) )
     		stringBuilder.append( "</td><td align=\"" + getColumnAlignmentFromProperty( Properties.PROPERTY_COLUMN_LEFT_CENTRE_TEXT_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
 
     	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT_DEFAULT, false ) );
