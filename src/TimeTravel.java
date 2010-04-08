@@ -121,13 +121,13 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
 						    			(
 						    				layout.createParallelGroup()
 						    					.addComponent( timeTravel.m_hourSpinner )
-						    					.addComponent( hours )
+						    					.addComponent( hours, Alignment.CENTER )
 						    			)
 						    			.addGroup
 						    			(
 						    				layout.createParallelGroup()
 												.addComponent( timeTravel.m_minuteSpinner )
-												.addComponent( minutes )
+												.addComponent( minutes, Alignment.CENTER )
 						    			)
 				    			)
 		    			)
@@ -142,7 +142,7 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
     		layout.createSequentialGroup()
     			.addGroup
     			(
-    				layout.createParallelGroup()
+    				layout.createParallelGroup( Alignment.BASELINE )
     					.addComponent( selectTimeZone )
     					.addComponent( timeTravel.m_timeZoneComboBox )
     			)
@@ -150,7 +150,7 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
 				.addPreferredGap( ComponentPlacement.UNRELATED )
     			.addGroup
     			(
-    				layout.createParallelGroup()
+    				layout.createParallelGroup( Alignment.BASELINE )
     					.addComponent( setTime )
     					.addComponent( timeTravel.m_hourSpinner )
     					.addComponent( timeTravel.m_minuteSpinner )
