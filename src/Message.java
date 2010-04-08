@@ -18,7 +18,7 @@ public class Message
 		combineTimeZones( userTimeZoneItems );
 
 		if( html )
-			message.append( "<html><table>");  //$NON-NLS-1$
+			message.append( "<html><table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");  //$NON-NLS-1$
 
 		DateFormat dateFormat = getDateTimeFormatter();
 		String previousDayIndicator = Properties.getInstance().getProperty( Properties.PROPERTY_DIFFERENT_DAY_INDICATOR_PREVIOUS_DAY, DifferentDayIndicator.PREVIOUS_DAY_INDICATOR, false );
@@ -157,7 +157,7 @@ public class Message
     	stringBuilder.append( "<tr>" ); //$NON-NLS-1$
 
     	stringBuilder.append( "<td align=\"" + getColumnAlignmentFromProperty( Properties.PROPERTY_COLUMN_LEFT_TEXT_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
-    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, Properties.PROPERTY_LAYOUT_LEFT_TEXT_DEFAULT, false ) );
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, Properties.PROPERTY_LAYOUT_LEFT_TEXT_DEFAULT, false ).replace( " ", "&nbsp;" ) );
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_LEFT_TEXT_AND_LEFT_OPTION_ARE_SEPARATE, false ) )
     		stringBuilder.append( "</td><td align=\"" + getColumnAlignmentFromProperty( Properties.PROPERTY_COLUMN_LEFT_OPTION_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -165,7 +165,7 @@ public class Message
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_LEFT_OPTION_AND_LEFT_CENTRE_TEXT_ARE_SEPARATE, false ) )
     		stringBuilder.append( "</td><td align=\"" + getColumnAlignmentFromProperty( Properties.PROPERTY_COLUMN_LEFT_CENTRE_TEXT_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT_DEFAULT, false ) );
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT_DEFAULT, false ).replace( " ", "&nbsp;" ) );
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_LEFT_CENTRE_TEXT_AND_CENTRE_OPTION_ARE_SEPARATE, false ) )
     		stringBuilder.append( "</td><td align=\"" + getColumnAlignmentFromProperty( Properties.PROPERTY_COLUMN_CENTRE_OPTION_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -173,7 +173,7 @@ public class Message
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_CENTRE_OPTION_AND_RIGHT_CENTRE_TEXT_ARE_SEPARATE, false ) )
     		stringBuilder.append( "</td><td align=\"" + getColumnAlignmentFromProperty( Properties.PROPERTY_COLUMN_RIGHT_CENTRE_TEXT_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT_DEFAULT, false ) );
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT_DEFAULT, false ).replace( " ", "&nbsp;" ) );
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_RIGHT_CENTRE_TEXT_AND_RIGHT_OPTION_ARE_SEPARATE, false ) )
     		stringBuilder.append( "</td><td align=\"" + getColumnAlignmentFromProperty( Properties.PROPERTY_COLUMN_RIGHT_OPTION_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -181,7 +181,7 @@ public class Message
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_RIGHT_OPTION_AND_RIGHT_TEXT_ARE_SEPARATE, false ) )
     		stringBuilder.append( "</td><td align=\"" + getColumnAlignmentFromProperty( Properties.PROPERTY_COLUMN_RIGHT_TEXT_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_TEXT_DEFAULT, false ) );
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_TEXT_DEFAULT, false ).replace( " ", "&nbsp;" ) );
     	stringBuilder.append( "</td>" ); //$NON-NLS-1$
 
     	stringBuilder.append( "</tr>" ); //$NON-NLS-1$
