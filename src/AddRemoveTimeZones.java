@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 
 public class AddRemoveTimeZones extends JDialog implements ActionListener
@@ -49,6 +50,7 @@ public class AddRemoveTimeZones extends JDialog implements ActionListener
         (
     		layout.createSequentialGroup()
     			.addComponent( scrollPane )
+    			.addPreferredGap( ComponentPlacement.UNRELATED )
     			.addComponent( addRemoveTimeZones.m_close )
 		);
 
