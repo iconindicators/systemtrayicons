@@ -63,14 +63,14 @@ public class RenameTimeZones extends JDialog
     	sequentialGroup = layout.createSequentialGroup();
 
     	parallelGroup = layout.createParallelGroup();
-    	for( int i = 0; i < timeZoneLabels.size(); i++ )
-    		parallelGroup.addComponent( timeZoneLabels.get( i ) );
+    	for( JLabel timeZoneLabel : timeZoneLabels )
+    		parallelGroup.addComponent( timeZoneLabel );
 
     	sequentialGroup.addGroup( parallelGroup );
 
     	parallelGroup = layout.createParallelGroup();
-    	for( int i = 0; i < renameTimeZones.m_timeZoneTextfields.size(); i++ )
-    		parallelGroup.addComponent( renameTimeZones.m_timeZoneTextfields.get( i ) );
+    	for( JTextField timeZoneTextfield : renameTimeZones.m_timeZoneTextfields )
+    		parallelGroup.addComponent( timeZoneTextfield );
 
     	sequentialGroup.addGroup( parallelGroup );
 
@@ -94,8 +94,8 @@ public class RenameTimeZones extends JDialog
     	for( int i = 0; i < timeZones.size(); i++ )
         	sequentialGroup.addGroup
         	(  
-    			layout.createParallelGroup()
-    				.addComponent( timeZoneLabels.get(i ) )
+    			layout.createParallelGroup( Alignment.BASELINE )
+    				.addComponent( timeZoneLabels.get( i ) )
     				.addComponent( renameTimeZones.m_timeZoneTextfields.get( i ) )
         	);
 
