@@ -208,8 +208,11 @@ public class Message
 	private static String getColumnAlignmentFromProperty( String property )
 	{
 		String value = Properties.getInstance().getProperty( property, "", true ); //$NON-NLS-1$
-		if( Properties.PROPERTY_COLUMN_ALIGNMENT_LEFT.equals( value ) || Properties.PROPERTY_COLUMN_ALIGNMENT_CENTRE.equals( value ) || Properties.PROPERTY_COLUMN_ALIGNMENT_RIGHT.equals( value ) )
+		if( Properties.PROPERTY_COLUMN_ALIGNMENT_LEFT.equals( value ) || Properties.PROPERTY_COLUMN_ALIGNMENT_RIGHT.equals( value ) )
 			return value;
+
+		if( Properties.PROPERTY_COLUMN_ALIGNMENT_CENTRE.equals( value ) )
+			return "center";
 
 		return  Properties.PROPERTY_COLUMN_ALIGNMENT_LEFT;
 	}
