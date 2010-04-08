@@ -58,7 +58,7 @@ public class ShowDateTime extends JDialog implements ClipboardOwner
     		{ 
     			public void actionPerformed( ActionEvent actionEvent ) 
     			{
-    				Toolkit.getDefaultToolkit().getSystemClipboard().setContents( new StringSelection( Message.getMessageString( showDateTime.m_gregorianCalendar, true ) ), showDateTime );
+    				Toolkit.getDefaultToolkit().getSystemClipboard().setContents( new StringSelection( Message.getMessageString( showDateTime.m_gregorianCalendar, false ) ), showDateTime );
 				}
 			}
 		);
