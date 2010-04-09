@@ -1,5 +1,3 @@
-//TODO Maybe align the sample button with the labels and the sample text with the combos.
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -31,14 +29,14 @@ public class MessageLayout extends JDialog implements ItemListener
 	private static final int BORDER_INDENT = 10;
 	private static final int NUMBER_OF_COLUMNS = 5;
 
-	private static final String LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR = "Different Day Indicator";
-	private static final String LAYOUT_OPTION_TIME = "Time";
-	private static final String LAYOUT_OPTION_TIME_ZONE = "Time Zone";
-	private static final String LAYOUT_OPTION_NONE = "";
+	private static final String LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR = Messages.getString( "MessageLayout.4" ); //$NON-NLS-1$
+	private static final String LAYOUT_OPTION_TIME = Messages.getString( "MessageLayout.5" ); //$NON-NLS-1$
+	private static final String LAYOUT_OPTION_TIME_ZONE = Messages.getString( "MessageLayout.6" ); //$NON-NLS-1$
+	private static final String LAYOUT_OPTION_NONE = Messages.getString( "MessageLayout.7" ); //$NON-NLS-1$
 
-	private static final String ALIGNMENT_LEFT = "Left";
-	private static final String ALIGNMENT_CENTRE = "Centre";
-	private static final String ALIGNMENT_RIGHT = "Right";
+	private static final String ALIGNMENT_LEFT = Messages.getString( "MessageLayout.8" ); //$NON-NLS-1$
+	private static final String ALIGNMENT_CENTRE = Messages.getString( "MessageLayout.9" ); //$NON-NLS-1$
+	private static final String ALIGNMENT_RIGHT = Messages.getString( "MessageLayout.10" ); //$NON-NLS-1$
 
 	protected JLabel m_layoutLabel, m_columnBreaksLabel, m_columnAlignmentsLabel, m_sampleLabel;
 	protected JTextField m_leftTextLayout, m_leftCentreTextLayout, m_rightCentreTextLayout, m_rightTextLayout;
@@ -88,7 +86,7 @@ public class MessageLayout extends JDialog implements ItemListener
 
     	final String[] layoutOptions = new String[] { LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR, LAYOUT_OPTION_TIME, LAYOUT_OPTION_TIME_ZONE, LAYOUT_OPTION_NONE };
 
-    	messageLayout.m_layoutLabel = new JLabel( "Layout Components: " );
+    	messageLayout.m_layoutLabel = new JLabel( Messages.getString( "MessageLayout.11" ) ); //$NON-NLS-1$
 
     	messageLayout.m_leftTextLayout = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, Properties.PROPERTY_LAYOUT_LEFT_TEXT_DEFAULT, false ) );
     	messageLayout.m_leftTextLayout.setColumns( NUMBER_OF_COLUMNS );
@@ -120,9 +118,9 @@ public class MessageLayout extends JDialog implements ItemListener
     	messageLayout.m_layoutComponents.add( messageLayout.m_rightOptionLayout );
     	messageLayout.m_layoutComponents.add( messageLayout.m_rightTextLayout );
 
-    	messageLayout.m_columnBreaksLabel = new JLabel( "Column Breaks: " );
+    	messageLayout.m_columnBreaksLabel = new JLabel( Messages.getString( "MessageLayout.12" ) ); //$NON-NLS-1$
 
-    	String separateColumsCheckboxToolTip = "<html>When checked, the adjoining layout components will be in separate columns.<br>When unchecked, the adjoining layout components will be in a single column.</html>";
+    	String separateColumsCheckboxToolTip = Messages.getString( "MessageLayout.13" ); //$NON-NLS-1$
 
     	messageLayout.m_leftTextLeftOptionBreak = new JCheckBox( "", messageLayout.m_leftTextAndLeftOptionAreSeparateOption ); //$NON-NLS-1$
     	messageLayout.m_leftTextLeftOptionBreak.addItemListener( messageLayout );
@@ -158,9 +156,9 @@ public class MessageLayout extends JDialog implements ItemListener
 
     	final String[] alignmentOptions = new String[] { ALIGNMENT_LEFT, ALIGNMENT_CENTRE, ALIGNMENT_RIGHT };
 
-    	messageLayout.m_columnAlignmentsLabel = new JLabel( "Column Alignments: " );
+    	messageLayout.m_columnAlignmentsLabel = new JLabel( Messages.getString( "MessageLayout.14" ) ); //$NON-NLS-1$
 
-    	String columAlignmentComboToolTip = "<html>Specifies the alignment of text within the column (or merged column).</html>";
+    	String columAlignmentComboToolTip = Messages.getString( "MessageLayout.15" ); //$NON-NLS-1$
 
     	messageLayout.m_leftTextAlignment = new JComboBox( alignmentOptions );
     	messageLayout.m_leftTextAlignment.setSelectedItem( messageLayout.m_leftTextAlignmentProperty );
@@ -193,7 +191,7 @@ public class MessageLayout extends JDialog implements ItemListener
     	messageLayout.m_columnAlignmentCombos.add( messageLayout.m_rightOptionAlignment );
     	messageLayout.m_columnAlignmentCombos.add( messageLayout.m_rightTextAlignment );
 
-    	messageLayout.m_sample = new JButton( Messages.getString( "MessageLayout.0" ) ); //$NON-NLS-1$
+    	messageLayout.m_sample = new JButton( Messages.getString( "MessageLayout.0" ) );  //$NON-NLS-1$
 
     	messageLayout.m_sampleLabel = new JLabel( Message.getMessageString( new GregorianCalendar(), true ) );
     	messageLayout.m_sampleLabel.setHorizontalAlignment( SwingConstants.CENTER );
