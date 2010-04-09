@@ -1,3 +1,5 @@
+//TODO Maybe align the sample button with the labels and the sample text with the combos.
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -29,6 +31,11 @@ public class MessageLayout extends JDialog implements ItemListener
 	private static final int BORDER_INDENT = 10;
 	private static final int NUMBER_OF_COLUMNS = 5;
 
+	private static final String LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR = "Different Day Indicator";
+	private static final String LAYOUT_OPTION_TIME = "Time";
+	private static final String LAYOUT_OPTION_TIME_ZONE = "Time Zone";
+	private static final String LAYOUT_OPTION_NONE = "";
+
 	private static final String ALIGNMENT_LEFT = "Left";
 	private static final String ALIGNMENT_CENTRE = "Centre";
 	private static final String ALIGNMENT_RIGHT = "Right";
@@ -57,11 +64,11 @@ public class MessageLayout extends JDialog implements ItemListener
 
     	// Read in property values and keep a copy of them here in case the user cancels the operation.
     	messageLayout.m_leftText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, Properties.PROPERTY_LAYOUT_LEFT_TEXT_DEFAULT, false );
-    	messageLayout.m_leftOption = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME_ZONE, false );
+    	messageLayout.m_leftOption = getLayoutProperty( Properties.PROPERTY_LAYOUT_LEFT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME_ZONE );
     	messageLayout.m_leftCentreText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT_DEFAULT, false );
-    	messageLayout.m_centreOption = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_CENTRE_OPTION, Properties.PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR, false );
+    	messageLayout.m_centreOption = getLayoutProperty( Properties.PROPERTY_LAYOUT_CENTRE_OPTION, Properties.PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR );
     	messageLayout.m_rightCentreText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT_DEFAULT, false );
-    	messageLayout.m_rightOption = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME, false );
+    	messageLayout.m_rightOption = getLayoutProperty( Properties.PROPERTY_LAYOUT_RIGHT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME );
     	messageLayout.m_rightText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_TEXT_DEFAULT, false );
 
     	messageLayout.m_leftTextAndLeftOptionAreSeparateOption = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_LEFT_TEXT_AND_LEFT_OPTION_ARE_SEPARATE, true );
@@ -79,31 +86,27 @@ public class MessageLayout extends JDialog implements ItemListener
     	messageLayout.m_rightOptionAlignmentProperty = getAlignmentProperty( Properties.PROPERTY_COLUMN_RIGHT_OPTION_ALIGNMENT );
     	messageLayout.m_rightTextAlignmentProperty = getAlignmentProperty( Properties.PROPERTY_COLUMN_RIGHT_TEXT_ALIGNMENT );
 
-    	Vector<String> comboValues = new Vector<String>();
-    	comboValues.add( Properties.PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR );
-    	comboValues.add( Properties.PROPERTY_LAYOUT_OPTION_TIME );
-    	comboValues.add( Properties.PROPERTY_LAYOUT_OPTION_TIME_ZONE );
-    	comboValues.add( Properties.PROPERTY_LAYOUT_OPTION_NONE );
+    	final String[] layoutOptions = new String[] { LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR, LAYOUT_OPTION_TIME, LAYOUT_OPTION_TIME_ZONE, LAYOUT_OPTION_NONE };
 
     	messageLayout.m_layoutLabel = new JLabel( "Layout Components: " );
 
     	messageLayout.m_leftTextLayout = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, Properties.PROPERTY_LAYOUT_LEFT_TEXT_DEFAULT, false ) );
     	messageLayout.m_leftTextLayout.setColumns( NUMBER_OF_COLUMNS );
 
-    	messageLayout.m_leftOptionLayout = new JComboBox( comboValues );
-    	messageLayout.m_leftOptionLayout.setSelectedItem(  Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME_ZONE, false ) ) ;
+    	messageLayout.m_leftOptionLayout = new JComboBox( layoutOptions );
+    	messageLayout.m_leftOptionLayout.setSelectedItem( messageLayout.m_leftOption ) ;
 
     	messageLayout.m_leftCentreTextLayout = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT_DEFAULT, false ) );
     	messageLayout.m_leftCentreTextLayout.setColumns( NUMBER_OF_COLUMNS );
 
-    	messageLayout.m_centreOptionLayout = new JComboBox( comboValues );
-    	messageLayout.m_centreOptionLayout.setSelectedItem(  Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_CENTRE_OPTION, Properties.PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR, false ) ) ;
+    	messageLayout.m_centreOptionLayout = new JComboBox( layoutOptions );
+    	messageLayout.m_centreOptionLayout.setSelectedItem( messageLayout.m_centreOption ) ;
 
     	messageLayout.m_rightCentreTextLayout = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT_DEFAULT, false ) );
     	messageLayout.m_rightCentreTextLayout.setColumns( NUMBER_OF_COLUMNS );
 
-    	messageLayout.m_rightOptionLayout = new JComboBox( comboValues );
-    	messageLayout.m_rightOptionLayout.setSelectedItem(  Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME, false ) ) ;
+    	messageLayout.m_rightOptionLayout = new JComboBox( layoutOptions );
+    	messageLayout.m_rightOptionLayout.setSelectedItem( messageLayout.m_rightOption ) ;
 
     	messageLayout.m_rightTextLayout = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_TEXT_DEFAULT, false ) );
     	messageLayout.m_rightTextLayout.setColumns( NUMBER_OF_COLUMNS );
@@ -240,11 +243,11 @@ public class MessageLayout extends JDialog implements ItemListener
 				public void actionPerformed( ActionEvent actionEvent )
 				{
 					Properties.getInstance().setProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, messageLayout.m_leftText );
-		    		Properties.getInstance().setProperty( Properties.PROPERTY_LAYOUT_LEFT_OPTION, messageLayout.m_leftOption );
+					setLayoutProperty( Properties.PROPERTY_LAYOUT_LEFT_OPTION, messageLayout.m_leftOption );
 		    		Properties.getInstance().setProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, messageLayout.m_leftCentreText );
-		    		Properties.getInstance().setProperty( Properties.PROPERTY_LAYOUT_CENTRE_OPTION, messageLayout.m_centreOption );
+		    		setLayoutProperty( Properties.PROPERTY_LAYOUT_CENTRE_OPTION, messageLayout.m_centreOption );
 		    		Properties.getInstance().setProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, messageLayout.m_rightCentreText );
-		    		Properties.getInstance().setProperty( Properties.PROPERTY_LAYOUT_RIGHT_OPTION, messageLayout.m_rightOption );
+		    		setLayoutProperty( Properties.PROPERTY_LAYOUT_RIGHT_OPTION, messageLayout.m_rightOption );
 		    		Properties.getInstance().setProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, messageLayout.m_rightText );
 
 		    		Properties.getInstance().setProperty( Properties.PROPERTY_COLUMNS_LEFT_TEXT_AND_LEFT_OPTION_ARE_SEPARATE, Boolean.toString( messageLayout.m_leftTextAndLeftOptionAreSeparateOption ) );
@@ -282,6 +285,42 @@ public class MessageLayout extends JDialog implements ItemListener
     }
 
 
+    private static String getLayoutProperty( String propertyName, String defaultValue )
+    {
+    	String value = Properties.getInstance().getProperty( propertyName, defaultValue, true );
+
+    	if( Properties.PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR.equals( value ) )
+    		return LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR;
+
+    	if( Properties.PROPERTY_LAYOUT_OPTION_TIME.equals( value ) )
+    		return LAYOUT_OPTION_TIME;
+
+    	if( Properties.PROPERTY_LAYOUT_OPTION_TIME_ZONE.equals( value ) )
+    		return LAYOUT_OPTION_TIME_ZONE;
+
+    	if( Properties.PROPERTY_LAYOUT_OPTION_NONE.equals( value ) )
+    		return LAYOUT_OPTION_NONE;
+
+    	return defaultValue;
+    }
+
+
+    protected static void setLayoutProperty( String propertyName, String value )
+    {
+    	if( value.equals( LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR ) )
+    		Properties.getInstance().setProperty( propertyName, Properties.PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR );
+
+    	if( value.equals( LAYOUT_OPTION_NONE ) )
+    		Properties.getInstance().setProperty( propertyName, Properties.PROPERTY_LAYOUT_OPTION_NONE );
+
+    	if( value.equals( LAYOUT_OPTION_TIME ) )
+    		Properties.getInstance().setProperty( propertyName, Properties.PROPERTY_LAYOUT_OPTION_TIME );
+
+    	if( value.equals( LAYOUT_OPTION_TIME_ZONE ) )
+    		Properties.getInstance().setProperty( propertyName, Properties.PROPERTY_LAYOUT_OPTION_TIME_ZONE );
+    }
+
+
     private static String getAlignmentProperty( String propertyName )
     {
     	String value = Properties.getInstance().getProperty( propertyName, Properties.PROPERTY_COLUMN_ALIGNMENT_LEFT, false );
@@ -314,11 +353,11 @@ public class MessageLayout extends JDialog implements ItemListener
     protected void storeProperties()
     {
 		Properties.getInstance().setProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, m_leftTextLayout.getText() );
-		Properties.getInstance().setProperty( Properties.PROPERTY_LAYOUT_LEFT_OPTION, m_leftOptionLayout.getSelectedItem().toString() );
+		setLayoutProperty( Properties.PROPERTY_LAYOUT_LEFT_OPTION, m_leftOptionLayout.getSelectedItem().toString() );
 		Properties.getInstance().setProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, m_leftCentreTextLayout.getText() );
-		Properties.getInstance().setProperty( Properties.PROPERTY_LAYOUT_CENTRE_OPTION, m_centreOptionLayout.getSelectedItem().toString() );
+		setLayoutProperty( Properties.PROPERTY_LAYOUT_CENTRE_OPTION, m_centreOptionLayout.getSelectedItem().toString() );
 		Properties.getInstance().setProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, m_rightCentreTextLayout.getText() );
-		Properties.getInstance().setProperty( Properties.PROPERTY_LAYOUT_RIGHT_OPTION, m_rightOptionLayout.getSelectedItem().toString() );
+		setLayoutProperty( Properties.PROPERTY_LAYOUT_RIGHT_OPTION, m_rightOptionLayout.getSelectedItem().toString() );
 		Properties.getInstance().setProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, m_rightTextLayout.getText() );
 
 		Properties.getInstance().setProperty( Properties.PROPERTY_COLUMNS_LEFT_TEXT_AND_LEFT_OPTION_ARE_SEPARATE, Boolean.toString( m_leftTextLeftOptionBreak.isSelected() ) );

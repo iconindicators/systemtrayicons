@@ -22,10 +22,10 @@ public class Properties
     public static final String PROPERTY_LAYOUT_RIGHT_OPTION = "LayoutRightOption";  //$NON-NLS-1$
 
     /** Values for combo portions of the layout */
-    public static final String PROPERTY_LAYOUT_OPTION_NONE = ""; //$NON-NLS-1$
-	public static final String PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR = Messages.getString( "Properties.0" ); //$NON-NLS-1$
-	public static final String PROPERTY_LAYOUT_OPTION_TIME = Messages.getString( "Properties.1" ); //$NON-NLS-1$
-	public static final String PROPERTY_LAYOUT_OPTION_TIME_ZONE = Messages.getString( "Properties.2" ); //$NON-NLS-1$
+    public static final String PROPERTY_LAYOUT_OPTION_NONE = "None"; //$NON-NLS-1$
+	public static final String PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR = "DifferentDayIndicator"; //$NON-NLS-1$
+	public static final String PROPERTY_LAYOUT_OPTION_TIME = "Time"; //$NON-NLS-1$
+	public static final String PROPERTY_LAYOUT_OPTION_TIME_ZONE = "TimeZone"; //$NON-NLS-1$
 
     /** Values for text portions of the layout */
     public static final String PROPERTY_LAYOUT_LEFT_TEXT = "LayoutLeftText";  //$NON-NLS-1$
@@ -63,17 +63,14 @@ public class Properties
 	public static final String PROPERTY_SHOW_DATE_AND_TIME_LONG = "ShowDateTimeLong"; //$NON-NLS-1$
 	public static final String PROPERTY_SHOW_DATE_AND_TIME_MEDIUM = "ShowDateTimeMedium"; //$NON-NLS-1$
 	public static final String PROPERTY_SHOW_DATE_AND_TIME_SHORT = "ShowDateTimeShort"; //$NON-NLS-1$
-
 	public static final String PROPERTY_SHOW_DATE_FULL = "ShowDateFull"; //$NON-NLS-1$
 	public static final String PROPERTY_SHOW_DATE_LONG = "ShowDateLong"; //$NON-NLS-1$
 	public static final String PROPERTY_SHOW_DATE_MEDIUM = "ShowDateMedium"; //$NON-NLS-1$
 	public static final String PROPERTY_SHOW_DATE_SHORT = "ShowDateShort"; //$NON-NLS-1$
-
 	public static final String PROPERTY_SHOW_TIME_FULL = "ShowTimeFull"; //$NON-NLS-1$
 	public static final String PROPERTY_SHOW_TIME_LONG = "ShowTimeLong"; //$NON-NLS-1$
 	public static final String PROPERTY_SHOW_TIME_MEDIUM = "ShowTimeMedium"; //$NON-NLS-1$
 	public static final String PROPERTY_SHOW_TIME_SHORT = "ShowTimeShort"; //$NON-NLS-1$
-
 	public static final String PROPERTY_SHOW_USER_DEFINED = "ShowUserDefined"; //$NON-NLS-1$
 	public static final String PROPERTY_SHOW_USER_DEFINED_PATTERN = "ShowUserDefinedPattern"; //$NON-NLS-1$
 
