@@ -2,6 +2,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 
@@ -22,7 +24,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EtchedBorder;
 
 
-public class MessageLayout extends JDialog implements ItemListener
+public class MessageLayout extends JDialog implements ActionListener, ItemListener, KeyListener
 {
 	private static final long serialVersionUID = 1L;
 
@@ -43,7 +45,7 @@ public class MessageLayout extends JDialog implements ItemListener
 	protected JComboBox m_leftOptionLayout, m_centreOptionLayout, m_rightOptionLayout;
 	protected JCheckBox m_leftTextLeftOptionBreak, m_leftOptionLeftCentreTextBreak, m_leftCentreTextCentreOptionBreak, m_centreOptionRightCentreTextBreak, m_rightCentreTextRightOptionBreak, m_rightOptionRightTextBreak;
 	protected JComboBox m_leftTextAlignment, m_leftOptionAlignment, m_leftCentreTextAlignment, m_centreOptionAlignment, m_rightCentreTextAlignment, m_rightOptionAlignment, m_rightTextAlignment;
-	protected JButton m_sample, m_ok, m_cancel;
+	protected JButton m_ok, m_cancel;
 
 	protected String m_leftText, m_leftOption, m_leftCentreText, m_centreOption, m_rightCentreText, m_rightOption, m_rightText;
 	protected boolean m_leftTextAndLeftOptionAreSeparateOption, m_leftOptionAndLeftCentreTextAreSeparateOption, m_leftCentreTextAndCentreOptionAreSeparateOption, m_centreOptionAndRightCentreTextAreSeparateOption, m_rightCentreTextAndRightOptionAreSeparateOption, m_rightOptionAndRightTextAreSeparateOption;
@@ -61,13 +63,13 @@ public class MessageLayout extends JDialog implements ItemListener
     	final MessageLayout messageLayout = new MessageLayout();
 
     	// Read in property values and keep a copy of them here in case the user cancels the operation.
-    	messageLayout.m_leftText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, Properties.PROPERTY_LAYOUT_LEFT_TEXT_DEFAULT, false );
+    	messageLayout.m_leftText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, "", false ); //$NON-NLS-1$
     	messageLayout.m_leftOption = getLayoutProperty( Properties.PROPERTY_LAYOUT_LEFT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME_ZONE );
-    	messageLayout.m_leftCentreText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT_DEFAULT, false );
+    	messageLayout.m_leftCentreText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, "", false ); //$NON-NLS-1$
     	messageLayout.m_centreOption = getLayoutProperty( Properties.PROPERTY_LAYOUT_CENTRE_OPTION, Properties.PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR );
-    	messageLayout.m_rightCentreText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT_DEFAULT, false );
+    	messageLayout.m_rightCentreText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, "", false ); //$NON-NLS-1$
     	messageLayout.m_rightOption = getLayoutProperty( Properties.PROPERTY_LAYOUT_RIGHT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME );
-    	messageLayout.m_rightText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_TEXT_DEFAULT, false );
+    	messageLayout.m_rightText = Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, "", false ); //$NON-NLS-1$
 
     	messageLayout.m_leftTextAndLeftOptionAreSeparateOption = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_LEFT_TEXT_AND_LEFT_OPTION_ARE_SEPARATE, true );
     	messageLayout.m_leftOptionAndLeftCentreTextAreSeparateOption = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_LEFT_OPTION_AND_LEFT_CENTRE_TEXT_ARE_SEPARATE, true );
@@ -88,26 +90,33 @@ public class MessageLayout extends JDialog implements ItemListener
 
     	messageLayout.m_layoutLabel = new JLabel( Messages.getString( "MessageLayout.11" ) ); //$NON-NLS-1$
 
-    	messageLayout.m_leftTextLayout = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, Properties.PROPERTY_LAYOUT_LEFT_TEXT_DEFAULT, false ) );
+    	messageLayout.m_leftTextLayout = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, "", false ) ); //$NON-NLS-1$
     	messageLayout.m_leftTextLayout.setColumns( NUMBER_OF_COLUMNS );
+    	messageLayout.m_leftTextLayout.addKeyListener( messageLayout );
 
     	messageLayout.m_leftOptionLayout = new JComboBox( layoutOptions );
-    	messageLayout.m_leftOptionLayout.setSelectedItem( messageLayout.m_leftOption ) ;
+    	messageLayout.m_leftOptionLayout.setSelectedItem( messageLayout.m_leftOption );
+    	messageLayout.m_leftOptionLayout.addActionListener( messageLayout );
 
-    	messageLayout.m_leftCentreTextLayout = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT_DEFAULT, false ) );
+    	messageLayout.m_leftCentreTextLayout = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, "", false ) ); //$NON-NLS-1$
     	messageLayout.m_leftCentreTextLayout.setColumns( NUMBER_OF_COLUMNS );
+    	messageLayout.m_leftCentreTextLayout.addKeyListener( messageLayout );
 
     	messageLayout.m_centreOptionLayout = new JComboBox( layoutOptions );
-    	messageLayout.m_centreOptionLayout.setSelectedItem( messageLayout.m_centreOption ) ;
+    	messageLayout.m_centreOptionLayout.setSelectedItem( messageLayout.m_centreOption );
+    	messageLayout.m_centreOptionLayout.addActionListener( messageLayout );
 
-    	messageLayout.m_rightCentreTextLayout = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT_DEFAULT, false ) );
+    	messageLayout.m_rightCentreTextLayout = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, "", false ) ); //$NON-NLS-1$
     	messageLayout.m_rightCentreTextLayout.setColumns( NUMBER_OF_COLUMNS );
+    	messageLayout.m_rightCentreTextLayout.addKeyListener( messageLayout );
 
     	messageLayout.m_rightOptionLayout = new JComboBox( layoutOptions );
-    	messageLayout.m_rightOptionLayout.setSelectedItem( messageLayout.m_rightOption ) ;
+    	messageLayout.m_rightOptionLayout.setSelectedItem( messageLayout.m_rightOption );
+    	messageLayout.m_rightOptionLayout.addActionListener( messageLayout );
 
-    	messageLayout.m_rightTextLayout = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_TEXT_DEFAULT, false ) );
+    	messageLayout.m_rightTextLayout = new JTextField( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, "", false ) ); //$NON-NLS-1$
     	messageLayout.m_rightTextLayout.setColumns( NUMBER_OF_COLUMNS );
+    	messageLayout.m_rightTextLayout.addKeyListener( messageLayout );
 
     	messageLayout.m_layoutComponents = new Vector<JComponent>();
     	messageLayout.m_layoutComponents.add( messageLayout.m_leftTextLayout );
@@ -163,24 +172,31 @@ public class MessageLayout extends JDialog implements ItemListener
     	messageLayout.m_leftTextAlignment = new JComboBox( alignmentOptions );
     	messageLayout.m_leftTextAlignment.setSelectedItem( messageLayout.m_leftTextAlignmentProperty );
     	messageLayout.m_leftTextAlignment.setToolTipText( columAlignmentComboToolTip );
+    	messageLayout.m_leftTextAlignment.addActionListener( messageLayout );
 
     	messageLayout.m_leftOptionAlignment = new JComboBox( alignmentOptions );
     	messageLayout.m_leftOptionAlignment.setToolTipText( columAlignmentComboToolTip );
+    	messageLayout.m_leftOptionAlignment.addActionListener( messageLayout );
 
     	messageLayout.m_leftCentreTextAlignment = new JComboBox( alignmentOptions );
     	messageLayout.m_leftCentreTextAlignment.setToolTipText( columAlignmentComboToolTip );
+    	messageLayout.m_leftCentreTextAlignment.addActionListener( messageLayout );
 
     	messageLayout.m_centreOptionAlignment = new JComboBox( alignmentOptions );
     	messageLayout.m_centreOptionAlignment.setToolTipText( columAlignmentComboToolTip );
+    	messageLayout.m_centreOptionAlignment.addActionListener( messageLayout );
 
     	messageLayout.m_rightCentreTextAlignment = new JComboBox( alignmentOptions );
     	messageLayout.m_rightCentreTextAlignment.setToolTipText( columAlignmentComboToolTip );
+    	messageLayout.m_rightCentreTextAlignment.addActionListener( messageLayout );
 
     	messageLayout.m_rightOptionAlignment = new JComboBox( alignmentOptions );
     	messageLayout.m_rightOptionAlignment.setToolTipText( columAlignmentComboToolTip );
+    	messageLayout.m_rightOptionAlignment.addActionListener( messageLayout );
 
     	messageLayout.m_rightTextAlignment = new JComboBox( alignmentOptions );
     	messageLayout.m_rightTextAlignment.setToolTipText( columAlignmentComboToolTip );
+    	messageLayout.m_rightTextAlignment.addActionListener( messageLayout );
 
     	messageLayout.m_columnAlignmentCombos = new Vector<JComboBox>();
     	messageLayout.m_columnAlignmentCombos.add( messageLayout.m_leftTextAlignment );
@@ -191,34 +207,20 @@ public class MessageLayout extends JDialog implements ItemListener
     	messageLayout.m_columnAlignmentCombos.add( messageLayout.m_rightOptionAlignment );
     	messageLayout.m_columnAlignmentCombos.add( messageLayout.m_rightTextAlignment );
 
-    	messageLayout.m_sample = new JButton( Messages.getString( "MessageLayout.0" ) );  //$NON-NLS-1$
-
     	messageLayout.m_sampleLabel = new JLabel( Message.getMessageString( new GregorianCalendar(), true ) );
     	messageLayout.m_sampleLabel.setHorizontalAlignment( SwingConstants.CENTER );
     	messageLayout.m_sampleLabel.setBorder
-        ( 
+        (
         	BorderFactory.createCompoundBorder
         	(
             	BorderFactory.createCompoundBorder
-            	( 
-            		BorderFactory.createEmptyBorder( BORDER_INDENT, BORDER_INDENT, BORDER_INDENT, BORDER_INDENT ),
+            	(
+            		BorderFactory.createEmptyBorder( BORDER_INDENT, 0, BORDER_INDENT, 0 ),
             		BorderFactory.createEtchedBorder( EtchedBorder.LOWERED )
             	),
         		BorderFactory.createEmptyBorder( BORDER_INDENT, BORDER_INDENT, BORDER_INDENT, BORDER_INDENT )
     		)
         );
-
-    	messageLayout.m_sample.addActionListener
-    	(
-			new ActionListener()
-			{
-				public void actionPerformed( ActionEvent actionEvent )
-				{
-					messageLayout.storeProperties();
-		    		messageLayout.m_sampleLabel.setText( Message.getMessageString( new GregorianCalendar(), true ) );
-				}
-			}
-		);
 
     	messageLayout.m_ok = new JButton( Messages.getString( "MessageLayout.1" ) ); //$NON-NLS-1$
     	messageLayout.m_ok.addActionListener
@@ -278,7 +280,6 @@ public class MessageLayout extends JDialog implements ItemListener
         messageLayout.setModalityType( ModalityType.APPLICATION_MODAL );
         messageLayout.addComponentListener( new ComponentListener( messageLayout, false, true ) );
         messageLayout.setVisible( true );
-
         return messageLayout;
     }
 
@@ -385,7 +386,7 @@ public class MessageLayout extends JDialog implements ItemListener
         layout.setAutoCreateGaps( true );
         layout.setAutoCreateContainerGaps( true );
 
-        layout.linkSize( SwingConstants.HORIZONTAL, m_ok, m_cancel, m_sample );
+        layout.linkSize( SwingConstants.HORIZONTAL, m_ok, m_cancel );
 
         SequentialGroup sequentialGroup = null;
     	ParallelGroup parallelGroup = null;
@@ -486,13 +487,7 @@ public class MessageLayout extends JDialog implements ItemListener
     	parallelGroup = layout.createParallelGroup( Alignment.CENTER );
     	parallelGroup
     		.addGroup( sequentialGroup )
-			.addGroup
-			(
-    			layout.createSequentialGroup()
-					.addComponent( m_sample )
-					.addPreferredGap( ComponentPlacement.UNRELATED )
-					.addComponent( m_sampleLabel )
-			)
+    		.addComponent( m_sampleLabel )
 			.addGroup
 			(
     			layout.createSequentialGroup()
@@ -569,12 +564,7 @@ public class MessageLayout extends JDialog implements ItemListener
     	sequentialGroup
 			.addGroup( parallelGroup )
 			.addPreferredGap( ComponentPlacement.UNRELATED )
-			.addGroup
-			(
-				layout.createParallelGroup( Alignment.CENTER )
-					.addComponent( m_sample )
-					.addComponent( m_sampleLabel )
-			)
+			.addComponent( m_sampleLabel )
 			.addPreferredGap( ComponentPlacement.UNRELATED )
 			.addGroup
 			(
@@ -584,5 +574,34 @@ public class MessageLayout extends JDialog implements ItemListener
 			);
 
 		layout.setVerticalGroup( sequentialGroup );        
+
+		updateSampleText();
     }    
+
+
+    @Override
+	public void keyPressed( KeyEvent keyEvent ) { updateSampleText(); }
+
+
+    @Override
+	public void keyReleased( KeyEvent keyEvent ) { updateSampleText(); }
+
+
+	@Override
+	public void keyTyped( KeyEvent keyEvent ) { updateSampleText(); }
+
+
+	@Override
+	public void actionPerformed( ActionEvent actionEvent ) { updateSampleText(); }
+
+
+	private void updateSampleText()
+	{
+		storeProperties();
+		m_sampleLabel.setText( Message.getMessageString( new GregorianCalendar(), true ) );
+	}
+	
+
+	public static void main( String[] args ) { MessageLayout.create(); }
+
 }
