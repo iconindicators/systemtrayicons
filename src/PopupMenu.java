@@ -22,7 +22,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	public static final String APPLICATION_NAME = Messages.getString( "PopupMenu.0" ); //$NON-NLS-1$
 	private static final String APPLICATION_SITE = "http://sourceforge.net/projects/wrldtimesystray"; //$NON-NLS-1$
 	private static final String APPLICATION_VERSION = Messages.getString( "PopupMenu.1" ); //$NON-NLS-1$
-	private static final String APPLICATION_VERSION_NUMBER = "1.4 (2008-10-27)"; //$NON-NLS-1$
+	private static final String APPLICATION_VERSION_NUMBER = "1.5 (2010-04-10)"; //$NON-NLS-1$ 
 
 	private static final String CREDIT_REGISTRY = Messages.getString( "PopupMenu.4" ); //$NON-NLS-1$
 	private static final String CREDIT_NSIS = Messages.getString( "PopupMenu.5" ); //$NON-NLS-1$
