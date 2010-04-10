@@ -138,13 +138,13 @@ public class Message
     {
     	StringBuilder stringBuilder = new StringBuilder();
 
-    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, Properties.PROPERTY_LAYOUT_LEFT_TEXT_DEFAULT, false ) );
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, "", false ) ); //$NON-NLS-1$
     	stringBuilder.append( getLayoutValue( Properties.PROPERTY_LAYOUT_LEFT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME_ZONE, timeZone, differentDayIndicator, dateTime ) );
-    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT_DEFAULT, false ) );
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, "", false ) ); //$NON-NLS-1$
     	stringBuilder.append( getLayoutValue( Properties.PROPERTY_LAYOUT_CENTRE_OPTION, Properties.PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR, timeZone, differentDayIndicator, dateTime ) );
-    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT_DEFAULT, false ) );
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, "", false ) ); //$NON-NLS-1$
     	stringBuilder.append( getLayoutValue( Properties.PROPERTY_LAYOUT_RIGHT_OPTION, Properties.PROPERTY_LAYOUT_OPTION_TIME, timeZone, differentDayIndicator, dateTime ) );
-    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_TEXT_DEFAULT, false ) );
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, "", false ) ); //$NON-NLS-1$
 
     	return stringBuilder.toString();
     }
@@ -157,7 +157,7 @@ public class Message
     	stringBuilder.append( "<tr>" ); //$NON-NLS-1$
 
     	stringBuilder.append( "<td align=\"" + getColumnAlignment( Properties.PROPERTY_COLUMN_LEFT_TEXT_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
-    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, Properties.PROPERTY_LAYOUT_LEFT_TEXT_DEFAULT, false ).replace( " ", "&nbsp;" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, "", false ).replace( " ", "&nbsp;" ).replace( "<", "&lt;" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_LEFT_TEXT_AND_LEFT_OPTION_ARE_SEPARATE, false ) )
     		stringBuilder.append( "</td><td align=\"" + getColumnAlignment( Properties.PROPERTY_COLUMN_LEFT_OPTION_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -165,7 +165,7 @@ public class Message
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_LEFT_OPTION_AND_LEFT_CENTRE_TEXT_ARE_SEPARATE, false ) )
     		stringBuilder.append( "</td><td align=\"" + getColumnAlignment( Properties.PROPERTY_COLUMN_LEFT_CENTRE_TEXT_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT_DEFAULT, false ).replace( " ", "&nbsp;" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_LEFT_CENTRE_TEXT, "", false ).replace( " ", "&nbsp;" ).replace( "<", "&lt;" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_LEFT_CENTRE_TEXT_AND_CENTRE_OPTION_ARE_SEPARATE, false ) )
     		stringBuilder.append( "</td><td align=\"" + getColumnAlignment( Properties.PROPERTY_COLUMN_CENTRE_OPTION_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -173,7 +173,7 @@ public class Message
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_CENTRE_OPTION_AND_RIGHT_CENTRE_TEXT_ARE_SEPARATE, false ) )
     		stringBuilder.append( "</td><td align=\"" + getColumnAlignment( Properties.PROPERTY_COLUMN_RIGHT_CENTRE_TEXT_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT_DEFAULT, false ).replace( " ", "&nbsp;" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT, "", false ).replace( " ", "&nbsp;" ).replace( "<", "&lt;" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_RIGHT_CENTRE_TEXT_AND_RIGHT_OPTION_ARE_SEPARATE, false ) )
     		stringBuilder.append( "</td><td align=\"" + getColumnAlignment( Properties.PROPERTY_COLUMN_RIGHT_OPTION_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -181,7 +181,7 @@ public class Message
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_COLUMNS_RIGHT_OPTION_AND_RIGHT_TEXT_ARE_SEPARATE, false ) )
     		stringBuilder.append( "</td><td align=\"" + getColumnAlignment( Properties.PROPERTY_COLUMN_RIGHT_TEXT_ALIGNMENT ) + "\">" ); //$NON-NLS-1$ //$NON-NLS-2$
 
-    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, Properties.PROPERTY_LAYOUT_RIGHT_TEXT_DEFAULT, false ).replace( " ", "&nbsp;" ) ); //$NON-NLS-1$ //$NON-NLS-2$
+    	stringBuilder.append( Properties.getInstance().getProperty( Properties.PROPERTY_LAYOUT_RIGHT_TEXT, "", false ).replace( " ", "&nbsp;" ).replace( "<", "&lt;" ) ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
     	stringBuilder.append( "</td>" ); //$NON-NLS-1$
 
     	stringBuilder.append( "</tr>" ); //$NON-NLS-1$
