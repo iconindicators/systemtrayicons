@@ -29,13 +29,9 @@ public class Properties
 
     /** Values for text portions of the layout */
     public static final String PROPERTY_LAYOUT_LEFT_TEXT = "LayoutLeftText";  //$NON-NLS-1$
-    public static final String PROPERTY_LAYOUT_LEFT_TEXT_DEFAULT = "";  //$NON-NLS-1$
     public static final String PROPERTY_LAYOUT_LEFT_CENTRE_TEXT = "LayoutLeftCentreText";  //$NON-NLS-1$
-    public static final String PROPERTY_LAYOUT_LEFT_CENTRE_TEXT_DEFAULT = ": ";  //$NON-NLS-1$
     public static final String PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT = "LayoutRightCentreText";  //$NON-NLS-1$
-    public static final String PROPERTY_LAYOUT_RIGHT_CENTRE_TEXT_DEFAULT = "";  //$NON-NLS-1$
     public static final String PROPERTY_LAYOUT_RIGHT_TEXT = "LayoutRightText";  //$NON-NLS-1$
-    public static final String PROPERTY_LAYOUT_RIGHT_TEXT_DEFAULT = "";  //$NON-NLS-1$
 
     /** Option for combining Time Zones. */
     public static final String PROPERTY_COMBINE_TIME_ZONES_OPTION = "CombineTimeZone"; //$NON-NLS-1$    
