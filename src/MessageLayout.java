@@ -40,20 +40,21 @@ public class MessageLayout extends JDialog implements ActionListener, ItemListen
 	private static final String ALIGNMENT_CENTRE = Messages.getString( "MessageLayout.9" ); //$NON-NLS-1$
 	private static final String ALIGNMENT_RIGHT = Messages.getString( "MessageLayout.10" ); //$NON-NLS-1$
 
-	protected JLabel m_layoutLabel, m_columnBreaksLabel, m_columnAlignmentsLabel, m_sampleLabel;
-	protected JTextField m_leftTextLayout, m_leftCentreTextLayout, m_rightCentreTextLayout, m_rightTextLayout;
-	protected JComboBox m_leftOptionLayout, m_centreOptionLayout, m_rightOptionLayout;
-	protected JCheckBox m_leftTextLeftOptionBreak, m_leftOptionLeftCentreTextBreak, m_leftCentreTextCentreOptionBreak, m_centreOptionRightCentreTextBreak, m_rightCentreTextRightOptionBreak, m_rightOptionRightTextBreak;
-	protected JComboBox m_leftTextAlignment, m_leftOptionAlignment, m_leftCentreTextAlignment, m_centreOptionAlignment, m_rightCentreTextAlignment, m_rightOptionAlignment, m_rightTextAlignment;
-	protected JButton m_ok, m_cancel;
+	private JLabel m_layoutLabel, m_columnBreaksLabel, m_columnAlignmentsLabel, m_sampleLabel;
+	private JTextField m_leftTextLayout, m_leftCentreTextLayout, m_rightCentreTextLayout, m_rightTextLayout;
+	private JComboBox m_leftOptionLayout, m_centreOptionLayout, m_rightOptionLayout;
+	private JCheckBox m_leftTextLeftOptionBreak, m_leftOptionLeftCentreTextBreak, m_leftCentreTextCentreOptionBreak, m_centreOptionRightCentreTextBreak, m_rightCentreTextRightOptionBreak, m_rightOptionRightTextBreak;
+	private JComboBox m_leftTextAlignment, m_leftOptionAlignment, m_leftCentreTextAlignment, m_centreOptionAlignment, m_rightCentreTextAlignment, m_rightOptionAlignment, m_rightTextAlignment;
+	private JButton m_ok, m_cancel;
 
 	protected String m_leftText, m_leftOption, m_leftCentreText, m_centreOption, m_rightCentreText, m_rightOption, m_rightText;
 	protected boolean m_leftTextAndLeftOptionAreSeparateOption, m_leftOptionAndLeftCentreTextAreSeparateOption, m_leftCentreTextAndCentreOptionAreSeparateOption, m_centreOptionAndRightCentreTextAreSeparateOption, m_rightCentreTextAndRightOptionAreSeparateOption, m_rightOptionAndRightTextAreSeparateOption;
 	protected String m_leftTextAlignmentProperty, m_leftOptionAlignmentProperty, m_leftCentreTextAlignmentProperty, m_centreOptionAlignmentProperty, m_rightCentreTextAlignmentProperty, m_rightOptionAlignmentProperty, m_rightTextAlignmentProperty;
 	
-	protected Vector<JComponent> m_layoutComponents;
-	protected Vector<JCheckBox> m_columnCheckboxes;
-	protected Vector<JComboBox> m_columnAlignmentCombos;
+	private Vector<JComponent> m_layoutComponents;
+	private Vector<JCheckBox> m_columnCheckboxes;
+	private Vector<JComboBox> m_columnAlignmentCombos;
+
 
 	private MessageLayout() { super( (JDialog)null ); }
 
@@ -175,26 +176,32 @@ public class MessageLayout extends JDialog implements ActionListener, ItemListen
     	messageLayout.m_leftTextAlignment.addActionListener( messageLayout );
 
     	messageLayout.m_leftOptionAlignment = new JComboBox( alignmentOptions );
+    	messageLayout.m_leftOptionAlignment.setSelectedItem( messageLayout.m_leftOptionAlignmentProperty );
     	messageLayout.m_leftOptionAlignment.setToolTipText( columAlignmentComboToolTip );
     	messageLayout.m_leftOptionAlignment.addActionListener( messageLayout );
 
     	messageLayout.m_leftCentreTextAlignment = new JComboBox( alignmentOptions );
+    	messageLayout.m_leftCentreTextAlignment.setSelectedItem( messageLayout.m_leftCentreTextAlignmentProperty );
     	messageLayout.m_leftCentreTextAlignment.setToolTipText( columAlignmentComboToolTip );
     	messageLayout.m_leftCentreTextAlignment.addActionListener( messageLayout );
 
     	messageLayout.m_centreOptionAlignment = new JComboBox( alignmentOptions );
+    	messageLayout.m_centreOptionAlignment.setSelectedItem( messageLayout.m_centreOptionAlignmentProperty );
     	messageLayout.m_centreOptionAlignment.setToolTipText( columAlignmentComboToolTip );
     	messageLayout.m_centreOptionAlignment.addActionListener( messageLayout );
 
     	messageLayout.m_rightCentreTextAlignment = new JComboBox( alignmentOptions );
+    	messageLayout.m_rightCentreTextAlignment.setSelectedItem( messageLayout.m_rightCentreTextAlignmentProperty );
     	messageLayout.m_rightCentreTextAlignment.setToolTipText( columAlignmentComboToolTip );
     	messageLayout.m_rightCentreTextAlignment.addActionListener( messageLayout );
 
     	messageLayout.m_rightOptionAlignment = new JComboBox( alignmentOptions );
+    	messageLayout.m_rightOptionAlignment.setSelectedItem( messageLayout.m_rightOptionAlignmentProperty );
     	messageLayout.m_rightOptionAlignment.setToolTipText( columAlignmentComboToolTip );
     	messageLayout.m_rightOptionAlignment.addActionListener( messageLayout );
 
     	messageLayout.m_rightTextAlignment = new JComboBox( alignmentOptions );
+    	messageLayout.m_rightTextAlignment.setSelectedItem( messageLayout.m_rightTextAlignmentProperty );
     	messageLayout.m_rightTextAlignment.setToolTipText( columAlignmentComboToolTip );
     	messageLayout.m_rightTextAlignment.addActionListener( messageLayout );
 
@@ -308,14 +315,11 @@ public class MessageLayout extends JDialog implements ActionListener, ItemListen
     {
     	if( value.equals( LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR ) )
     		Properties.getInstance().setProperty( propertyName, Properties.PROPERTY_LAYOUT_OPTION_DIFFERENT_DAY_INDICATOR );
-
-    	if( value.equals( LAYOUT_OPTION_NONE ) )
+    	else if( value.equals( LAYOUT_OPTION_NONE ) )
     		Properties.getInstance().setProperty( propertyName, Properties.PROPERTY_LAYOUT_OPTION_NONE );
-
-    	if( value.equals( LAYOUT_OPTION_TIME ) )
+    	else if( value.equals( LAYOUT_OPTION_TIME ) )
     		Properties.getInstance().setProperty( propertyName, Properties.PROPERTY_LAYOUT_OPTION_TIME );
-
-    	if( value.equals( LAYOUT_OPTION_TIME_ZONE ) )
+    	else if( value.equals( LAYOUT_OPTION_TIME_ZONE ) )
     		Properties.getInstance().setProperty( propertyName, Properties.PROPERTY_LAYOUT_OPTION_TIME_ZONE );
     }
 
@@ -340,11 +344,9 @@ public class MessageLayout extends JDialog implements ActionListener, ItemListen
     {
     	if( value.equals( ALIGNMENT_CENTRE ) )
     		Properties.getInstance().setProperty( propertyName, Properties.PROPERTY_COLUMN_ALIGNMENT_CENTRE );
-
-    	if( value.equals( ALIGNMENT_LEFT ) )
+    	else if( value.equals( ALIGNMENT_LEFT ) )
     		Properties.getInstance().setProperty( propertyName, Properties.PROPERTY_COLUMN_ALIGNMENT_LEFT );
-
-    	if( value.equals( ALIGNMENT_RIGHT ) )
+    	else if( value.equals( ALIGNMENT_RIGHT ) )
     		Properties.getInstance().setProperty( propertyName, Properties.PROPERTY_COLUMN_ALIGNMENT_RIGHT );
     }
 
@@ -575,7 +577,12 @@ public class MessageLayout extends JDialog implements ActionListener, ItemListen
 
 		layout.setVerticalGroup( sequentialGroup );        
 
-		updateSampleText();
+		// If a column has been hidden, need to ensure its value is the same of the left-most visible column.
+    	for( int i = 0; i < m_columnCheckboxes.size(); i++ )
+    		if( ! m_columnCheckboxes.get( i ).isSelected() )
+    			m_columnAlignmentCombos.get( i + 1 ).setSelectedIndex( m_columnAlignmentCombos.get( i ).getSelectedIndex() );
+
+    	updateSampleText();
     }    
 
 
@@ -600,8 +607,4 @@ public class MessageLayout extends JDialog implements ActionListener, ItemListen
 		storeProperties();
 		m_sampleLabel.setText( Message.getMessageString( new GregorianCalendar(), true ) );
 	}
-	
-
-	public static void main( String[] args ) { MessageLayout.create(); }
-
 }
