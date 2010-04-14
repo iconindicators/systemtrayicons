@@ -10,16 +10,19 @@ import javax.swing.UIManager;
 
 public class WorldTimeSystemTray implements ClipboardOwner
 {
+    public static void main( String[] args ) { new WorldTimeSystemTray(); }
+
+
     public WorldTimeSystemTray()
 	{
-    	// On Ubuntu, running the application on startup failed as the system tray was not ready
-		// So we sleep for 5 seconds first...    	
+    	// On Ubuntu, running the application on startup failed as the system tray was not ready.
+		// So we sleep for 5 seconds first...
     	try { Thread.sleep( 5000 ); }
 		catch( InterruptedException interruptedException ) { /** Do nothing. */ }
 
     	UIManager.put( "swing.boldMetal", Boolean.FALSE ); //$NON-NLS-1$
     	try { UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() ); }
-        catch( Throwable throwable ) { /** Do nothing. */ }
+    	catch( Throwable throwable ) { /** This should NEVER happen! */ }
 
         if( ! SystemTray.isSupported() )
         {
@@ -79,9 +82,9 @@ public class WorldTimeSystemTray implements ClipboardOwner
         	{
         		public void run() 
         		{
-        			TrayIcon trayIcon = TrayIcon.createTrayIcon();
 	            	try 
 	            	{ 
+	        			TrayIcon trayIcon = TrayIcon.createTrayIcon();
 	            		SystemTray.getSystemTray().add( trayIcon ); 
 	            		trayIcon.displayStartupBalloon();
 	            	}
@@ -94,8 +97,6 @@ public class WorldTimeSystemTray implements ClipboardOwner
 	        				JOptionPane.ERROR_MESSAGE, 
 	        				JOptionPane.DEFAULT_OPTION
 	        			);
-	        			
-	        			System.exit( 1 );
 	        		}
         		}
         	}
@@ -104,7 +105,4 @@ public class WorldTimeSystemTray implements ClipboardOwner
 
 
 	public void lostOwnership( Clipboard clipboard, Transferable transferable ) { /** Do nothing. */ }
-
-
-    public static void main( String[] args ) { new WorldTimeSystemTray(); }
 }
