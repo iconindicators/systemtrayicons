@@ -2,7 +2,7 @@ World Time System Tray Release Notes
 ------------------------------------
 
 
-2010-04-10 Version 1.5
+2010-04-14 Version 1.5
 
 * Fixed bug which incorrectly read in escaped commas.  Refer to bug
   "Can't use commas in user-defined time zone names", ID 2935102.
