@@ -62,17 +62,17 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
         timeTravel.m_output = new JLabel();
         timeTravel.m_output.setHorizontalAlignment( SwingConstants.CENTER );
         timeTravel.m_output.setBorder
-        ( 
-        	BorderFactory.createCompoundBorder
-        	(
+        (
             	BorderFactory.createCompoundBorder
-            	( 
-            		BorderFactory.createEmptyBorder( BORDER_INDENT, BORDER_INDENT, BORDER_INDENT, BORDER_INDENT ),
-            		BorderFactory.createEtchedBorder( EtchedBorder.LOWERED )
-            	),
-        		BorderFactory.createEmptyBorder( BORDER_INDENT, BORDER_INDENT, BORDER_INDENT, BORDER_INDENT )
-    		)
-        );
+            	(
+                	BorderFactory.createCompoundBorder
+                	(
+                		BorderFactory.createEmptyBorder( BORDER_INDENT, 0, BORDER_INDENT, 0 ),
+                		BorderFactory.createEtchedBorder( EtchedBorder.LOWERED )
+                	),
+            		BorderFactory.createEmptyBorder( BORDER_INDENT, BORDER_INDENT, BORDER_INDENT, BORDER_INDENT )
+        		)
+            );
 
         // The data we pass to the combo box has to be a copy.
         // When we (later) remove the items from the combo, the original data gets clobbered.
