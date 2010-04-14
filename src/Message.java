@@ -127,10 +127,7 @@ public class Message
 
     private static String buildLine( boolean html, String timeZone, String differentDayIndicator, String dateTime )
     {
-    	if( html )
-    		return buildLineInHTML( timeZone, differentDayIndicator, dateTime );
-    	
-    	return buildLineInPlaintext( timeZone, differentDayIndicator, dateTime );
+    	return html ? buildLineInHTML( timeZone, differentDayIndicator, dateTime ) : buildLineInPlaintext( timeZone, differentDayIndicator, dateTime );
     }
 
 
