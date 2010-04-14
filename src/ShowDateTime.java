@@ -38,17 +38,17 @@ public class ShowDateTime extends JDialog implements ClipboardOwner
         output.setHorizontalAlignment( SwingConstants.CENTER );
 
         output.setBorder
-        ( 
-        	BorderFactory.createCompoundBorder
-        	(
+        (
             	BorderFactory.createCompoundBorder
-            	( 
-            		BorderFactory.createEmptyBorder( BORDER_INDENT, BORDER_INDENT, BORDER_INDENT, BORDER_INDENT ),
-            		BorderFactory.createEtchedBorder( EtchedBorder.LOWERED )
-            	),
-        		BorderFactory.createEmptyBorder( BORDER_INDENT, BORDER_INDENT, BORDER_INDENT, BORDER_INDENT )
-    		)
-        );
+            	(
+                	BorderFactory.createCompoundBorder
+                	(
+                		BorderFactory.createEmptyBorder( BORDER_INDENT, 0, BORDER_INDENT, 0 ),
+                		BorderFactory.createEtchedBorder( EtchedBorder.LOWERED )
+                	),
+            		BorderFactory.createEmptyBorder( BORDER_INDENT, BORDER_INDENT, BORDER_INDENT, BORDER_INDENT )
+        		)
+            );
 
         JButton copy = new JButton( Messages.getString( "ShowDateTime.0" ) ); //$NON-NLS-1$
         copy.setToolTipText( Messages.getString( "ShowDateTime.1" ) ); //$NON-NLS-1$
