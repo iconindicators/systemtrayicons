@@ -5,26 +5,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
 
 
 public class PopupMenu extends java.awt.PopupMenu implements ActionListener, ItemListener
 {
 	private static final long serialVersionUID = 1L;
 
-	private static final String APPLICATION_AUTHOR = "Bernard Giannetti"; //$NON-NLS-1$
-	public static final String APPLICATION_NAME = Messages.getString( "PopupMenu.0" ); //$NON-NLS-1$
-	private static final String APPLICATION_SITE = "http://sourceforge.net/projects/wrldtimesystray"; //$NON-NLS-1$
-	private static final String APPLICATION_VERSION = Messages.getString( "PopupMenu.1" ); //$NON-NLS-1$
-	private static final String APPLICATION_VERSION_NUMBER = "1.5 (2010-04-14)"; //$NON-NLS-1$ 
-
-	private static final String CREDIT_REGISTRY = Messages.getString( "PopupMenu.4" ); //$NON-NLS-1$
 	private static final String CREDIT_NSIS = Messages.getString( "PopupMenu.5" ); //$NON-NLS-1$
 
 	private static final String POPUP_ABOUT = Messages.getString( "PopupMenu.6" ); //$NON-NLS-1$
@@ -184,7 +177,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	    checkboxMenuItem.addItemListener( this );
 	    add( checkboxMenuItem );
 
-	    if( SystemStart.isMicrosoftWindows() )
+	    if( OperatingSystem.isWindows() )
 	    {
 		    checkboxMenuItem = new CheckboxMenuItem( POPUP_RUN_ON_SYSTEM_START, SystemStart.runOnSystemStart() );
 		    checkboxMenuItem.addItemListener( this );
@@ -235,19 +228,17 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 
     	if( source instanceof MenuItem && POPUP_ABOUT.equals( ( (MenuItem)source ).getLabel() ) )
     	{
-    		final JLabel label =
-    			new JLabel
-    			(
-    				"<html><center>" + //$NON-NLS-1$
-    				"<b>" + APPLICATION_NAME + "</b><br>" + APPLICATION_VERSION + " " + APPLICATION_VERSION_NUMBER + "<br><br>" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    				APPLICATION_AUTHOR + "<br>" + APPLICATION_SITE + "<br><br>" + //$NON-NLS-1$ //$NON-NLS-2$
-    				( SystemStart.isMicrosoftWindows() ? CREDIT_REGISTRY + "<br><br>" : "" ) + //$NON-NLS-1$ //$NON-NLS-2$
-    				( SystemStart.isMicrosoftWindows() ? CREDIT_NSIS + "<br><br>" : "" ) + //$NON-NLS-1$ //$NON-NLS-2$
-    				"</center></html>", //$NON-NLS-1$
-    				SwingConstants.CENTER
-    			);
+    		String message =
+				"<html><center><br>" +  //$NON-NLS-1$
+        		"<b>" + WorldTimeSystemTray.APPLICATION_NAME + "</b><br><br>" + //$NON-NLS-1$ //$NON-NLS-2$
+        		new MessageFormat( Messages.getString("PopupMenu.62") ).format( new Object[] { WorldTimeSystemTray.APPLICATION_VERSION_NUMBER } ) +"<br>" + //$NON-NLS-1$ //$NON-NLS-2$
+        		"<a href='" + WorldTimeSystemTray.APPLICATION_URL + "'>" + WorldTimeSystemTray.APPLICATION_URL + "</a><br><br><br>" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        		"<u>" + Messages.getString("PopupMenu.63") + "</u><br><br>" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        		WorldTimeSystemTray.APPLICATION_AUTHOR + "<br><br>" + //$NON-NLS-1$
+				( OperatingSystem.isWindows() ? CREDIT_NSIS + "<br><br>" : "" ) + //$NON-NLS-1$ //$NON-NLS-2$
+				"</center></html>";  //$NON-NLS-1$
 
-    		showMessageDialog( POPUP_ABOUT, label, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION );
+    		MessageDialog.showMessageDialog( POPUP_ABOUT, MessageDialog.createURLLabel( message ), JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION );
 			return;
     	}
 

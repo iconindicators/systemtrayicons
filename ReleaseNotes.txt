@@ -2,6 +2,17 @@ World Time System Tray Release Notes
 ------------------------------------
 
 
+2011-10-08 Version 1.6
+
+* General code cleanup. 
+
+* Added URL to About box.
+
+* Windows installer/launcher now handles UAC better.
+
+* Windows registry access implemented in pure Java.
+
+
 2010-04-14 Version 1.5
 
 * Fixed bug which incorrectly read in escaped commas.  Refer to bug

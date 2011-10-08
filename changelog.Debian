@@ -1,21 +1,8 @@
-worldtimesystemtray (1.5) karmic; urgency=low
+worldtimesystemtray (1.6) narwhal; urgency=low
 
-* Fixed bug which incorrectly read in escaped commas.  Refer to bug
-  "Can't use commas in user-defined time zone names", ID 2935102.
+  * General code cleanup. 
+  
+  * Added URL to About box.
 
-* Enhanced the layout option allowing the user to specify the alignment of the
-  message components.  Also allows message components to be combined. Refer to
-  feature request "Line up date/time column in balloon display", ID 2935106.
-  The end result is that the message is now rendered as HTML in all dialogs.
-  Unfortunately it's not possible to use HTML in the bubble text nor the
-  hover text.
 
-* Removed the translation of properties. This may effect your layout and so
-  will need to be reset.
-
-* The message layout now supports whitespace.
-
-* New translation for en_US added to support the spelling of "center" versus
-  "centre".
-
- -- Bernard Giannetti <bernmeister@users.sourceforge.net>  Wed, 14 Apr 2010 12:39:10 +1100
+ -- Bernard Giannetti <bernmeister@users.sourceforge.net>  Sat, 8 Oct 2011 18:15:10 +1100

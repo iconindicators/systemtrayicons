@@ -10,19 +10,21 @@ import javax.swing.UIManager;
 
 public class WorldTimeSystemTray implements ClipboardOwner
 {
-    public static void main( String[] args ) { new WorldTimeSystemTray(); }
+	public static final String APPLICATION_AUTHOR = "Bernard Giannetti"; //$NON-NLS-1$
+	public static final String APPLICATION_EXECUTABLE = "WorldTimeSystemTray.exe";  //$NON-NLS-1$
+	public static final String APPLICATION_NAME = "World Time System Tray";  //$NON-NLS-1$
+	public static final String APPLICATION_URL = "http://wrldtimesystray.sourceforge.net"; //$NON-NLS-1$
+	public static final String APPLICATION_VERSION_NUMBER = "1.6 (2011-10-08)"; //$NON-NLS-1$
 
 
-    public WorldTimeSystemTray()
+	public WorldTimeSystemTray()
 	{
-    	// On Ubuntu, running the application on startup failed as the system tray was not ready.
-		// So we sleep for 5 seconds first...
-    	try { Thread.sleep( 5000 ); }
+    	// On Ubuntu, running the application on startup failed as the system tray was not ready, so sleep (on all platforms, can't hurt).    	
+    	try { Thread.sleep( 2500 ); }
 		catch( InterruptedException interruptedException ) { /** Do nothing. */ }
 
-    	UIManager.put( "swing.boldMetal", Boolean.FALSE ); //$NON-NLS-1$
     	try { UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() ); }
-    	catch( Throwable throwable ) { /** This should NEVER happen! */ }
+        catch( Exception exception ) { /** Do nothing. */ }
 
         if( ! SystemTray.isSupported() )
         {
@@ -76,27 +78,39 @@ public class WorldTimeSystemTray implements ClipboardOwner
 			return;
         }
 
+        if( OperatingSystem.isWindows() )
+        {
+        	try { WindowsRegistry.initialise(); }
+        	catch( Exception exception )
+        	{
+        		MessageDialog.showMessageDialog( Messages.getString( "WorldTimeSystemTray.9" ), Messages.getString( "WorldTimeSystemTray.10" ), JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION );  //$NON-NLS-1$//$NON-NLS-2$
+				return;
+        	}
+        }
+
         SwingUtilities.invokeLater
         (
         	new Runnable() 
         	{
         		public void run() 
         		{
+        			TrayIcon trayIcon = TrayIcon.createTrayIcon();
 	            	try 
-	            	{ 
-	        			TrayIcon trayIcon = TrayIcon.createTrayIcon();
+	            	{
 	            		SystemTray.getSystemTray().add( trayIcon ); 
 	            		trayIcon.displayStartupBalloon();
 	            	}
-	        		catch( Throwable throwable ) 
+	        		catch( Exception exception ) 
 	        		{
 	        			MessageDialog.showMessageDialog
 	        			(
 	        				Messages.getString( "WorldTimeSystemTray.2" ), //$NON-NLS-1$ 
-	        				throwable.getMessage(), 
+	        				exception.getMessage(), 
 	        				JOptionPane.ERROR_MESSAGE, 
 	        				JOptionPane.DEFAULT_OPTION
 	        			);
+	        			
+	        			System.exit( 1 );
 	        		}
         		}
         	}
@@ -105,4 +119,7 @@ public class WorldTimeSystemTray implements ClipboardOwner
 
 
 	public void lostOwnership( Clipboard clipboard, Transferable transferable ) { /** Do nothing. */ }
+
+
+	public static void main( String[] args ) { new WorldTimeSystemTray(); }
 }

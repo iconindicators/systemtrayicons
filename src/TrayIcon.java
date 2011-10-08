@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseMotionListener
 {
 	private static String APPLICATION_ICON_IMAGE = "worldtimesystemtray16x16.gif";  //$NON-NLS-1$
-	private static String TRAY_ICON_IMAGE = SystemStart.isMicrosoftWindows() ? "worldtimesystemtray16x16.gif" : "worldtimesystemtray20x20.gif";  //$NON-NLS-1$ //$NON-NLS-2$
+	private static String TRAY_ICON_IMAGE = OperatingSystem.isWindows() ? "worldtimesystemtray16x16.gif" : "worldtimesystemtray20x20.gif";  //$NON-NLS-1$ //$NON-NLS-2$
 	private static final String MESSAGE_TOOL_TIP = Messages.getString( "TrayIcon.1" );  //$NON-NLS-1$
 
 	private static final PopupMenu ms_popupMenu = new PopupMenu();
@@ -30,7 +30,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 	public static TrayIcon createTrayIcon() { return new TrayIcon(); }
 
 
-	public void displayStartupBalloon() { displayMessage( PopupMenu.APPLICATION_NAME, getMessageString(), TrayIcon.MessageType.NONE ); }
+	public void displayStartupBalloon() { displayMessage( WorldTimeSystemTray.APPLICATION_NAME, getMessageString(), TrayIcon.MessageType.NONE ); }
 
 
 	public static final Image getTrayIconImage() { return new ImageIcon( ClassLoader.getSystemResource( TRAY_ICON_IMAGE ) ).getImage(); }
@@ -58,9 +58,9 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 	{
     	if( mouseEvent.getButton() == MouseEvent.BUTTON1 )
     	{
-    		( (TrayIcon)mouseEvent.getSource() ).displayMessage( PopupMenu.APPLICATION_NAME, getMessageString(), TrayIcon.MessageType.NONE );
+    		( (TrayIcon)mouseEvent.getSource() ).displayMessage( WorldTimeSystemTray.APPLICATION_NAME, getMessageString(), TrayIcon.MessageType.NONE );
     	}
-    	else if( mouseEvent.getButton() == MouseEvent.BUTTON3 && SystemStart.isMicrosoftWindows() )
+    	else if( mouseEvent.getButton() == MouseEvent.BUTTON3 && OperatingSystem.isWindows() )
     	{
     		// To block the right click action we check here if the right mouse button is clicked.
     		// If a dialog is already showing, then we don't want to show the popup.

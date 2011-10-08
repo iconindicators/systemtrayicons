@@ -1,29 +1,13 @@
-import ca.beq.util.win32.registry.RegistryKey;
-import ca.beq.util.win32.registry.RegistryValue;
-import ca.beq.util.win32.registry.RootKey;
-import ca.beq.util.win32.registry.ValueType;
-
-
 public class SystemStart
 {
-	// Various types of operating system as per System property "os.name" (see http://tolstoy.com/samizdat/sysprops.html).
-	private static final String OS_NAME = "os.name"; //$NON-NLS-1$
-	private static final String OS_NAME_MICROSOFT_WINDOWS = "Windows"; //$NON-NLS-1$
-
 	private static final String MICROSOFT_WINDOWS_REGISTRY_KEY = "Software\\Microsoft\\Windows\\CurrentVersion\\Run"; //$NON-NLS-1$
-	private static final String MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME = "WorldTimeSystemTray"; //$NON-NLS-1$
-	private static final String MICROSOFT_WINDOWS_REGISTRY_VALUE_DATA = System.getProperties().get( "user.dir" ) + "\\WorldTimeSystemTray.exe"; //$NON-NLS-1$ //$NON-NLS-2$
-
-
-    public static boolean isMicrosoftWindows()
-    {
-    	return System.getProperty( OS_NAME ).toLowerCase().contains( OS_NAME_MICROSOFT_WINDOWS.toLowerCase() );
-    }
+	private static final String MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME = WorldTimeSystemTray.APPLICATION_NAME;
+	private static final String MICROSOFT_WINDOWS_REGISTRY_VALUE_DATA = System.getProperties().get( "user.dir" ) + "\\" + WorldTimeSystemTray.APPLICATION_EXECUTABLE; //$NON-NLS-1$ //$NON-NLS-2$
 
 
     public static boolean runOnSystemStart()
     {
-    	if( isMicrosoftWindows() )
+    	if( OperatingSystem.isWindows() )
     		return runOnSystemStartMicrosoftWindows();
 
     	return false;
@@ -32,43 +16,45 @@ public class SystemStart
 
     private static boolean runOnSystemStartMicrosoftWindows()
     {
-    	RegistryKey registryKey = new RegistryKey( RootKey.HKEY_CURRENT_USER, MICROSOFT_WINDOWS_REGISTRY_KEY );
-
-    	return
-    		registryKey.exists() &&
-    		registryKey.hasValue( MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME ) &&
-    		registryKey.getValue( MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME ).getStringValue().equals( MICROSOFT_WINDOWS_REGISTRY_VALUE_DATA );
+    	try
+    	{
+			String registryValue = WindowsRegistry.readString( WindowsRegistry.HKEY_LOCAL_MACHINE, MICROSOFT_WINDOWS_REGISTRY_KEY, MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME );
+			return registryValue != null && registryValue.contentEquals( MICROSOFT_WINDOWS_REGISTRY_VALUE_DATA ); 
+    	}
+    	catch( Exception exception ) { return false; }
     }
 
-
-    public static void setRunOnSystemStart( boolean b )
+    
+    public static boolean setRunOnSystemStart( boolean runOnSystemStart )
     {
-    	if( isMicrosoftWindows() )
-    		setRunOnSystemStartMicrosoftWindows( b );
+    	if( OperatingSystem.isWindows() )
+    		return setRunOnSystemStartMicrosoftWindows( runOnSystemStart );
+
+    	return true;
     }
 
-
-    private static void setRunOnSystemStartMicrosoftWindows( boolean b )
+    
+    private static boolean setRunOnSystemStartMicrosoftWindows( boolean runOnSystemStart )
     {
-    	RegistryKey registryKey = new RegistryKey( RootKey.HKEY_CURRENT_USER, MICROSOFT_WINDOWS_REGISTRY_KEY );
-
-    	if( b )
+    	try
     	{
-    		// Create the key if need be and set the value.
-			if( ! registryKey.exists() )
-	    		registryKey.create();
+	    	if( runOnSystemStart )
+	    	{
+	    		// Create the key if need be and set the value.
+	    		String registryValue = WindowsRegistry.readString( WindowsRegistry.HKEY_LOCAL_MACHINE, MICROSOFT_WINDOWS_REGISTRY_KEY, MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME );
+	    		if( registryValue == null )
+	    			WindowsRegistry.createKey( WindowsRegistry.HKEY_LOCAL_MACHINE, MICROSOFT_WINDOWS_REGISTRY_KEY );
 
-        	RegistryValue registryValue = new RegistryValue( MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME, ValueType.REG_SZ, MICROSOFT_WINDOWS_REGISTRY_VALUE_DATA );
-        	registryKey.setValue( registryValue );
-    	}
-    	else
-    	{
-    		// Delete the value, if it exists.
-    		if( ! registryKey.exists() )
-        		return;
+	    		WindowsRegistry.writeStringValue( WindowsRegistry.HKEY_LOCAL_MACHINE, MICROSOFT_WINDOWS_REGISTRY_KEY, MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME, MICROSOFT_WINDOWS_REGISTRY_VALUE_DATA );
+        	}
+	    	else
+	    	{
+	    		// Delete the value.
+	    		WindowsRegistry.deleteValue( WindowsRegistry.HKEY_LOCAL_MACHINE, MICROSOFT_WINDOWS_REGISTRY_KEY, MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME );
+	    	}
 
-        	if( registryKey.hasValue( MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME ) )
-        		registryKey.deleteValue( MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME );
+	    	return true;
     	}
+    	catch( Exception exception ) { exception.printStackTrace(); return false; } // Not the best way to handle it...but at least running from the command line will give the stack trace.
     }
 }

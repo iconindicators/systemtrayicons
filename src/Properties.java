@@ -7,7 +7,7 @@ import java.util.Vector;
 
 public class Properties
 {
-	public static final String PROPERTY_DIRECTORY = System.getProperty( "user.home" ) + File.separator + ".worldtimesystemtray"; //$NON-NLS-1$ //$NON-NLS-2$
+	public static final String PROPERTY_DIRECTORY = System.getProperty( "user.home" ) + File.separator + "." + WorldTimeSystemTray.APPLICATION_NAME.toLowerCase().replace( " ", "" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	public static final String PROPERTY_FILE = PROPERTY_DIRECTORY + File.separator + "properties" ; //$NON-NLS-1$
 
 	private static java.util.Properties ms_properties = new java.util.Properties();
@@ -125,7 +125,7 @@ public class Properties
 
             ms_properties.load( new FileInputStream( PROPERTY_FILE ) );
         }
-        catch( Throwable throwable ) { ms_properties = new java.util.Properties(); }
+        catch( Exception exception ) { ms_properties = new java.util.Properties(); }
     }
 
 
@@ -164,7 +164,7 @@ public class Properties
             return defaultValue;
 
         try { return Boolean.valueOf( val ).booleanValue(); }
-        catch( Throwable throwable ) { return defaultValue; }
+        catch( Exception exception ) { return defaultValue; }
     }
 
 
@@ -177,7 +177,7 @@ public class Properties
             return defaultValue;
 
         try { return Integer.valueOf( val ).intValue(); }
-        catch( Throwable throwable ) { return defaultValue; }
+        catch( Exception exception ) { return defaultValue; }
     }
 
 
@@ -245,6 +245,6 @@ public class Properties
     public void store()
 	{
         try { ms_properties.store( new FileOutputStream( PROPERTY_FILE ), null ); }
-        catch( Throwable throwable ) { /** Do nothing. */ }
+        catch( Exception exception ) { /** Do nothing. */ }
 	}
 }
