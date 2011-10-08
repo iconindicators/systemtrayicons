@@ -5,7 +5,7 @@ import java.io.FileOutputStream;
 
 public class Properties
 {
-	public static final String PROPERTY_DIRECTORY = System.getProperty( "user.home" ) + File.separator + ".stardatesystemtray"; //$NON-NLS-1$ //$NON-NLS-2$
+	public static final String PROPERTY_DIRECTORY = System.getProperty( "user.home" ) + File.separator + "." + StardateSystemTray.APPLICATION_NAME.toLowerCase().replace( " ", "" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	public static final String PROPERTY_FILE = PROPERTY_DIRECTORY + File.separator + "properties" ; //$NON-NLS-1$
 
 	private static java.util.Properties ms_properties = new java.util.Properties();

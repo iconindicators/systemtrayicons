@@ -5,10 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.text.MessageFormat;
 
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.SwingConstants;
 
 
 public class PopupMenu extends java.awt.PopupMenu implements ActionListener, ItemListener
@@ -37,12 +36,6 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	static final String SUBPOPUP_DATE_TIME_FORMAT_LONG = Messages.getString( "PopupMenu.15" );  //$NON-NLS-1$
 	static final String SUBPOPUP_DATE_TIME_FORMAT_MEDIUM = Messages.getString( "PopupMenu.16" );  //$NON-NLS-1$
 	static final String SUBPOPUP_DATE_TIME_FORMAT_SHORT = Messages.getString( "PopupMenu.17" );  //$NON-NLS-1$
-
-	public static final String APPLICATION_NAME = Messages.getString( "PopupMenu.18" );  //$NON-NLS-1$
-	private static final String APPLICATION_AUTHOR = "Bernard Giannetti"; //$NON-NLS-1$
-	private static final String APPLICATION_SITE = "http://sourceforge.net/projects/stardatesystray"; //$NON-NLS-1$
-	public static final String APPLICATION_VERSION = Messages.getString( "PopupMenu.19" );  //$NON-NLS-1$
-	public static final String APPLICATION_VERSION_NUMBER = "1.7 (2011-10-08)"; //$NON-NLS-1$
 
 	private static final String CREDIT_ALGORITHM_LINE1 = Messages.getString( "PopupMenu.21" );  //$NON-NLS-1$
 	private static final String CREDIT_ALGORITHM_LINE2 = Messages.getString( "PopupMenu.22" );  //$NON-NLS-1$
@@ -183,21 +176,17 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 
     	if( POPUP_ABOUT.equals( menuItem ) )
     	{
-    		ms_popupDisabled = true;
-    		final JLabel label = 
-    			new JLabel
-    			( 
-    				"<html><center>" +  //$NON-NLS-1$
-    				"<b>" + APPLICATION_NAME + "</b><br>" + APPLICATION_VERSION + " " + APPLICATION_VERSION_NUMBER + "<br><br>" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    				APPLICATION_AUTHOR + "<br>" + APPLICATION_SITE + "<br><br>" + //$NON-NLS-1$ //$NON-NLS-2$
-    				CREDIT_ALGORITHM_LINE1 + "<br>" + CREDIT_ALGORITHM_LINE2 + "<br><br>" +    //$NON-NLS-1$ //$NON-NLS-2$
-    				CREDIT_CHRONOLOGY + "<br><br>" +   //$NON-NLS-1$
-    				( OperatingSystem.isWindows() ? CREDIT_NSIS + "<br><br>" : "" ) + //$NON-NLS-1$ //$NON-NLS-2$
-    				"</center></html>",  //$NON-NLS-1$
-    				SwingConstants.CENTER
-    			);
+    		String message =
+				"<html><center><br>" +  //$NON-NLS-1$
+        		"<b>" + StardateSystemTray.APPLICATION_NAME + "</b><br><br>" + //$NON-NLS-1$ //$NON-NLS-2$
+        		new MessageFormat( Messages.getString("PopupMenu.19") ).format( new Object[] { StardateSystemTray.APPLICATION_VERSION_NUMBER } ) +"<br><br>" + //$NON-NLS-1$ //$NON-NLS-2$
+        		"<a href='" + StardateSystemTray.APPLICATION_URL + "'>" + StardateSystemTray.APPLICATION_URL + "</a><br><br>" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				CREDIT_ALGORITHM_LINE1 + "<br>" + CREDIT_ALGORITHM_LINE2 + "<br><br>" +    //$NON-NLS-1$ //$NON-NLS-2$
+				CREDIT_CHRONOLOGY + "<br><br>" +   //$NON-NLS-1$
+				( OperatingSystem.isWindows() ? CREDIT_NSIS + "<br><br>" : "" ) + //$NON-NLS-1$ //$NON-NLS-2$
+				"</center></html>";  //$NON-NLS-1$
 
-    		MessageDialog.showMessageDialog( POPUP_ABOUT, label, JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION );
+    		MessageDialog.showMessageDialog( POPUP_ABOUT, MessageDialog.createURLLabel( message ), JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION );
 	        ms_popupDisabled = false;
 
 			return;

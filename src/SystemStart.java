@@ -1,10 +1,9 @@
 public class SystemStart
 {
 	private static final String MICROSOFT_WINDOWS_REGISTRY_KEY = "Software\\Microsoft\\Windows\\CurrentVersion\\Run"; //$NON-NLS-1$
-	private static final String MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME = "Stardate System Tray"; //$NON-NLS-1$
-	private static final String MICROSOFT_WINDOWS_REGISTRY_VALUE_DATA = System.getProperties().get( "user.dir" ) + "\\StardateSystemTray.exe"; //$NON-NLS-1$ //$NON-NLS-2$
-//TODO Get the exe name from somewhere
-//TODO Get the application name from somewhere	
+	private static final String MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME = StardateSystemTray.APPLICATION_NAME;
+	private static final String MICROSOFT_WINDOWS_REGISTRY_VALUE_DATA = System.getProperties().get( "user.dir" ) + "\\" + StardateSystemTray.APPLICATION_EXECUTABLE; //$NON-NLS-1$ //$NON-NLS-2$
+
 
     public static boolean runOnSystemStart()
     {

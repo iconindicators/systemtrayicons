@@ -31,7 +31,6 @@
 		<javac srcdir="${src}" destdir="${classes}" includeantruntime="false">
 			<classpath>
 				<pathelement location="${lib}/joda-time-2.0.jar" />								
-<!--				<pathelement location="${lib}/win32/jRegistryKey.jar" />-->
 			</classpath>
 			<compilerarg value="-Xlint:deprecation,fallthrough,finally,path,unchecked" />
 		</javac>
@@ -60,13 +59,12 @@
 
 		<manifest file="${classes}/MANIFEST.MF">
 			<attribute name="Class-Path" value=". ${jar-filename} joda-time-2.0.jar" />
-<!--			<attribute name="Class-Path" value=". ${jar-filename} joda-time-2.0.jar jRegistryKey.jar" />-->
 			<attribute name="Main-Class" value="StardateSystemTray" />
 		</manifest>
 		<jar 
 			jarfile="${release}/${systemtray-jar-filename}"
 			basedir="${classes}"
-			includes=" i18n/* MessageDialog.class Messages.class OperatingSystem.class PopupMenu.class Properties.class ShowCalendars*.class StardateSystemTray*.class SystemStart.class TrayIcon.class WindowsRegistry.class stardatesystemtray16x16.gif stardatesystemtray20x20.gif"
+			includes=" i18n/* MessageDialog*.class Messages*.class OperatingSystem*.class PopupMenu*.class Properties*.class ShowCalendars*.class StardateSystemTray*.class SystemStart*.class TrayIcon*.class WindowsRegistry*.class stardatesystemtray16x16.gif stardatesystemtray20x20.gif"
 			manifest="${classes}/MANIFEST.MF"
 		/>
 

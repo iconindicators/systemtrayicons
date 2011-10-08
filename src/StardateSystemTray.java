@@ -7,7 +7,14 @@ import javax.swing.UIManager;
 
 public class StardateSystemTray
 {
-    public StardateSystemTray()
+	public static final String APPLICATION_AUTHOR = "Bernard Giannetti"; //$NON-NLS-1$
+	public static final String APPLICATION_EXECUTABLE = "StardateSystemTray.exe";  //$NON-NLS-1$
+	public static final String APPLICATION_NAME = "Stardate System Tray";  //$NON-NLS-1$
+	public static final String APPLICATION_URL = "http://stardatesystray.sourceforge.net"; //$NON-NLS-1$
+	public static final String APPLICATION_VERSION_NUMBER = "1.7 (2011-10-08)"; //$NON-NLS-1$
+
+
+	public StardateSystemTray()
 	{
     	// On Ubuntu, running the application on startup failed as the system tray was not ready, so sleep (on all platforms, can't hurt).    	
     	try { Thread.sleep( 2500 ); }
@@ -73,15 +80,7 @@ public class StardateSystemTray
         	try { WindowsRegistry.initialise(); }
         	catch( Exception exception )
         	{
-//TODO Need messages for failure!
-        		MessageDialog.showMessageDialog
-		    	( 
-		    		Messages.getString( "StardateSystemTray.7" ), //$NON-NLS-1$
-		    		Messages.getString( "StardateSystemTray.8" ) + Properties.PROPERTY_FILE, //$NON-NLS-1$
-					JOptionPane.ERROR_MESSAGE,
-					JOptionPane.DEFAULT_OPTION
-		    	);
-		
+        		MessageDialog.showMessageDialog( Messages.getString( "StardateSystemTray.9" ), Messages.getString( "StardateSystemTray.10" ), JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION );  //$NON-NLS-1$//$NON-NLS-2$
 				return;
         	}
         }

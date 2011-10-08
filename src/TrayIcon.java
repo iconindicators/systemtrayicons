@@ -64,9 +64,9 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 	{
 		String messageString = getMessageString( false );
 		if( messageString.length() == 0 )
-			displayMessage( PopupMenu.APPLICATION_NAME, MESSAGE_NO_CHRONOLOGIES, TrayIcon.MessageType.NONE ); 
+			displayMessage( StardateSystemTray.APPLICATION_NAME, MESSAGE_NO_CHRONOLOGIES, TrayIcon.MessageType.NONE ); 
 		else
-			displayMessage( PopupMenu.APPLICATION_NAME, messageString, TrayIcon.MessageType.NONE ); 
+			displayMessage( StardateSystemTray.APPLICATION_NAME, messageString, TrayIcon.MessageType.NONE ); 
 	}
 
 
@@ -177,9 +177,9 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
         	TrayIcon trayIcon = (TrayIcon)mouseEvent.getSource();
 			String messageString = getMessageString( false );
 			if( messageString.length() == 0 )
-				trayIcon.displayMessage( PopupMenu.APPLICATION_NAME, MESSAGE_NO_CHRONOLOGIES, TrayIcon.MessageType.NONE );
+				trayIcon.displayMessage( StardateSystemTray.APPLICATION_NAME, MESSAGE_NO_CHRONOLOGIES, TrayIcon.MessageType.NONE );
 			else
-				trayIcon.displayMessage( PopupMenu.APPLICATION_NAME, messageString, TrayIcon.MessageType.NONE );
+				trayIcon.displayMessage( StardateSystemTray.APPLICATION_NAME, messageString, TrayIcon.MessageType.NONE );
 		}
     	if( mouseEvent.getButton() == MouseEvent.BUTTON3 && OperatingSystem.isWindows() )
     	{
