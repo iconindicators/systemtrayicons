@@ -1,11 +1,12 @@
-stardatesystemtray (1.6) karmic; urgency=low
+stardatesystemtray (1.7) karmic; urgency=low
 
-  * Fixed aggressive rounding of the fractional part of a stardate
-    (which resulted in its value only being a 0 or 5).
-    
-  * Clean up of the sample Converter program.
+  * General code cleanup. 
+  
+  * Added URL to About box.
+
+  * Updated Joda library.
 
 
- -- Bernard Giannetti <bernmeister@users.sourceforge.net>  Fri, 13 Oct 2009 9:55:21 +1100
+ -- Bernard Giannetti <bernmeister@users.sourceforge.net>  Sat, 8 Oct 2011 18:15:10 +1100
 
 
