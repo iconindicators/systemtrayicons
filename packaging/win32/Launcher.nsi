@@ -1,5 +1,3 @@
-;TODO Add a version number to the Jar or place in manifest?
-
 ;--------------------------------
 ;Constants
 
