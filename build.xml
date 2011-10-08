@@ -1,186 +1,181 @@
 <project name="StardateSystemTray" default="CompileAndJar" basedir=".">
 
-	<!-- Application and version properties. -->
-	<property name="version" value="1.7" />
-	<property name="JavaDocTitleVersion" value="Stardate v1.2 API Specification" />
+  <!-- Application and version properties. -->
+  <property name="version" value="1.7" />
+  <property name="JavaDocTitleVersion" value="Stardate v1.2 API Specification" />
 
-	<!-- Compile properties -->
-	<property name="classes" location="classes" />
-	<property name="doc" location="doc" />
-	<property name="i18n" location="i18n" />
-	<property name="img" location="img" />
-	<property name="javadoc" value="javadoc" />
-	<property name="jar-filename" value="stardate.jar" />
-	<property name="applet-jar-filename" value="stardateapplet.jar" />
-	<property name="application-jar-filename" value="stardateconverter.jar" />
-	<property name="systemtray-jar-filename" value="stardatesystemtray.jar" />
-	<property name="lib" location="lib" />
-	<property name="packaging" location="packaging" />
-	<property name="release" location="release" />
-	<property name="src" location="src" />
-
-
-	<!-- Compile class files and JAR -->
-	<target name="CompileAndJar" description="Compiles the Java source and build various JAR files.">
-		<delete dir="${classes}" />
-		<mkdir dir="${classes}" />
-
-		<delete dir="${release}" />
-		<mkdir dir="${release}" />
-
-		<javac srcdir="${src}" destdir="${classes}" includeantruntime="false">
-			<classpath>
-				<pathelement location="${lib}/joda-time-2.0.jar" />								
-			</classpath>
-			<compilerarg value="-Xlint:deprecation,fallthrough,finally,path,unchecked" />
-		</javac>
-
-		<copy todir="${classes}/i18n">
-			<fileset dir="${i18n}"/>
-		</copy>
-
-		<copy file="${img}/stardatesystemtray16x16.gif" todir="${classes}" />
-		<copy file="${img}/stardatesystemtray20x20.gif" todir="${classes}" />
-
-		<jar jarfile="${release}/${jar-filename}" basedir="${classes}" includes="Stardate.class StardateException*.class" />
-
-		<jar jarfile="${release}/${applet-jar-filename}" basedir="${classes}" includes="StardateApplet*.class" />
-
-		<manifest file="${classes}/MANIFEST.MF">
-			<attribute name="Class-Path" value=". ${jar-filename}" />
-			<attribute name="Main-Class" value="StardateConverter" />
-		</manifest>
-		<jar 
-			jarfile="${release}/${application-jar-filename}" 
-			basedir="${classes}" 
-			includes="StardateConverter.class stardatesystemtray16x16.gif" 
-			manifest="${classes}/MANIFEST.MF" 
-		/>
-
-		<manifest file="${classes}/MANIFEST.MF">
-			<attribute name="Class-Path" value=". ${jar-filename} joda-time-2.0.jar" />
-			<attribute name="Main-Class" value="StardateSystemTray" />
-		</manifest>
-		<jar 
-			jarfile="${release}/${systemtray-jar-filename}"
-			basedir="${classes}"
-			includes=" i18n/* MessageDialog*.class Messages*.class OperatingSystem*.class PopupMenu*.class Properties*.class ShowCalendars*.class StardateSystemTray*.class SystemStart*.class TrayIcon*.class WindowsRegistry*.class stardatesystemtray16x16.gif stardatesystemtray20x20.gif"
-			manifest="${classes}/MANIFEST.MF"
-		/>
-
-		<delete dir="${classes}" />
-	</target>
+  <!-- Compile properties -->
+  <property name="classes" location="classes" />
+  <property name="doc" location="doc" />
+  <property name="i18n" location="i18n" />
+  <property name="img" location="img" />
+  <property name="javadoc" value="javadoc" />
+  <property name="jar-filename" value="stardate.jar" />
+  <property name="applet-jar-filename" value="stardateapplet.jar" />
+  <property name="application-jar-filename" value="stardateconverter.jar" />
+  <property name="systemtray-jar-filename" value="stardatesystemtray.jar" />
+  <property name="lib" location="lib" />
+  <property name="packaging" location="packaging" />
+  <property name="release" location="release" />
+  <property name="src" location="src" />
 
 
-	<!-- Build the JavaDoc -->
-	<target name="JavaDoc" depends="CompileAndJar" description="Create Javadoc for the Stardate API.">
-		<property name="windowtitle" value="${JavaDocTitleVersion}" />
-		<property name="doctitle" value="${JavaDocTitleVersion}" />
-		<property name="header" value="${JavaDocTitleVersion}" />
+  <target name="CompileAndJar" description="Compiles the Java source and build various JAR files.">
+    <delete dir="${classes}" />
+    <mkdir dir="${classes}" />
 
-		<delete dir="${javadoc}" />
-		<mkdir dir="${javadoc}" />
-		
-		<javadoc 
-			sourcefiles="${src}/Stardate.java,${src}/StardateException.java" 
-			packagenames="*.*" 
-			destdir="${javadoc}" 
-			author="true" 
-			version="true" 
-			use="true" 
-			splitindex="true" 
-			overview="${src}/overview.html" 
-			windowtitle="${windowtitle}" 
-			header="${header}" 
-			doctitle="${doctitle}"
-		>
-		</javadoc>
-	</target>
+    <delete dir="${release}" />
+    <mkdir dir="${release}" />
 
+    <javac srcdir="${src}" destdir="${classes}" includeantruntime="false">
+      <classpath>
+        <pathelement location="${lib}/joda-time-2.0.jar" />                
+      </classpath>
+      <compilerarg value="-Xlint:deprecation,fallthrough,finally,path,unchecked" />
+    </javac>
 
-	<!-- Use NSIS to build Windows installer and setup executables - can be performed on both Windows and Linux. -->
-	<target name="Win32" depends="CompileAndJar" description="Build the Microsoft Windows installer and executable using NSIS.">
-		<exec executable="makensis">
-			<arg line="packaging/win32/Launcher.nsi"/>
-		</exec>
+    <copy todir="${classes}/i18n">
+      <fileset dir="${i18n}"/>
+    </copy>
 
-		<exec executable="makensis">
-			<arg line="packaging/win32/Installer.nsi"/>
-		</exec>
+    <copy file="${img}/stardatesystemtray16x16.gif" todir="${classes}" />
+    <copy file="${img}/stardatesystemtray20x20.gif" todir="${classes}" />
 
-		<move file="packaging/win32/StardateSystemTraySetup.exe" tofile="${release}/StardateSystemTraySetup-${version}.exe" />
-		<delete file="packaging/win32/StardateSystemTray.exe" />
-	</target>
+    <jar jarfile="${release}/${jar-filename}" basedir="${classes}" includes="Stardate.class StardateException*.class" />
 
+    <jar jarfile="${release}/${applet-jar-filename}" basedir="${classes}" includes="StardateApplet*.class" />
 
-	<!-- Create a Debian package - can only be done on Linux and run as root! -->
-	<target name="Debian" depends="CompileAndJar" description="Builds the Debian installer file...must be run as root!">
-		<echo message="" />
-		<echo message="********************************************************************************" />
-		<echo message="This task must be run as root and only on a Linux Debian based operating system." />
-		<echo message="For example, on Ubuntu: 'sudo ant Debian'" />
-		<echo message="After this task, run 'lintian' on the deb file to check for errors/warnings." />
-		<echo message="********************************************************************************" />
-		<echo message="" />
+    <manifest file="${classes}/MANIFEST.MF">
+      <attribute name="Class-Path" value=". ${jar-filename}" />
+      <attribute name="Main-Class" value="StardateConverter" />
+    </manifest>
+    <jar 
+      jarfile="${release}/${application-jar-filename}" 
+      basedir="${classes}" 
+      includes="StardateConverter.class stardatesystemtray16x16.gif" 
+      manifest="${classes}/MANIFEST.MF" 
+    />
 
-		<copy todir="${release}/working" preservelastmodified="true">
-			<fileset dir="packaging/debian" excludes="**/*.svn"/>
-		</copy>
+    <manifest file="${classes}/MANIFEST.MF">
+      <attribute name="Class-Path" value=". ${jar-filename} joda-time-2.0.jar" />
+      <attribute name="Main-Class" value="StardateSystemTray" />
+    </manifest>
+    <jar 
+      jarfile="${release}/${systemtray-jar-filename}"
+      basedir="${classes}"
+      includes=" i18n/* MessageDialog*.class Messages*.class OperatingSystem*.class PopupMenu*.class Properties*.class ShowCalendars*.class StardateSystemTray*.class SystemStart*.class TrayIcon*.class WindowsRegistry*.class stardatesystemtray16x16.gif stardatesystemtray20x20.gif"
+      manifest="${classes}/MANIFEST.MF"
+    />
 
-		<chmod file="${release}/working/DEBIAN/postinst" perm="755"/>
-		<chgrp file="${release}/working/DEBIAN/postinst" group="root"/>
-		<chown file="${release}/working/DEBIAN/postinst" owner="root"/>
-
-		<chmod file="${release}/working/DEBIAN/postrm" perm="755"/>
-		<chgrp file="${release}/working/DEBIAN/postrm" group="root"/>
-		<chown file="${release}/working/DEBIAN/postrm" owner="root"/>
-
-		<chmod file="${release}/working/usr/bin/stardatesystemtray" perm="ugo+x"/>
-
-		<copy file="${release}/${jar-filename}" todir="${release}/working/usr/share/stardatesystemtray" preservelastmodified="true" />
-		<copy file="${release}/${systemtray-jar-filename}" todir="${release}/working/usr/share/stardatesystemtray" preservelastmodified="true" />
-		<copy file="${lib}/joda-time-2.0.jar" todir="${release}/working/usr/share/stardatesystemtray" preservelastmodified="true" />
-
-		<copy file="TODO.txt" tofile="${release}/working/usr/share/doc/stardatesystemtray/TODO" preservelastmodified="true" />
-		<copy file="${doc}/License.txt" tofile="${release}/working/usr/share/doc/stardatesystemtray/copyright" preservelastmodified="true" />
-
-		<copy file="changelog.Debian" tofile="${release}/working/usr/share/doc/stardatesystemtray/changelog" preservelastmodified="true" />
-		<exec executable="gzip">
-			<arg line="-9 ${release}/working/usr/share/doc/stardatesystemtray/changelog" />
-		</exec>
-
-		<copy file="${img}/stardatesystemtray16x16.xpm" todir="${release}/working/usr/share/pixmaps" preservelastmodified="true" />
-		<copy file="${img}/stardatesystemtray32x32.xpm" todir="${release}/working/usr/share/pixmaps" preservelastmodified="true" />	
-
-		<exec executable="dpkg">
-			<arg line="--build ${release}/working ${release}/stardatesystemtray_${version}_all.deb" />
-		</exec>
-
-		<delete dir="${release}/working" />
-	</target>
+    <delete dir="${classes}" />
+  </target>
 
 
-	<!-- Do a full release -->
-	<target name="Release" depends="Debian, Win32, JavaDoc" description="Packages up the various parts for a formal release.">
-        <zip destfile="${release}/StardateJavaDoc-${version}.zip" basedir="${javadoc}" />	
+  <target name="JavaDoc" depends="CompileAndJar" description="Create Javadoc for the Stardate API.">
+    <property name="windowtitle" value="${JavaDocTitleVersion}" />
+    <property name="doctitle" value="${JavaDocTitleVersion}" />
+    <property name="header" value="${JavaDocTitleVersion}" />
 
-        <zip destfile="${release}/StardateJAR-${version}.zip">
-            <fileset file="${release}/${jar-filename}"/>
-        </zip>
+    <delete dir="${javadoc}" />
+    <mkdir dir="${javadoc}" />
+    
+    <javadoc 
+      sourcefiles="${src}/Stardate.java,${src}/StardateException.java" 
+      packagenames="*.*" 
+      destdir="${javadoc}" 
+      author="true" 
+      version="true" 
+      use="true" 
+      splitindex="true" 
+      overview="${src}/overview.html" 
+      windowtitle="${windowtitle}" 
+      header="${header}" 
+      doctitle="${doctitle}"
+    >
+    </javadoc>
+  </target>
 
-        <zip destfile="${release}/SampleApplet-${version}.zip">
-            <fileset file="${release}/${jar-filename}"/>
-            <fileset file="${release}/${applet-jar-filename}"/>
-            <fileset file="${src}/stardate.html"/>
-        </zip>
 
-        <zip destfile="${release}/SampleApplication-${version}.zip">
-            <fileset file="${release}/${jar-filename}"/>
-            <fileset file="${release}/${application-jar-filename}"/>
-        </zip>
+  <target name="Win32" depends="CompileAndJar" description="Build the Microsoft Windows installer and executable using NSIS.">
+    <exec executable="makensis">
+      <arg line="packaging/win32/Launcher.nsi"/>
+    </exec>
 
-        <zip destfile="${release}/StardateSystemTraySource-${version}.zip" basedir="${src}" includes="*.java" />		
+    <exec executable="makensis">
+      <arg line="packaging/win32/Installer.nsi"/>
+    </exec>
 
-	</target>
+    <move file="packaging/win32/StardateSystemTraySetup.exe" tofile="${release}/StardateSystemTraySetup-${version}.exe" />
+    <delete file="packaging/win32/StardateSystemTray.exe" />
+  </target>
+
+
+  <target name="Debian" depends="CompileAndJar" description="Builds the Debian installer file...must be run as root!">
+    <echo message="" />
+    <echo message="********************************************************************************" />
+    <echo message="This task must be run as root and only on a Linux Debian based operating system." />
+    <echo message="For example, on Ubuntu: 'sudo ant Debian'" />
+    <echo message="After this task, run 'lintian' on the deb file to check for errors/warnings." />
+    <echo message="********************************************************************************" />
+    <echo message="" />
+
+    <copy todir="${release}/working" preservelastmodified="true">
+      <fileset dir="packaging/debian" excludes="**/*.svn"/>
+    </copy>
+
+    <chmod file="${release}/working/DEBIAN/postinst" perm="755"/>
+    <chgrp file="${release}/working/DEBIAN/postinst" group="root"/>
+    <chown file="${release}/working/DEBIAN/postinst" owner="root"/>
+
+    <chmod file="${release}/working/DEBIAN/postrm" perm="755"/>
+    <chgrp file="${release}/working/DEBIAN/postrm" group="root"/>
+    <chown file="${release}/working/DEBIAN/postrm" owner="root"/>
+
+    <chmod file="${release}/working/usr/bin/stardatesystemtray" perm="ugo+x"/>
+
+    <copy file="${release}/${jar-filename}" todir="${release}/working/usr/share/stardatesystemtray" preservelastmodified="true" />
+    <copy file="${release}/${systemtray-jar-filename}" todir="${release}/working/usr/share/stardatesystemtray" preservelastmodified="true" />
+    <copy file="${lib}/joda-time-2.0.jar" todir="${release}/working/usr/share/stardatesystemtray" preservelastmodified="true" />
+
+    <copy file="TODO.txt" tofile="${release}/working/usr/share/doc/stardatesystemtray/TODO" preservelastmodified="true" />
+    <copy file="License.txt" tofile="${release}/working/usr/share/doc/stardatesystemtray/copyright" preservelastmodified="true" />
+
+    <copy file="changelog.Debian" tofile="${release}/working/usr/share/doc/stardatesystemtray/changelog" preservelastmodified="true" />
+    <exec executable="gzip">
+      <arg line="-9 ${release}/working/usr/share/doc/stardatesystemtray/changelog" />
+    </exec>
+
+    <copy file="${img}/stardatesystemtray16x16.xpm" todir="${release}/working/usr/share/pixmaps" preservelastmodified="true" />
+    <copy file="${img}/stardatesystemtray32x32.xpm" todir="${release}/working/usr/share/pixmaps" preservelastmodified="true" />  
+
+    <exec executable="dpkg">
+      <arg line="--build ${release}/working ${release}/stardatesystemtray_${version}_all.deb" />
+    </exec>
+
+    <delete dir="${release}/working" />
+  </target>
+
+
+  <target name="Release" depends="Debian, Win32, JavaDoc" description="Packages up the various parts for a formal release.">
+    <zip destfile="${release}/StardateJavaDoc-${version}.zip" basedir="${javadoc}" />  
+
+    <zip destfile="${release}/StardateJAR-${version}.zip">
+      <fileset file="${release}/${jar-filename}"/>
+    </zip>
+
+    <zip destfile="${release}/SampleApplet-${version}.zip">
+      <fileset file="${release}/${jar-filename}"/>
+      <fileset file="${release}/${applet-jar-filename}"/>
+      <fileset file="${src}/stardate.html"/>
+    </zip>
+
+    <zip destfile="${release}/SampleApplication-${version}.zip">
+      <fileset file="${release}/${jar-filename}"/>
+      <fileset file="${release}/${application-jar-filename}"/>
+    </zip>
+
+    <zip destfile="${release}/StardateSystemTraySource-${version}.zip" basedir="${src}" includes="*.java" />    
+
+  </target>
 
 </project>
