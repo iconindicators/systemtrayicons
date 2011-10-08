@@ -4,23 +4,23 @@ Stardate and Stardate System Tray Release Notes
 
 2011-10-08 Version 1.7
 
-  * General code cleanup. 
+* General code cleanup. 
 
-  * Added URL to About box.
+* Added URL to About box.
 
-  * Windows installer/launcher now handles UAC better.
+* Windows installer/launcher now handles UAC better.
 
-  * Windows registry access implemented in pure Java.
+* Windows registry access implemented in pure Java.
 
-  * Updated Joda library.
+* Updated Joda library.
 
 
 2009-11-13 Version 1.6
 
-  * Fixed aggressive rounding of the fractional part of a Stardate
+* Fixed aggressive rounding of the fractional part of a Stardate
     (which resulted in its value only being a 0 or 5).
     
-  * Clean up of the sample Converter program.
+* Clean up of the sample Converter program.
 
 
 2008-10-27 Version 1.5

@@ -99,7 +99,7 @@
 
 
 	<!-- Use NSIS to build Windows installer and setup executables - can be performed on both Windows and Linux. -->
-	<target name="Win32" description="Build the Microsoft Windows installer and executable using NSIS.">
+	<target name="Win32" depends="CompileAndJar" description="Build the Microsoft Windows installer and executable using NSIS.">
 		<exec executable="makensis">
 			<arg line="packaging/win32/Launcher.nsi"/>
 		</exec>

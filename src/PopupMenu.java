@@ -179,9 +179,11 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     		String message =
 				"<html><center><br>" +  //$NON-NLS-1$
         		"<b>" + StardateSystemTray.APPLICATION_NAME + "</b><br><br>" + //$NON-NLS-1$ //$NON-NLS-2$
-        		new MessageFormat( Messages.getString("PopupMenu.19") ).format( new Object[] { StardateSystemTray.APPLICATION_VERSION_NUMBER } ) +"<br><br>" + //$NON-NLS-1$ //$NON-NLS-2$
-        		"<a href='" + StardateSystemTray.APPLICATION_URL + "'>" + StardateSystemTray.APPLICATION_URL + "</a><br><br>" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				CREDIT_ALGORITHM_LINE1 + "<br>" + CREDIT_ALGORITHM_LINE2 + "<br><br>" +    //$NON-NLS-1$ //$NON-NLS-2$
+        		new MessageFormat( Messages.getString("PopupMenu.19") ).format( new Object[] { StardateSystemTray.APPLICATION_VERSION_NUMBER } ) +"<br>" + //$NON-NLS-1$ //$NON-NLS-2$
+        		"<a href='" + StardateSystemTray.APPLICATION_URL + "'>" + StardateSystemTray.APPLICATION_URL + "</a><br><br><br>" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        		"<u>" + Messages.getString("PopupMenu.30") + "</u><br><br>" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        		StardateSystemTray.APPLICATION_AUTHOR + "<br><br>" + //$NON-NLS-1$
+				CREDIT_ALGORITHM_LINE1 + "<br><i>" + CREDIT_ALGORITHM_LINE2 + "</i><br><br>" +    //$NON-NLS-1$ //$NON-NLS-2$
 				CREDIT_CHRONOLOGY + "<br><br>" +   //$NON-NLS-1$
 				( OperatingSystem.isWindows() ? CREDIT_NSIS + "<br><br>" : "" ) + //$NON-NLS-1$ //$NON-NLS-2$
 				"</center></html>";  //$NON-NLS-1$
@@ -235,8 +237,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     	else if( POPUP_RUN_ON_SYSTEM_START.equals( label ) )
     	{
     		if( ! SystemStart.setRunOnSystemStart( checkboxMenuItem.getState() ) )
-    			MessageDialog.showMessageDialog( "title", "message", JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION );
-//TODO Add i18n    		
+    			MessageDialog.showMessageDialog( Messages.getString( "PopupMenu.30" ), Messages.getString( "PopupMenu.31" ), JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION );  //$NON-NLS-1$//$NON-NLS-2$
     	}
 
     	// Handle each chronology.
