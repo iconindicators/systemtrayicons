@@ -135,13 +135,13 @@ public class StardateApplet extends Applet
 	private void initialiseParameters()
 	{
 		try { m_showIssue = Boolean.valueOf( getParameter( PARAM_NAME_SHOW_ISSUE ) ).booleanValue(); }
-		catch( Throwable throwable ) { /** Do nothing. */ }
+		catch( Exception exception ) { /** Do nothing. */ }
 
 		try { m_padInteger = Boolean.valueOf( getParameter( PARAM_NAME_PAD_INTEGER ) ).booleanValue(); }
-		catch( Throwable throwable ) { /** Do nothing. */ }
+		catch( Exception exception ) { /** Do nothing. */ }
 
 		try { m_updatePeriod = Integer.valueOf( getParameter( PARAM_NAME_UPDATE_PERIOD_MILLIS ) ).intValue(); }
-		catch( Throwable throwable ) { /** Do nothing. */ }
+		catch( Exception exception ) { /** Do nothing. */ }
 		if( m_updatePeriod < PARAM_VALUE_UPDATE_PERIOD_MILLIS_MINIMUM )
 			m_updatePeriod = PARAM_VALUE_UPDATE_PERIOD_MILLIS_DEFAULT;
  
@@ -152,7 +152,7 @@ public class StardateApplet extends Applet
 			int blue = Integer.valueOf( getParameter( PARAM_NAME_BACKGROUND_BLUE ) ).intValue();
 			m_backgroundColour = new Color( red, green, blue );
 		}
-		catch( Throwable throwable ) { /** Do nothing. */ }
+		catch( Exception exception ) { /** Do nothing. */ }
  
 		try
 		{
@@ -161,7 +161,7 @@ public class StardateApplet extends Applet
 			int blue = Integer.valueOf( getParameter( PARAM_NAME_FOREGROUND_BLUE ) ).intValue();
 			m_foregroundColour = new Color( red, green, blue );
 		}
-		catch( Throwable throwable ) { /** Do nothing. */ }
+		catch( Exception exception ) { /** Do nothing. */ }
  
 		try
 		{
@@ -170,16 +170,16 @@ public class StardateApplet extends Applet
 			int blue = Integer.valueOf( getParameter( PARAM_NAME_PEN_BLUE ) ).intValue();
 			m_penColour = new Color( red, green, blue );
 		}
-		catch( Throwable throwable ) { /** Do nothing. */ }
+		catch( Exception exception ) { /** Do nothing. */ }
 
 		try { m_textBefore = getParameter( PARAM_NAME_TEXT_BEFORE ); }
-		catch( Throwable throwable ) { /** Do nothing. */ }
+		catch( Exception exception ) { /** Do nothing. */ }
 
 		try { m_textAfter = getParameter( PARAM_NAME_TEXT_AFTER ); }
-		catch( Throwable throwable ) { /** Do nothing. */ }
+		catch( Exception exception ) { /** Do nothing. */ }
 
 		try { m_font = getParameter( PARAM_NAME_FONT_NAME ); }
-		catch( Throwable throwable ) { m_font = null; }
+		catch( Exception exception ) { m_font = null; }
 
 		try
 		{
@@ -191,13 +191,13 @@ public class StardateApplet extends Applet
 			else if( fontStyle.equalsIgnoreCase( PARAM_VALUE_FONT_STYLE_BOLDITALIC ) )
 				m_fontStyle = Font.BOLD | Font.ITALIC; 
 		}
-		catch( Throwable throwable ) { m_fontStyle = PARAM_VALUE_FONT_STYLE_DEFAULT; }
+		catch( Exception exception ) { m_fontStyle = PARAM_VALUE_FONT_STYLE_DEFAULT; }
 		
 		if( m_fontSize < PARAM_VALUE_FONT_SIZE_MINIMUM )
 			m_updatePeriod = PARAM_VALUE_FONT_SIZE_DEFAULT; 
 
 		try { m_fontSize = Integer.valueOf( getParameter( PARAM_NAME_FONT_SIZE ) ).intValue(); }
-		catch( Throwable throwable ) { /** Do nothing. */ }
+		catch( Exception exception ) { /** Do nothing. */ }
 		if( m_fontSize < PARAM_VALUE_FONT_SIZE_MINIMUM )
 			m_updatePeriod = PARAM_VALUE_FONT_SIZE_DEFAULT; 
 	}

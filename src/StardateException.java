@@ -37,7 +37,7 @@ public class StardateException extends Exception
 	 * 
 	 * @param cause The cause of this exception.
 	 */
-	public StardateException( Throwable cause ) { super( cause ); }
+	public StardateException( Exception cause ) { super( cause ); }
 
 	
 	/**
@@ -46,7 +46,7 @@ public class StardateException extends Exception
 	 * @param message The detail message.
 	 * @param cause The cause of this exception.
 	 */
-	public StardateException( String message, Throwable cause ) { super( message, cause ); }
+	public StardateException( String message, Exception cause ) { super( message, cause ); }
 	
 	
 	/**

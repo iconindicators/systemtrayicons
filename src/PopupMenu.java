@@ -42,12 +42,11 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	private static final String APPLICATION_AUTHOR = "Bernard Giannetti"; //$NON-NLS-1$
 	private static final String APPLICATION_SITE = "http://sourceforge.net/projects/stardatesystray"; //$NON-NLS-1$
 	public static final String APPLICATION_VERSION = Messages.getString( "PopupMenu.19" );  //$NON-NLS-1$
-	public static final String APPLICATION_VERSION_NUMBER = "1.6 (2009-11-13)"; //$NON-NLS-1$
+	public static final String APPLICATION_VERSION_NUMBER = "1.7 (2011-10-08)"; //$NON-NLS-1$
 
 	private static final String CREDIT_ALGORITHM_LINE1 = Messages.getString( "PopupMenu.21" );  //$NON-NLS-1$
 	private static final String CREDIT_ALGORITHM_LINE2 = Messages.getString( "PopupMenu.22" );  //$NON-NLS-1$
 	private static final String CREDIT_CHRONOLOGY = Messages.getString( "PopupMenu.23" );  //$NON-NLS-1$
-	private static final String CREDIT_REGISTRY = Messages.getString( "PopupMenu.24" );  //$NON-NLS-1$
 	private static final String CREDIT_NSIS = Messages.getString( "PopupMenu.25" );  //$NON-NLS-1$
 
     private CheckboxMenuItem m_checkboxMenuItemDateFormatLong = null;
@@ -137,7 +136,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	    
 	    add( subpopup );
 
-	    if( SystemStart.isMicrosoftWindows() )
+	    if( OperatingSystem.isWindows() )
 	    {
 		    checkboxMenuItem = new CheckboxMenuItem( POPUP_RUN_ON_SYSTEM_START, SystemStart.runOnSystemStart() );
 		    checkboxMenuItem.addItemListener( this );
@@ -193,8 +192,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     				APPLICATION_AUTHOR + "<br>" + APPLICATION_SITE + "<br><br>" + //$NON-NLS-1$ //$NON-NLS-2$
     				CREDIT_ALGORITHM_LINE1 + "<br>" + CREDIT_ALGORITHM_LINE2 + "<br><br>" +    //$NON-NLS-1$ //$NON-NLS-2$
     				CREDIT_CHRONOLOGY + "<br><br>" +   //$NON-NLS-1$
-    				( SystemStart.isMicrosoftWindows() ? CREDIT_REGISTRY + "<br><br>" : "" ) + //$NON-NLS-1$ //$NON-NLS-2$
-    				( SystemStart.isMicrosoftWindows() ? CREDIT_NSIS + "<br><br>" : "" ) + //$NON-NLS-1$ //$NON-NLS-2$
+    				( OperatingSystem.isWindows() ? CREDIT_NSIS + "<br><br>" : "" ) + //$NON-NLS-1$ //$NON-NLS-2$
     				"</center></html>",  //$NON-NLS-1$
     				SwingConstants.CENTER
     			);
@@ -247,7 +245,9 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     	// Toggle the run on system start option.
     	else if( POPUP_RUN_ON_SYSTEM_START.equals( label ) )
     	{
-    		SystemStart.setRunOnSystemStart( checkboxMenuItem.getState() );
+    		if( ! SystemStart.setRunOnSystemStart( checkboxMenuItem.getState() ) )
+    			MessageDialog.showMessageDialog( "title", "message", JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION );
+//TODO Add i18n    		
     	}
 
     	// Handle each chronology.

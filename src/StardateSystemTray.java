@@ -9,14 +9,12 @@ public class StardateSystemTray
 {
     public StardateSystemTray()
 	{
-    	// On Ubuntu, running the application on startup failed as the system tray was not ready
-		// So we sleep for 5 seconds first...    	
-    	try { Thread.sleep( 5000 ); }
+    	// On Ubuntu, running the application on startup failed as the system tray was not ready, so sleep (on all platforms, can't hurt).    	
+    	try { Thread.sleep( 2500 ); }
 		catch( InterruptedException interruptedException ) { /** Do nothing. */ }
 
-		UIManager.put( "swing.boldMetal", Boolean.FALSE ); //$NON-NLS-1$
     	try { UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() ); }
-        catch( Throwable throwable ) { /** Do nothing. */ }
+        catch( Exception exception ) { /** Do nothing. */ }
 
         if( ! SystemTray.isSupported() )
         {
@@ -43,7 +41,7 @@ public class StardateSystemTray
 	
 			return;
         }
-		
+
         if( ! Properties.getInstance().canReadPropertyFile() )
         {
 	    	MessageDialog.showMessageDialog
@@ -56,7 +54,7 @@ public class StardateSystemTray
 	
 			return;
         }
-		
+
         if( ! Properties.getInstance().canWritePropertyFile() )
         {
 	    	MessageDialog.showMessageDialog
@@ -68,6 +66,24 @@ public class StardateSystemTray
 	    	);
 	
 			return;
+        }
+
+        if( OperatingSystem.isWindows() )
+        {
+        	try { WindowsRegistry.initialise(); }
+        	catch( Exception exception )
+        	{
+//TODO Need messages for failure!
+        		MessageDialog.showMessageDialog
+		    	( 
+		    		Messages.getString( "StardateSystemTray.7" ), //$NON-NLS-1$
+		    		Messages.getString( "StardateSystemTray.8" ) + Properties.PROPERTY_FILE, //$NON-NLS-1$
+					JOptionPane.ERROR_MESSAGE,
+					JOptionPane.DEFAULT_OPTION
+		    	);
+		
+				return;
+        	}
         }
 
         SwingUtilities.invokeLater
@@ -82,12 +98,12 @@ public class StardateSystemTray
 	            		SystemTray.getSystemTray().add( trayIcon ); 
 	            		trayIcon.displayStartupBalloon();
 	            	}
-	        		catch( Throwable throwable ) 
+	        		catch( Exception exception ) 
 	        		{
 	        			MessageDialog.showMessageDialog
 	        			(
 	        				Messages.getString( "StardateSystemTray.2" ), //$NON-NLS-1$ 
-	        				throwable.getMessage(), 
+	        				exception.getMessage(), 
 	        				JOptionPane.ERROR_MESSAGE, 
 	        				JOptionPane.DEFAULT_OPTION
 	        			);

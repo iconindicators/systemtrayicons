@@ -62,7 +62,7 @@ public class Properties
 
             ms_properties.load( new FileInputStream( PROPERTY_FILE ) );
         }
-        catch( Throwable throwable ) { ms_properties = new java.util.Properties(); }
+        catch( Exception exception ) { ms_properties = new java.util.Properties(); }
     }
 
 
@@ -96,7 +96,7 @@ public class Properties
             return defaultValue;
 
         try { return Boolean.valueOf( val ).booleanValue(); }
-        catch( Throwable throwable ) { return defaultValue; }
+        catch( Exception exception ) { return defaultValue; }
     }
 
 
@@ -113,6 +113,6 @@ public class Properties
     public void store()
 	{
         try { ms_properties.store( new FileOutputStream( PROPERTY_FILE ), null ); }
-        catch( Throwable throwable ) { /** Do nothing. */ }
+        catch( Exception exception ) { /** Do nothing. */ }
 	}
 }

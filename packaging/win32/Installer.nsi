@@ -1,41 +1,45 @@
-;NSIS installer script for Stardate System Tray
+;Put in a check to see if we are already running the program.
 
 
 ;--------------------------------
-;Include Modern UI
+;Constants
 
-  !include "MUI.nsh"
-  !include "WordFunc.nsh"
-  !insertmacro VersionCompare
+  !define APPLICATION_NAME "Stardate System Tray"
+  !define LAUNCHER_NAME "StardateSystemTray.exe"
+
+;--------------------------------
+;Includes
+
+  !include MUI2.nsh
+  !include WordFunc.nsh
 
 
 ;--------------------------------
 ;General
 
-  ;Name and file
-  Name "Stardate System Tray"
+  Name "${APPLICATION_NAME}"
   OutFile "StardateSystemTraySetup.exe"
-
-  ;Default installation folder
-  InstallDir "$PROGRAMFILES\Stardate System Tray"
-  
-  ;Get installation folder from registry if available
-  InstallDirRegKey HKCU "Software\Stardate System Tray" ""
+  InstallDir "$PROGRAMFILES\${APPLICATION_NAME}"
+  RequestExecutionLevel admin
+  SetCompressor /SOLID lzma
 
 
 ;--------------------------------
 ;Variables
 
-  Var MUI_TEMP
-  Var STARTMENU_FOLDER
+  Var StartMenuFolder
 
 
 ;--------------------------------
 ;Interface Settings
 
-  !define MUI_FINISHPAGE_NOAUTOCLOSE
   !define MUI_ABORTWARNING
-  !define MUI_UNFINISHPAGE_NOAUTOCLOSE
+  !define MUI_FINISHPAGE_RUN "$INSTDIR\${LAUNCHER_NAME}"
+  !define MUI_LICENSEPAGE_RADIOBUTTONS
+  !define MUI_STARTMENUPAGE_NODISABLE
+  !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKCU"
+  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\${APPLICATION_NAME}"
+  !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
   !define MUI_UNABORTWARNING
 
 
@@ -47,15 +51,8 @@
   !insertmacro MUI_PAGE_LICENSE "..\..\doc\License.txt"
   !insertmacro MUI_PAGE_DIRECTORY
   
-  ;Start Menu Folder Page Configuration
-  !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKCU" 
-  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\Stardate System Tray" 
-  !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
-  
-  !insertmacro MUI_PAGE_STARTMENU Application $STARTMENU_FOLDER
-  !insertmacro MUI_PAGE_INSTFILES  
-
-  !define MUI_FINISHPAGE_RUN "$INSTDIR\StardateSystemTray.exe"
+  !insertmacro MUI_PAGE_STARTMENU "Application" $StartMenuFolder
+  !insertmacro MUI_PAGE_INSTFILES
   !insertmacro MUI_PAGE_FINISH
 
   !insertmacro MUI_UNPAGE_WELCOME
@@ -66,80 +63,66 @@
 
 ;--------------------------------
 ;Languages
- 
+
   !insertmacro MUI_LANGUAGE "English"
 
 
 ;--------------------------------
-;Default Section
+;Installer Section
 
-Section "Default Section" 
+Section "Install" 
+
+  SetShellvarContext all
 
   SetOutPath "$INSTDIR"
-  
+
   File ..\..\ReleaseNotes.txt
   File ..\..\TODO.txt
   File ..\..\doc\License.txt
+  File ..\..\img\stardatesystemtray.ico		
   File ..\..\release\stardate.jar
   File ..\..\release\stardatesystemtray.jar
-  File ..\..\lib\joda-time-1.5.2.jar
-  File ..\..\lib\win32\jRegistryKey.jar
-  File ..\..\lib\win32\jRegistryKey.dll
+  File ..\..\lib\joda-time-2.0.jar
   File ..\..\packaging\win32\StardateSystemTray.exe	
 
-  WriteRegStr HKCU "Software\Stardate System Tray" "" $INSTDIR
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Run" "StardateSystemTray" "$INSTDIR\StardateSystemTray.exe"
-  
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Stardate System Tray" "DisplayName" "Stardate System Tray"
-  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Stardate System Tray" "UninstallString" "$INSTDIR\Uninstall.exe"
-  WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Stardate System Tray" "NoModify" 0x1
-  WriteRegDWORD HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Stardate System Tray" "NoRepair" 0x1
-  
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${APPLICATION_NAME}" "$INSTDIR\${LAUNCHER_NAME}"
+
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "DisplayName" "${APPLICATION_NAME}"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "UninstallString" "$\"$INSTDIR\Uninstall.exe$\""
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "NoModify" 1
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "NoRepair" 1
+
   WriteUninstaller "$INSTDIR\Uninstall.exe"
-  
-  !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
-    CreateDirectory "$SMPROGRAMS\$STARTMENU_FOLDER"
-    CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Stardate System Tray.lnk" "$INSTDIR\StardateSystemTray.exe"  
-    CreateShortCut "$SMPROGRAMS\$STARTMENU_FOLDER\Uninstall.lnk" "$INSTDIR\Uninstall.exe"  
+
+  !insertmacro MUI_STARTMENU_WRITE_BEGIN "Application"
+    CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
+    CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPLICATION_NAME}.lnk" "$INSTDIR\${LAUNCHER_NAME}" "" "$INSTDIR\stardatesystemtray.ico"
+    CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk" "$INSTDIR\Uninstall.exe"  
   !insertmacro MUI_STARTMENU_WRITE_END
 
 SectionEnd
 
- 
+
 ;--------------------------------
 ;Uninstaller Section
 
 Section "Uninstall"
 
-  RMDir /r /REBOOTOK $INSTDIR
-  
-  !insertmacro MUI_STARTMENU_GETFOLDER Application $MUI_TEMP
-    
-  Delete "$SMPROGRAMS\$MUI_TEMP\Stardate System Tray.lnk"
-  Delete "$SMPROGRAMS\$MUI_TEMP\Uninstall.lnk"
-  
-  ;Delete empty start menu parent directories
-  StrCpy $MUI_TEMP "$SMPROGRAMS\$MUI_TEMP"
- 
-  startMenuDeleteLoop:
-	ClearErrors
-    RMDir $MUI_TEMP
-    GetFullPathName $MUI_TEMP "$MUI_TEMP\.."
-    
-    IfErrors startMenuDeleteLoopDone
-  
-    StrCmp $MUI_TEMP $SMPROGRAMS startMenuDeleteLoopDone startMenuDeleteLoop
-  startMenuDeleteLoopDone:
+  SetShellvarContext all
 
-  DeleteRegKey /ifempty HKCU "Software\Stardate System Tray"
-  DeleteRegValue HKCU "Software\Microsoft\Windows\CurrentVersion\Run" "StardateSystemTray"
-  DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\Stardate System Tray"
-  
-SectionEnd
+  RMDir /r /REBOOTOK "$INSTDIR"
+
+  !insertmacro MUI_STARTMENU_GETFOLDER "Application" $StartMenuFolder
+  RMDir /r "$SMPROGRAMS\$StartMenuFolder"
+
+  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}"
+  DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${APPLICATION_NAME}"
+
+ SectionEnd
 
 
-;--------------------------------
 Function CheckJRE
+  !insertmacro VersionCompare
   call GetJavaVersion
   pop $0 ; major version
   pop $1 ; minor version
