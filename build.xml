@@ -1,119 +1,113 @@
 <project name="WorldTimeSystemTray" default="CompileAndJar" basedir=".">
 
-	<!-- Application and version properties. -->
-	<property name="version" value="1.6" />
+  <!-- Application and version properties. -->
+  <property name="version" value="1.6" />
 
-	<!-- Compile properties -->
-	<property name="classes" location="classes" />
-	<property name="doc" location="doc" />
-	<property name="i18n" location="i18n" />
-	<property name="img" location="img" />
-	<property name="jar-filename" value="worldtimesystemtray.jar" />
-	<property name="lib" location="lib" />
-	<property name="packaging" location="packaging" />
-	<property name="release" location="release" />
-	<property name="src" location="src" />
-
-
-	<!-- Compile class files and JAR -->
-	<target name="CompileAndJar" description="Compiles the Java source and build various JAR files.">
-		<delete dir="${classes}" />
-		<mkdir dir="${classes}" />
-
-		<delete dir="${release}" />
-		<mkdir dir="${release}" />
-
-		<javac srcdir="${src}" destdir="${classes}" includeantruntime="false">
-			<compilerarg value="-Xlint:deprecation,fallthrough,finally,path,unchecked" />
-		</javac>
-
-		<copy todir="${classes}/i18n">
-			<fileset dir="${i18n}"/>
-		</copy>
-
-		<copy file="${img}/worldtimesystemtray16x16.gif" todir="${classes}" />
-		<copy file="${img}/worldtimesystemtray20x20.gif" todir="${classes}" />
-
-<!--TODO the class path in SST has the jar filename... -->		
-		
-		<manifest file="${classes}/MANIFEST.MF">
-			<attribute name="Class-Path" value="." />
-			<attribute name="Main-Class" value="WorldTimeSystemTray" />
-		</manifest>
-		<jar jarfile="${release}/${jar-filename}" basedir="${classes}" manifest="${classes}/MANIFEST.MF" excludes="MANIFEST.MF" />
-
-		<delete dir="${classes}" />
-	</target>
+  <!-- Compile properties -->
+  <property name="classes" location="classes" />
+  <property name="doc" location="doc" />
+  <property name="i18n" location="i18n" />
+  <property name="img" location="img" />
+  <property name="jar-filename" value="worldtimesystemtray.jar" />
+  <property name="lib" location="lib" />
+  <property name="packaging" location="packaging" />
+  <property name="release" location="release" />
+  <property name="src" location="src" />
 
 
-	<!-- Use NSIS to build Windows installer and setup executables -->
-	<target name="Win32" depends="CompileAndJar" description="Build the Microsoft Windows installer and executable using NSIS.">
-		<exec executable="makensis">
-			<arg line="packaging/win32/Launcher.nsi"/>
-		</exec>
+  <target name="CompileAndJar" description="Compiles the Java source and build various JAR files.">
+    <delete dir="${classes}" />
+    <mkdir dir="${classes}" />
 
-		<exec executable="makensis">
-			<arg line="packaging/win32/Installer.nsi"/>
-		</exec>
+    <delete dir="${release}" />
+    <mkdir dir="${release}" />
 
-		<move file="packaging/win32/WorldTimeSystemTraySetup.exe" tofile="${release}/WorldTimeSystemTraySetup-${version}.exe" />
-		<delete file="packaging/win32/WorldTimeSystemTray.exe" />
-	</target>
+    <javac srcdir="${src}" destdir="${classes}" includeantruntime="false">
+      <compilerarg value="-Xlint:deprecation,fallthrough,finally,path,unchecked" />
+    </javac>
 
+    <copy todir="${classes}/i18n">
+      <fileset dir="${i18n}"/>
+    </copy>
 
-	<!-- Create a Debian package - can only be done on Linux and run as root! -->
-	<target name="Debian" depends="CompileAndJar" description="Builds the Debian installer file...must be run as root!">
-		<echo message="" />
-		<echo message="********************************************************************************" />
-		<echo message="This task must be run as root and only on a Linux Debian based operating system." />
-		<echo message="For example, on Ubuntu: 'sudo ant Debian'" />
-		<echo message="After this task, run 'lintian' on the deb file to check for errors/warnings." />
-		<echo message="********************************************************************************" />
-		<echo message="" />
+    <copy file="${img}/worldtimesystemtray16x16.gif" todir="${classes}" />
+    <copy file="${img}/worldtimesystemtray20x20.gif" todir="${classes}" />
 
-		<copy todir="${release}/working" preservelastmodified="true">
-			<fileset dir="packaging/debian" excludes="**/*.svn"/>
-		</copy>
+    <manifest file="${classes}/MANIFEST.MF">
+      <attribute name="Class-Path" value="." />
+      <attribute name="Main-Class" value="WorldTimeSystemTray" />
+    </manifest>
+    <jar jarfile="${release}/${jar-filename}" basedir="${classes}" manifest="${classes}/MANIFEST.MF" excludes="MANIFEST.MF" />
 
-		<chmod file="${release}/working/DEBIAN/postinst" perm="755"/>
-		<chgrp file="${release}/working/DEBIAN/postinst" group="root"/>
-		<chown file="${release}/working/DEBIAN/postinst" owner="root"/>
-
-		<chmod file="${release}/working/DEBIAN/postrm" perm="755"/>
-		<chgrp file="${release}/working/DEBIAN/postrm" group="root"/>
-		<chown file="${release}/working/DEBIAN/postrm" owner="root"/>
-
-		<chmod file="${release}/working/usr/bin/worldtimesystemtray" perm="ugo+x"/>
-
-		<copy file="${release}/${jar-filename}" todir="${release}/working/usr/share/worldtimesystemtray" preservelastmodified="true" />
-
-		<copy file="TODO.txt" tofile="${release}/working/usr/share/doc/worldtimesystemtray/TODO" preservelastmodified="true" />
-		<copy file="${doc}/License.txt" tofile="${release}/working/usr/share/doc/worldtimesystemtray/copyright" preservelastmodified="true" />
-
-		<copy file="changelog.Debian" tofile="${release}/working/usr/share/doc/worldtimesystemtray/changelog" preservelastmodified="true" />
-		<exec executable="gzip">
-			<arg line="-9 ${release}/working/usr/share/doc/worldtimesystemtray/changelog" />
-		</exec>
-
-		<copy file="${img}/worldtimesystemtray16x16.xpm" todir="${release}/working/usr/share/pixmaps" preservelastmodified="true" />
-		<copy file="${img}/worldtimesystemtray32x32.xpm" todir="${release}/working/usr/share/pixmaps" preservelastmodified="true" />	
-
-		<exec executable="dpkg">
-			<arg line="--build ${release}/working ${release}/worldtimesystemtray_${version}_all.deb" />
-		</exec>
-
-		<delete dir="${release}/working" />
-	</target>
+    <delete dir="${classes}" />
+  </target>
 
 
-	<!-- Do a full release -->
-	<target name="Release" depends="Debian, Win32" description="Packages up the various parts for a formal release.">
-        <zip destfile="${release}/WorldTimeSystemTrayJAR-${version}.zip">
-            <fileset file="${release}/${jar-filename}"/>
-        </zip>
-		<delete file="${release}/${jar-filename}" />
+  <target name="Win32" depends="CompileAndJar" description="Build the Microsoft Windows installer and executable using NSIS.">
+    <exec executable="makensis">
+      <arg line="packaging/win32/Launcher.nsi"/>
+    </exec>
 
-        <zip destfile="${release}/WorldTimeSystemTraySource-${version}.zip" basedir="${src}" includes="*.java" />		
-    </target>
+    <exec executable="makensis">
+      <arg line="packaging/win32/Installer.nsi"/>
+    </exec>
+
+    <move file="packaging/win32/WorldTimeSystemTraySetup.exe" tofile="${release}/WorldTimeSystemTraySetup-${version}.exe" />
+    <delete file="packaging/win32/WorldTimeSystemTray.exe" />
+  </target>
+
+
+  <target name="Debian" depends="CompileAndJar" description="Builds the Debian installer file...must be run as root!">
+    <echo message="" />
+    <echo message="********************************************************************************" />
+    <echo message="This task must be run as root and only on a Linux Debian based operating system." />
+    <echo message="For example, on Ubuntu: 'sudo ant Debian'" />
+    <echo message="After this task, run 'lintian' on the deb file to check for errors/warnings." />
+    <echo message="********************************************************************************" />
+    <echo message="" />
+
+    <copy todir="${release}/working" preservelastmodified="true">
+      <fileset dir="packaging/debian" excludes="**/*.svn"/>
+    </copy>
+
+    <chmod file="${release}/working/DEBIAN/postinst" perm="755"/>
+    <chgrp file="${release}/working/DEBIAN/postinst" group="root"/>
+    <chown file="${release}/working/DEBIAN/postinst" owner="root"/>
+
+    <chmod file="${release}/working/DEBIAN/postrm" perm="755"/>
+    <chgrp file="${release}/working/DEBIAN/postrm" group="root"/>
+    <chown file="${release}/working/DEBIAN/postrm" owner="root"/>
+
+    <chmod file="${release}/working/usr/bin/worldtimesystemtray" perm="ugo+x"/>
+
+    <copy file="${release}/${jar-filename}" todir="${release}/working/usr/share/worldtimesystemtray" preservelastmodified="true" />
+
+    <copy file="TODO.txt" tofile="${release}/working/usr/share/doc/worldtimesystemtray/TODO" preservelastmodified="true" />
+    <copy file="License.txt" tofile="${release}/working/usr/share/doc/worldtimesystemtray/copyright" preservelastmodified="true" />
+
+    <copy file="changelog.Debian" tofile="${release}/working/usr/share/doc/worldtimesystemtray/changelog" preservelastmodified="true" />
+    <exec executable="gzip">
+      <arg line="-9 ${release}/working/usr/share/doc/worldtimesystemtray/changelog" />
+    </exec>
+
+    <copy file="${img}/worldtimesystemtray16x16.xpm" todir="${release}/working/usr/share/pixmaps" preservelastmodified="true" />
+    <copy file="${img}/worldtimesystemtray32x32.xpm" todir="${release}/working/usr/share/pixmaps" preservelastmodified="true" />  
+
+    <exec executable="dpkg">
+      <arg line="--build ${release}/working ${release}/worldtimesystemtray_${version}_all.deb" />
+    </exec>
+
+    <delete dir="${release}/working" />
+  </target>
+
+
+  <target name="Release" depends="Debian, Win32" description="Packages up the various parts for a formal release.">
+    <zip destfile="${release}/WorldTimeSystemTrayJAR-${version}.zip">
+      <fileset file="${release}/${jar-filename}"/>
+    </zip>
+    <delete file="${release}/${jar-filename}" />
+
+    <zip destfile="${release}/WorldTimeSystemTraySource-${version}.zip" basedir="${src}" includes="*.java" />    
+  </target>
 
 </project>

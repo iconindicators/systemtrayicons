@@ -48,7 +48,7 @@
 
   Page custom CheckJRE
   !insertmacro MUI_PAGE_WELCOME
-  !insertmacro MUI_PAGE_LICENSE "..\..\doc\License.txt"
+  !insertmacro MUI_PAGE_LICENSE "..\..\License.txt"
   !insertmacro MUI_PAGE_DIRECTORY
   
   !insertmacro MUI_PAGE_STARTMENU "Application" $StartMenuFolder
@@ -78,7 +78,7 @@ Section "Install"
 
   File ..\..\ReleaseNotes.txt
   File ..\..\TODO.txt
-  File ..\..\doc\License.txt
+  File ..\..\License.txt
   File ..\..\release\worldtimesystemtray.jar
   File ..\..\packaging\win32\WorldTimeSystemTray.exe	
 
