@@ -230,7 +230,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     	{
     		String message =
 				"<html><center><br>" +  //$NON-NLS-1$
-        		"<b>" + WorldTimeSystemTray.APPLICATION_NAME + "</b><br><br>" + //$NON-NLS-1$ //$NON-NLS-2$
+        		"<h2>" + WorldTimeSystemTray.APPLICATION_NAME + "</h2><br><br>" + //$NON-NLS-1$ //$NON-NLS-2$
         		new MessageFormat( Messages.getString("PopupMenu.62") ).format( new Object[] { WorldTimeSystemTray.APPLICATION_VERSION_NUMBER } ) +"<br>" + //$NON-NLS-1$ //$NON-NLS-2$
         		"<a href='" + WorldTimeSystemTray.APPLICATION_URL + "'>" + WorldTimeSystemTray.APPLICATION_URL + "</a><br><br><br>" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         		"<u>" + Messages.getString("PopupMenu.63") + "</u><br><br>" + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
