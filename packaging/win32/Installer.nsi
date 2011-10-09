@@ -1,6 +1,3 @@
-;Put in a check to see if we are already running the program.
-
-
 ;--------------------------------
 ;Constants
 
@@ -10,6 +7,7 @@
 ;--------------------------------
 ;Includes
 
+  !addplugindir "./"
   !include MUI2.nsh
   !include WordFunc.nsh
 
@@ -116,6 +114,24 @@ Section "Uninstall"
   DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${APPLICATION_NAME}"
 
  SectionEnd
+
+
+Function .onInit
+  FindProcDLL::FindProc "${LAUNCHER_NAME}"
+  IntCmp $R0 1 0 notRunning
+  MessageBox MB_OK|MB_ICONEXCLAMATION "${APPLICATION_NAME} is running - please close it first." /SD IDOK
+  Abort
+  notRunning:
+FunctionEnd
+
+
+Function un.onInit
+  FindProcDLL::FindProc "${LAUNCHER_NAME}"
+  IntCmp $R0 1 0 notRunning
+  MessageBox MB_OK|MB_ICONEXCLAMATION "${APPLICATION_NAME} is running - please close it first." /SD IDOK
+  Abort
+  notRunning:
+FunctionEnd
 
 
 Function CheckJRE
