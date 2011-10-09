@@ -70,7 +70,7 @@
 
 Section "Install" 
 
-  SetShellvarContext all
+  SetShellVarContext all
 
   SetOutPath "$INSTDIR"
 
@@ -103,7 +103,7 @@ SectionEnd
 
 Section "Uninstall"
 
-  SetShellvarContext all
+  SetShellVarContext all
 
   RMDir /r /REBOOTOK "$INSTDIR"
 
