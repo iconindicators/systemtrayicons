@@ -7,7 +7,7 @@
 ;--------------------------------
 ;Includes
 
-  !addplugindir "./"
+  !addplugindir "."
   !include MUI2.nsh
   !include WordFunc.nsh
 
