@@ -161,4 +161,4 @@ World Time System Tray Release Notes
 * First release.
 
 
-http://sourceforge.net/projects/wrldtimesystray
+http://wrldtimesystray.sourceforge.net
