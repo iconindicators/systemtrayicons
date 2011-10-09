@@ -120,4 +120,4 @@ Stardate and Stardate System Tray Release Notes
 * First release.
 
 
-http://sourceforge.net/projects/stardatesystray
+http://stardatesystray.sourceforge.net

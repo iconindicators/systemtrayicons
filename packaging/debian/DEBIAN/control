@@ -1,12 +1,12 @@
 Package: stardatesystemtray
-Version: 1.6
+Version: 1.7
 Section: misc
 Priority: optional
 Architecture: all
-Depends: sun-java6-jre
+Depends: java-6-openjdk
 Installed-Size: 63
 Maintainer: Bernard Giannetti <bernmeister@users.sourceforge.net>
-Homepage: http://sourceforge.net/projects/stardatesystray/
+Homepage: http://stardatesystray.sourceforge.net
 Description: Show the current stardate and dates from other calendars
  Features:
   * Show the current stardate; optionally show the stardate issue and/or pad 
