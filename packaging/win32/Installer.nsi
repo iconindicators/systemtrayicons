@@ -32,7 +32,6 @@
 ;Interface Settings
 
   !define MUI_ABORTWARNING
-  !define MUI_FINISHPAGE_RUN "$INSTDIR\${LAUNCHER_NAME}"
   !define MUI_LICENSEPAGE_RADIOBUTTONS
   !define MUI_STARTMENUPAGE_NODISABLE
   !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKCU"
@@ -77,6 +76,7 @@ Section "Install"
   File ..\..\ReleaseNotes.txt
   File ..\..\TODO.txt
   File ..\..\License.txt
+  File ..\..\img\worldtimesystemtray.ico		
   File ..\..\release\worldtimesystemtray.jar
   File ..\..\packaging\win32\WorldTimeSystemTray.exe	
 
