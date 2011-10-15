@@ -186,6 +186,7 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
     }
 
 
+	@Override 
 	public void itemStateChanged( ItemEvent itemEvent )
 	{
     	if( itemEvent.getSource() == m_showAllTimeZonesCheckbox )
@@ -214,7 +215,8 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
 	}
 
 
-    public void actionPerformed( ActionEvent actionEvent )
+	@Override 
+	public void actionPerformed( ActionEvent actionEvent )
 	{
     	if( actionEvent.getSource() == m_calculate )
     	{
@@ -329,23 +331,23 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
     }
     
 
-    public void windowClosing( WindowEvent windowEvent ) { resetProperties(); }
+	@Override public void windowClosing( WindowEvent windowEvent ) { resetProperties(); }
 
     
-    public void windowClosed( WindowEvent windowEvent ) { /** Do nothing. */ }
+	@Override public void windowClosed( WindowEvent windowEvent ) { /** Do nothing. */ }
 
     
-    public void windowOpened( WindowEvent windowEvent ) { /** Do nothing. */ }
+	@Override public void windowOpened( WindowEvent windowEvent ) { /** Do nothing. */ }
 
     
-    public void windowIconified( WindowEvent windowEvent ) { /** Do nothing. */ }
+	@Override public void windowIconified( WindowEvent windowEvent ) { /** Do nothing. */ }
 
     
-    public void windowDeiconified( WindowEvent windowEvent ) { /** Do nothing. */ }
+	@Override public void windowDeiconified( WindowEvent windowEvent ) { /** Do nothing. */ }
     
     
-    public void windowActivated( WindowEvent windowEvent ) { /** Do nothing. */ }
+	@Override public void windowActivated( WindowEvent windowEvent ) { /** Do nothing. */ }
 
     
-    public void windowDeactivated( WindowEvent windowEvent ) { /** Do nothing. */ }
+	@Override public void windowDeactivated( WindowEvent windowEvent ) { /** Do nothing. */ }
 }

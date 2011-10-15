@@ -234,6 +234,7 @@ public class MessageLayout extends JDialog implements ActionListener, ItemListen
     	(
 			new ActionListener()
 			{
+				@Override 
 				public void actionPerformed( ActionEvent actionEvent )
 				{
 					messageLayout.storeProperties();
@@ -247,6 +248,7 @@ public class MessageLayout extends JDialog implements ActionListener, ItemListen
     	(
 			new ActionListener()
 			{
+				@Override 
 				public void actionPerformed( ActionEvent actionEvent )
 				{
 					Properties.getInstance().setProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, messageLayout.m_leftText );
@@ -380,7 +382,8 @@ public class MessageLayout extends JDialog implements ActionListener, ItemListen
     }
 
 
-    public void itemStateChanged( ItemEvent itemEvent )
+	@Override 
+	public void itemStateChanged( ItemEvent itemEvent )
     {
     	getContentPane().removeAll();
     	GroupLayout layout = new GroupLayout( getContentPane() );

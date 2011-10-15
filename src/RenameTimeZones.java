@@ -45,7 +45,7 @@ public class RenameTimeZones extends JDialog
         renameTimeZones.m_ok.addActionListener( renameTimeZones.new OKActionListener() );
 
         JButton cancel = new JButton( Messages.getString( "RenameTimeZones.2" ) );  //$NON-NLS-1$
-    	cancel.addActionListener( new ActionListener() { public void actionPerformed( ActionEvent actionEvent ) { renameTimeZones.dispose(); } } );
+    	cancel.addActionListener( new ActionListener() { @Override public void actionPerformed( ActionEvent actionEvent ) { renameTimeZones.dispose(); } } );
 
         GroupLayout layout = new GroupLayout( renameTimeZones.getContentPane() );
         renameTimeZones.getContentPane().setLayout( layout );
@@ -124,6 +124,7 @@ public class RenameTimeZones extends JDialog
 
     protected class OKActionListener implements ActionListener
     {
+    	@Override 
     	public void actionPerformed( ActionEvent actionEvent )
     	{
 			// Check for empty values.

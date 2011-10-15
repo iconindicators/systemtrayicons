@@ -222,7 +222,8 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     }
 
 
-    public void actionPerformed( ActionEvent actionEvent )
+	@Override 
+	public void actionPerformed( ActionEvent actionEvent )
 	{
 		Object source = actionEvent.getSource();
 
@@ -345,6 +346,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     }
 
 
+	@Override 
 	public void itemStateChanged( ItemEvent itemEvent )
     {
     	CheckboxMenuItem checkboxMenuItem = (CheckboxMenuItem)itemEvent.getSource();

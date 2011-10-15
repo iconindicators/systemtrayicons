@@ -42,9 +42,10 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 	private String getMessageString() { return Message.getMessageString( new GregorianCalendar(), false ); }
 
 
-    public void mouseDragged( MouseEvent mouseEvent ) { /** Do nothing. */ }
+	@Override public void mouseDragged( MouseEvent mouseEvent ) { /** Do nothing. */ }
 
 
+	@Override 
 	public void mouseMoved( MouseEvent mouseEvent ) 
 	{
 		if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_TIMES_IN_TOOL_TIP, true ) )
@@ -54,7 +55,8 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 	}
 
 
-    public void mousePressed( MouseEvent mouseEvent )
+	@Override 
+	public void mousePressed( MouseEvent mouseEvent )
 	{
     	if( mouseEvent.getButton() == MouseEvent.BUTTON1 )
     	{
@@ -73,14 +75,14 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 	}
 
 
-	public void mouseClicked( MouseEvent mouseEvent ) { /** Do nothing. */ }
+	@Override public void mouseClicked( MouseEvent mouseEvent ) { /** Do nothing. */ }
 
 
-	public void mouseEntered( MouseEvent mouseEvent ) { /** Do nothing. */ }
+	@Override public void mouseEntered( MouseEvent mouseEvent ) { /** Do nothing. */ }
 
 
-	public void mouseExited( MouseEvent mouseEvent ) { /** Do nothing. */ }
+	@Override public void mouseExited( MouseEvent mouseEvent ) { /** Do nothing. */ }
 
 
-	public void mouseReleased( MouseEvent mouseEvent ) { /** Do nothing. */ }
+	@Override public void mouseReleased( MouseEvent mouseEvent ) { /** Do nothing. */ }
 }

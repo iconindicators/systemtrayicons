@@ -65,7 +65,8 @@ public class AddRemoveTimeZones extends JDialog implements ActionListener
     }
 
 
-    public void actionPerformed( ActionEvent actionEvent )
+	@Override 
+	public void actionPerformed( ActionEvent actionEvent )
 	{
     	if( actionEvent.getSource() == this.m_close )
 		{

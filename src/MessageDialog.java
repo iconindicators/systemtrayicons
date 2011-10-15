@@ -56,6 +56,7 @@ public class MessageDialog
     	(
     		new HyperlinkListener()
     		{
+    			@Override 
     			public void hyperlinkUpdate( HyperlinkEvent hyperlinkEvent )
     			{
     				if( Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported( Desktop.Action.BROWSE ) )

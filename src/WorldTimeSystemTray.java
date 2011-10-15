@@ -92,6 +92,7 @@ public class WorldTimeSystemTray implements ClipboardOwner
         (
         	new Runnable() 
         	{
+        		@Override 
         		public void run() 
         		{
         			TrayIcon trayIcon = TrayIcon.createTrayIcon();
@@ -118,7 +119,7 @@ public class WorldTimeSystemTray implements ClipboardOwner
 	}
 
 
-	public void lostOwnership( Clipboard clipboard, Transferable transferable ) { /** Do nothing. */ }
+	@Override public void lostOwnership( Clipboard clipboard, Transferable transferable ) { /** Do nothing. */ }
 
 
 	public static void main( String[] args ) { new WorldTimeSystemTray(); }

@@ -56,6 +56,7 @@ public class ShowDateTime extends JDialog implements ClipboardOwner
         ( 
     		new ActionListener() 
     		{ 
+    			@Override 
     			public void actionPerformed( ActionEvent actionEvent ) 
     			{
     				Toolkit.getDefaultToolkit().getSystemClipboard().setContents( new StringSelection( Message.getMessageString( showDateTime.m_gregorianCalendar, false ) ), showDateTime );
@@ -64,7 +65,7 @@ public class ShowDateTime extends JDialog implements ClipboardOwner
 		);
 
         JButton close = new JButton( Messages.getString( "ShowDateTime.2" ) );  //$NON-NLS-1$
-        close.addActionListener( new ActionListener() { public void actionPerformed( ActionEvent actionEvent ) { showDateTime.dispose(); } } );
+        close.addActionListener( new ActionListener() { @Override public void actionPerformed( ActionEvent actionEvent ) { showDateTime.dispose(); } } );
 
         GroupLayout layout = new GroupLayout( showDateTime.getContentPane() );
         showDateTime.getContentPane().setLayout( layout );
@@ -109,5 +110,5 @@ public class ShowDateTime extends JDialog implements ClipboardOwner
     }
 
 
-    public void lostOwnership( Clipboard clipboard, Transferable transferable ) { /** Do nothing. */ }
+	@Override public void lostOwnership( Clipboard clipboard, Transferable transferable ) { /** Do nothing. */ }
 }

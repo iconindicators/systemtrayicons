@@ -22,7 +22,8 @@ public class ComponentListener implements java.awt.event.ComponentListener
     }
 
 
-    public void componentResized( ComponentEvent componentEvent )
+	@Override 
+	public void componentResized( ComponentEvent componentEvent )
     {
         if( ! ( componentEvent.getComponent() instanceof Window ) )
             return;
@@ -59,13 +60,13 @@ public class ComponentListener implements java.awt.event.ComponentListener
     }
 
 
-    public void componentHidden( ComponentEvent componentEvent ) { /** Do nothing. */ }
+	@Override public void componentHidden( ComponentEvent componentEvent ) { /** Do nothing. */ }
 
 
-    public void componentMoved( ComponentEvent componentEvent ) { /** Do nothing. */ }
+	@Override public void componentMoved( ComponentEvent componentEvent ) { /** Do nothing. */ }
 
 
-    public void componentShown( ComponentEvent componentEvent ) { /** Do nothing. */ }
+	@Override public void componentShown( ComponentEvent componentEvent ) { /** Do nothing. */ }
     
     
     private static void centreWindowAboutScreen( Container container )

@@ -42,6 +42,7 @@ public class DifferentDayIndicator extends JDialog
     	( 
 			new ActionListener() 
 			{ 
+				@Override 
 				public void actionPerformed( ActionEvent actionEvent ) 
 				{ 
 		    		Properties.getInstance().setProperty( Properties.PROPERTY_DIFFERENT_DAY_INDICATOR_PREVIOUS_DAY, previousDayTextfield.getText() );
@@ -54,7 +55,7 @@ public class DifferentDayIndicator extends JDialog
 		);
 
     	JButton cancel = new JButton( Messages.getString( "DifferentDayIndicator.3" ) ); //$NON-NLS-1$
-    	cancel.addActionListener( new ActionListener() { public void actionPerformed( ActionEvent actionEvent ) { differentDayIndicator.dispose(); } } );
+    	cancel.addActionListener( new ActionListener() { @Override public void actionPerformed( ActionEvent actionEvent ) { differentDayIndicator.dispose(); } } );
     	
     	GroupLayout layout = new GroupLayout( differentDayIndicator.getContentPane() );
         differentDayIndicator.getContentPane().setLayout( layout );

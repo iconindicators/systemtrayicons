@@ -74,7 +74,8 @@ public class CheckboxList extends JList
     
     protected class CheckboxListener implements ListSelectionListener
     {
-        public void valueChanged( ListSelectionEvent listSelectionEvent )
+    	@Override 
+    	public void valueChanged( ListSelectionEvent listSelectionEvent )
         {
             if( listSelectionEvent.getValueIsAdjusting() )
                 return;
@@ -106,7 +107,8 @@ public class CheckboxList extends JList
 
     protected class CheckboxRenderer implements ListCellRenderer
     {
-        public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
+    	@Override 
+    	public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
         {
             JPanel panel = new JPanel();
             panel.setLayout( new BoxLayout( panel, BoxLayout.X_AXIS ) );
