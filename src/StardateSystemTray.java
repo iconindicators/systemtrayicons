@@ -89,7 +89,8 @@ public class StardateSystemTray
         (
         	new Runnable() 
         	{
-        		public void run() 
+        		@Override
+				public void run() 
         		{
         			TrayIcon trayIcon = TrayIcon.createTrayIcon();
 	            	try 

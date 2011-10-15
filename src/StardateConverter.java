@@ -46,7 +46,8 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
     }
 
 
-    public void actionPerformed( ActionEvent actionEvent )
+    @Override
+	public void actionPerformed( ActionEvent actionEvent )
     {
         if( m_stardateToGregorian )
         {
@@ -107,7 +108,8 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
     }
 
 
-    public void stateChanged( ChangeEvent changeEvent )
+    @Override
+	public void stateChanged( ChangeEvent changeEvent )
     {
     	if( changeEvent.getSource() == m_spinnerHHMMSS || changeEvent.getSource() == m_spinnerYYYYMMDD )
     		m_stardateToGregorian = false;
@@ -116,7 +118,8 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
     }
 
 
-    public void focusGained( FocusEvent focusEvent )
+    @Override
+	public void focusGained( FocusEvent focusEvent )
     {
     	if( focusEvent.getSource() == ( (JSpinner.DefaultEditor)m_spinnerHHMMSS.getEditor() ).getTextField() || focusEvent.getSource() == ( (JSpinner.DefaultEditor)m_spinnerYYYYMMDD.getEditor() ).getTextField() )
     		m_stardateToGregorian = false;
@@ -125,12 +128,13 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
     }
 
 
-    public void focusLost( FocusEvent focusEvent ) { /** Do nothing. */ }
+    @Override
+	public void focusLost( FocusEvent focusEvent ) { /** Do nothing. */ }
 
 
     private JPanel buildMainPanel()
     {
-        JLabel gregorianToStardateLabel = new JLabel( "Convert from a Gregorian date to a Stardate:" ); 
+        JLabel gregorianToStardateLabel = new JLabel( "Convert from a Gregorian date to a Stardate:" );
 
         JLabel yearMonthDayLabel = new JLabel( "YYYY-MM-DD :" );
 

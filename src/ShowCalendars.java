@@ -56,7 +56,8 @@ public class ShowCalendars extends JDialog implements ClipboardOwner
         ( 
     		new ActionListener() 
     		{ 
-    			public void actionPerformed( ActionEvent actionEvent ) 
+    			@Override
+				public void actionPerformed( ActionEvent actionEvent ) 
     			{
     				Toolkit.getDefaultToolkit().getSystemClipboard().setContents( new StringSelection( TrayIcon.getMessageString( false ) ), showDateTime );
 				}
@@ -64,7 +65,7 @@ public class ShowCalendars extends JDialog implements ClipboardOwner
 		);
 
         JButton close = new JButton( Messages.getString( "ShowCalendars.2" ) );  //$NON-NLS-1$
-        close.addActionListener( new ActionListener() { public void actionPerformed( ActionEvent actionEvent ) { showDateTime.dispose(); } } );
+        close.addActionListener( new ActionListener() { @Override public void actionPerformed( ActionEvent actionEvent ) { showDateTime.dispose(); } } );
 
         GroupLayout layout = new GroupLayout( showDateTime.getContentPane() );
         showDateTime.getContentPane().setLayout( layout );
@@ -109,5 +110,5 @@ public class ShowCalendars extends JDialog implements ClipboardOwner
     }
 
 
-    public void lostOwnership( Clipboard clipboard, Transferable transferable ) { /** Do nothing. */ }
+    @Override public void lostOwnership( Clipboard clipboard, Transferable transferable ) { /** Do nothing. */ }
 }
