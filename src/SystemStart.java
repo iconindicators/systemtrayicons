@@ -18,7 +18,7 @@ public class SystemStart
     {
     	try
     	{
-			String registryValue = WindowsRegistry.readString( WindowsRegistry.HKEY_LOCAL_MACHINE, MICROSOFT_WINDOWS_REGISTRY_KEY, MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME );
+			String registryValue = WindowsRegistry.readString( WindowsRegistry.HKEY_CURRENT_USER, MICROSOFT_WINDOWS_REGISTRY_KEY, MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME );
 			return registryValue != null && registryValue.contentEquals( MICROSOFT_WINDOWS_REGISTRY_VALUE_DATA ); 
     	}
     	catch( Exception exception ) { return false; }
@@ -41,16 +41,16 @@ public class SystemStart
 	    	if( runOnSystemStart )
 	    	{
 	    		// Create the key if need be and set the value.
-	    		String registryValue = WindowsRegistry.readString( WindowsRegistry.HKEY_LOCAL_MACHINE, MICROSOFT_WINDOWS_REGISTRY_KEY, MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME );
+	    		String registryValue = WindowsRegistry.readString( WindowsRegistry.HKEY_CURRENT_USER, MICROSOFT_WINDOWS_REGISTRY_KEY, MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME );
 	    		if( registryValue == null )
-	    			WindowsRegistry.createKey( WindowsRegistry.HKEY_LOCAL_MACHINE, MICROSOFT_WINDOWS_REGISTRY_KEY );
+	    			WindowsRegistry.createKey( WindowsRegistry.HKEY_CURRENT_USER, MICROSOFT_WINDOWS_REGISTRY_KEY );
 
-	    		WindowsRegistry.writeStringValue( WindowsRegistry.HKEY_LOCAL_MACHINE, MICROSOFT_WINDOWS_REGISTRY_KEY, MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME, MICROSOFT_WINDOWS_REGISTRY_VALUE_DATA );
+	    		WindowsRegistry.writeStringValue( WindowsRegistry.HKEY_CURRENT_USER, MICROSOFT_WINDOWS_REGISTRY_KEY, MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME, MICROSOFT_WINDOWS_REGISTRY_VALUE_DATA );
         	}
 	    	else
 	    	{
 	    		// Delete the value.
-	    		WindowsRegistry.deleteValue( WindowsRegistry.HKEY_LOCAL_MACHINE, MICROSOFT_WINDOWS_REGISTRY_KEY, MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME );
+	    		WindowsRegistry.deleteValue( WindowsRegistry.HKEY_CURRENT_USER, MICROSOFT_WINDOWS_REGISTRY_KEY, MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME );
 	    	}
 
 	    	return true;

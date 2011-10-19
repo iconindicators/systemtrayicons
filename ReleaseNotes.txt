@@ -2,6 +2,12 @@ Stardate and Stardate System Tray Release Notes
 -----------------------------------------------
 
 
+2011-10-19 Version 1.8
+
+* Changed the installer to install as local user.
+  Less issues with UAC (fingers crossed).
+
+
 2011-10-08 Version 1.7
 
 * General code cleanup. 
