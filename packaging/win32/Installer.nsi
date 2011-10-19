@@ -1,9 +1,18 @@
 ;--------------------------------
+;Based in part on 
+;  http://www.klopfenstein.net/lorenz.aspx/simple-nsis-installer-with-user-execution-level
+
+
+;--------------------------------
 ;Constants
 
   !define APPLICATION_NAME "World Time System Tray"
   !define LAUNCHER_NAME "WorldTimeSystemTray.exe"
+  !define REGISTRY_UNINSTALL_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}"
+  !define START_MENU "$STARTMENU\Programs\${APPLICATION_NAME}"
+  !define UNINSTALLER_NAME "Uninstall.exe"
 
+  
 ;--------------------------------
 ;Includes
 
@@ -17,8 +26,8 @@
 
   Name "${APPLICATION_NAME}"
   OutFile "WorldTimeSystemTraySetup.exe"
-  InstallDir "$PROGRAMFILES\${APPLICATION_NAME}"
-  RequestExecutionLevel admin
+  InstallDir "$LOCALAPPDATA\${APPLICATION_NAME}"
+  RequestExecutionLevel user
   SetCompressor /SOLID lzma
 
 
@@ -32,12 +41,12 @@
 ;Interface Settings
 
   !define MUI_ABORTWARNING
+  !define MUI_FINISHPAGE_NOAUTOCLOSE
+  !define MUI_FINISHPAGE_RUN "$INSTDIR\${LAUNCHER_NAME}"
   !define MUI_LICENSEPAGE_RADIOBUTTONS
   !define MUI_STARTMENUPAGE_NODISABLE
-  !define MUI_STARTMENUPAGE_REGISTRY_ROOT "HKCU"
-  !define MUI_STARTMENUPAGE_REGISTRY_KEY "Software\${APPLICATION_NAME}"
-  !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME "Start Menu Folder"
   !define MUI_UNABORTWARNING
+  !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
 
 ;--------------------------------
@@ -46,8 +55,7 @@
   Page custom CheckJRE
   !insertmacro MUI_PAGE_WELCOME
   !insertmacro MUI_PAGE_LICENSE "..\..\License.txt"
-  !insertmacro MUI_PAGE_DIRECTORY
-  
+
   !insertmacro MUI_PAGE_STARTMENU "Application" $StartMenuFolder
   !insertmacro MUI_PAGE_INSTFILES
   !insertmacro MUI_PAGE_FINISH
@@ -69,9 +77,8 @@
 
 Section "Install" 
 
-  SetShellVarContext all
-
   SetOutPath "$INSTDIR"
+  SetOverwrite on
 
   File ..\..\ReleaseNotes.txt
   File ..\..\TODO.txt
@@ -80,20 +87,19 @@ Section "Install"
   File ..\..\release\worldtimesystemtray.jar
   File ..\..\packaging\win32\WorldTimeSystemTray.exe	
 
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${APPLICATION_NAME}" "$INSTDIR\${LAUNCHER_NAME}"
+  WriteUninstaller "$INSTDIR\${UNINSTALLER_NAME}"
 
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "DisplayName" "${APPLICATION_NAME}"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "UninstallString" "$\"$INSTDIR\Uninstall.exe$\""
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "NoModify" 1
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}" "NoRepair" 1
+  WriteRegStr HKCU "${REGISTRY_UNINSTALL_KEY}" "DisplayName" "${APPLICATION_NAME}"
+  WriteRegStr HKCU "${REGISTRY_UNINSTALL_KEY}" "UninstallString" "$\"$INSTDIR\${UNINSTALLER_NAME}$\""
+  WriteRegDWORD HKCU "${REGISTRY_UNINSTALL_KEY}" "NoModify" 1
+  WriteRegDWORD HKCU "${REGISTRY_UNINSTALL_KEY}" "NoRepair" 1
 
-  WriteUninstaller "$INSTDIR\Uninstall.exe"
+  WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Run" "${APPLICATION_NAME}" "$INSTDIR\${LAUNCHER_NAME}"
 
-  !insertmacro MUI_STARTMENU_WRITE_BEGIN "Application"
-    CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
-    CreateShortCut "$SMPROGRAMS\$StartMenuFolder\${APPLICATION_NAME}.lnk" "$INSTDIR\${LAUNCHER_NAME}" "" "$INSTDIR\worldtimesystemtray.ico"
-    CreateShortCut "$SMPROGRAMS\$StartMenuFolder\Uninstall.lnk" "$INSTDIR\Uninstall.exe"  
-  !insertmacro MUI_STARTMENU_WRITE_END
+  SetShellVarContext current
+  CreateDirectory "${START_MENU}"
+  CreateShortCut "${START_MENU}\${APPLICATION_NAME}.lnk" "$INSTDIR\${LAUNCHER_NAME}" "" "$INSTDIR\worldtimesystemtray.ico"
+  CreateShortCut "${START_MENU}\Uninstall.lnk" "$INSTDIR\${UNINSTALLER_NAME}"
 
 SectionEnd
 
@@ -103,17 +109,14 @@ SectionEnd
 
 Section "Uninstall"
 
-  SetShellVarContext all
-
   RMDir /r /REBOOTOK "$INSTDIR"
 
-  !insertmacro MUI_STARTMENU_GETFOLDER "Application" $StartMenuFolder
-  RMDir /r "$SMPROGRAMS\$StartMenuFolder"
+  DeleteRegKey HKCU "${REGISTRY_UNINSTALL_KEY}"
 
-  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPLICATION_NAME}"
-  DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${APPLICATION_NAME}"
+  SetShellVarContext current
+  RMDir /r "${START_MENU}"
 
- SectionEnd
+SectionEnd
 
 
 Function .onInit

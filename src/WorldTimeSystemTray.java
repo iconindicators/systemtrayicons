@@ -14,7 +14,7 @@ public class WorldTimeSystemTray implements ClipboardOwner
 	public static final String APPLICATION_EXECUTABLE = "WorldTimeSystemTray.exe";  //$NON-NLS-1$
 	public static final String APPLICATION_NAME = "World Time System Tray";  //$NON-NLS-1$
 	public static final String APPLICATION_URL = "http://wrldtimesystray.sourceforge.net"; //$NON-NLS-1$
-	public static final String APPLICATION_VERSION_NUMBER = "1.6 (2011-10-08)"; //$NON-NLS-1$
+	public static final String APPLICATION_VERSION_NUMBER = "1.7 (2011-10-19)"; //$NON-NLS-1$
 
 
 	public WorldTimeSystemTray()
