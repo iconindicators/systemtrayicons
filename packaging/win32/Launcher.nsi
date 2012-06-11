@@ -10,7 +10,7 @@
 ;General
 
   Name "${APPLICATION_NAME}"
-  Icon "..\..\img\stardatesystemtray.ico"
+  Icon "..\..\img\stardatesystemtray48x48.ico"
   OutFile "${LAUNCHER_NAME}"
   RequestExecutionLevel user
   SetCompressor /SOLID lzma

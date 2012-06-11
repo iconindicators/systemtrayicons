@@ -83,10 +83,10 @@ Section "Install"
   File ..\..\ReleaseNotes.txt
   File ..\..\TODO.txt
   File ..\..\License.txt
-  File ..\..\img\stardatesystemtray.ico		
+  File ..\..\img\stardatesystemtray48x48.ico		
   File ..\..\release\stardate.jar
   File ..\..\release\stardatesystemtray.jar
-  File ..\..\lib\joda-time-2.0.jar
+  File ..\..\lib\joda-time-2.1.jar
   File ..\..\packaging\win32\StardateSystemTray.exe	
 
   WriteUninstaller "$INSTDIR\${UNINSTALLER_NAME}"
@@ -100,7 +100,7 @@ Section "Install"
 
   SetShellVarContext current
   CreateDirectory "${START_MENU}"
-  CreateShortCut "${START_MENU}\${APPLICATION_NAME}.lnk" "$INSTDIR\${LAUNCHER_NAME}" "" "$INSTDIR\stardatesystemtray.ico"
+  CreateShortCut "${START_MENU}\${APPLICATION_NAME}.lnk" "$INSTDIR\${LAUNCHER_NAME}" "" "$INSTDIR\stardatesystemtray48x48.ico"
   CreateShortCut "${START_MENU}\Uninstall.lnk" "$INSTDIR\${UNINSTALLER_NAME}"
 
 SectionEnd
