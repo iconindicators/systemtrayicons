@@ -2,6 +2,19 @@ Stardate and Stardate System Tray Release Notes
 -----------------------------------------------
 
 
+2012-06-11 Version 1.9
+
+* Implemented a Python version of the Stardate API.
+
+* Implemented an Ubuntu app indicator (equivalent of a Windows system tray
+  icon) which also has a fallback mode to work on Debian.  
+  PPA???
+
+* Additions to the API: getStardateFractionalPeriod(). 
+
+* Corrected calculations such that the Python and Java stardates match.
+
+
 2011-10-19 Version 1.8
 
 * Changed the installer to install as local user.
