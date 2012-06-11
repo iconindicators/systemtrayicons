@@ -8,7 +8,7 @@ public class Properties
 	public static final String PROPERTY_DIRECTORY = System.getProperty( "user.home" ) + File.separator + "." + StardateSystemTray.APPLICATION_NAME.toLowerCase().replace( " ", "" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	public static final String PROPERTY_FILE = PROPERTY_DIRECTORY + File.separator + "properties" ; //$NON-NLS-1$
 
-	private static java.util.Properties ms_properties = new java.util.Properties();
+	private java.util.Properties m_properties = new java.util.Properties();
     private static Properties ms_instance = new Properties();
     private static boolean ms_canCreatePropertyDirectory = true;
     private static boolean ms_canReadPropertiesFile = true;
@@ -60,29 +60,29 @@ public class Properties
         		return;
         	}
 
-            ms_properties.load( new FileInputStream( PROPERTY_FILE ) );
+            m_properties.load( new FileInputStream( PROPERTY_FILE ) );
         }
-        catch( Exception exception ) { ms_properties = new java.util.Properties(); }
+        catch( Exception exception ) { m_properties = new java.util.Properties(); }
     }
 
 
     public static Properties getInstance() { return ms_instance; }
 
 
-    public boolean canCreatePropertyDirectory() { return ms_canCreatePropertyDirectory; }
+    public static boolean canCreatePropertyDirectory() { return ms_canCreatePropertyDirectory; }
 
 
-    public boolean canReadPropertyFile() { return ms_canReadPropertiesFile; }
+    public static boolean canReadPropertyFile() { return ms_canReadPropertiesFile; }
 
 
-    public boolean canWritePropertyFile() { return ms_canWritePropertiesFile; }
+    public static boolean canWritePropertyFile() { return ms_canWritePropertiesFile; }
 
 
     public String getProperty( String key, String defaultValue )
     {
         if( key == null ) throw new IllegalArgumentException( "Key cannot be null." ); //$NON-NLS-1$
 
-        Object value = ms_properties.getProperty( key );
+        Object value = m_properties.getProperty( key );
         return value == null ? defaultValue : value.toString();
     }
 
@@ -91,7 +91,7 @@ public class Properties
     {
         if( key == null ) throw new IllegalArgumentException( "Key cannot be null." ); //$NON-NLS-1$
 
-        String val = ms_properties.getProperty( key );
+        String val = m_properties.getProperty( key );
         if( val == null || val.length() == 0 )
             return defaultValue;
 
@@ -106,13 +106,13 @@ public class Properties
 
         if( value == null ) throw new IllegalArgumentException( "Value cannot be null." ); //$NON-NLS-1$
 
-        ms_properties.setProperty( key, value );
+        m_properties.setProperty( key, value );
     }
 
 
     public void store()
 	{
-        try { ms_properties.store( new FileOutputStream( PROPERTY_FILE ), null ); }
+        try { m_properties.store( new FileOutputStream( PROPERTY_FILE ), null ); }
         catch( Exception exception ) { /** Do nothing. */ }
 	}
 }

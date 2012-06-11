@@ -43,7 +43,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 	private TrayIcon()
 	{
 		super( TrayIcon.getTrayIconImage(), null, ms_popupMenu );
-		
+
 		setImageAutoSize( true );
 		addMouseListener( this );
 		addMouseMotionListener( this );
@@ -91,7 +91,6 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
         	message.append( message.length() > 0 ? newLine : "" );   //$NON-NLS-1$
     		message.append( MESSAGE_COPTIC ).append( conversionDateTime.toString( getDateTimeFormatter() ) );
     	}
-
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_ETHIOPIC, true ) )
     	{
@@ -163,7 +162,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 	public void mouseMoved( MouseEvent mouseEvent )
 	{
 		Stardate stardate = new Stardate();
-		stardate.setGregorian(  new GregorianCalendar() );
+		stardate.setGregorian( new GregorianCalendar() );
 
 		boolean showStardateIssue = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_ISSUE, true );
 		boolean padStardate = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_PAD_STARDATE, true );
@@ -188,7 +187,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     		// To block the right click action we check here if the right mouse button is clicked.
     		// If a dialog is already showing, then we don't want to show the popup.
     		// This only works for Microsoft Windows...we have another "hack" in PopupMenu::show().
-    		if( ms_popupMenu.isPopupDisabled() )
+    		if( PopupMenu.isPopupDisabled() )
     			setPopupMenu( null );
     		else
     			setPopupMenu( ms_popupMenu );

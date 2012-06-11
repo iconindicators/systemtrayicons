@@ -1,5 +1,7 @@
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 
 /**
@@ -32,43 +34,25 @@ import java.util.GregorianCalendar;
  * <br>
  * Between 5/10/2283 to 1/1/2323 ([19]7840.0 and [20]5006.0, respectively) the rate changes once again, this time to 0.5 units per day.<br>
  * <br>
- * From 1/1/2323 ([20]5006.0) the rate changed to 1000 units per mean solar year (365.2425 days).  
- * Also, stardate [20]5006.0 becomes [21]00000.0.
+ * From 1/1/2323 ([20]5006.0) the rate changed to 1000 units per mean solar year (365.2425 days) and stardate [20]5006.0 becomes [21]00000.0.
  */
 public class Stardate
 {
 	/** API version. */
-	private static final String API_VERSION = "Version 1.2 (2009-11-13)"; //$NON-NLS-1$
-
-
-	/** Internal representation for the Gregorian Calendar date/time. */
-    private GregorianCalendar m_gregorianCalendar = null;
-
-
-    /** Internal representation for the stardate. */
-    private int m_issue = 0, m_integer = 0, m_fraction = 0;
-
-
-    /** If any part of the current stardate has changed, the entire Gregorian Calendar needs to be recalculated. */
-    private boolean m_recalculateGregorian = false;
-
-
-    /** If any part of the current Gregorian Calendar has changed, the entire star date needs to be recalculated. */
-    private boolean m_recalculateStardate = false;
+	private static final String API_VERSION = "Version 1.3 (2012-06-11)"; //$NON-NLS-1$
 
 
     /** Rates (in stardate units per day) for each stardate era. */
-    private static final double[] m_stardateRates = { 5.0, 5.0, 0.1, 0.5, 1000.0 / 365.2425 };
+    private static final double[] ms_stardateRates = { 5.0, 5.0, 0.1, 0.5, 1000.0 / 365.2425 };
 
 
     /**
      * The Gregorian dates which reflect the start date for each rate.
-     * For example, if the array index 3, this corresponds to the rate of 0.5 stardate units per day.
-     * The corresponding Gregorian date is 5/10/2283.
-     * Note that the month is zero-based (January = 0).
+     * For example, an index of 3 (Gregorian date of 5/10/2283) corresponds to the rate of 0.5 stardate units per day.
+     * The month is zero-based (January = 0).
      */
     private static final
-        GregorianCalendar[] m_gregorianDates =
+        GregorianCalendar[] ms_gregorianDates =
         {
             new GregorianCalendar( 2162, 0, 4 ),
             new GregorianCalendar( 2162, 0, 4 ),
@@ -77,6 +61,26 @@ public class Stardate
             new GregorianCalendar( 2323, 0, 1 )
         };
 
+
+    static 
+    {
+    	// Based on this bug http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4255109 ensure all timezones are UTC.
+    	for( GregorianCalendar gregorianCalendar : ms_gregorianDates )
+    		gregorianCalendar.setTimeZone( TimeZone.getTimeZone( "UTC" ) ); //$NON-NLS-1$
+    }
+
+
+    /** Internal representation for the Gregorian date/time. */
+    private GregorianCalendar m_gregorian = new GregorianCalendar( TimeZone.getTimeZone( "UTC" ) ); //$NON-NLS-1$
+
+
+    /** Internal representation for the stardate. */
+    private int m_stardateIssue = 0, m_stardateInteger = 0, m_stardateFraction = 0;
+
+
+    /** The index specifying the specific stardate rate. */
+    private int m_index = 0;  
+    
 
     /** Stardate constructor. */
     public Stardate() { /** Do nothing. */ }
@@ -91,103 +95,104 @@ public class Stardate
 
 
     /**
-	 * Sets a Gregorian Calendar object for conversion to a stardate.
+     * Gets the period (in seconds) between updates/changes to the current stardate.
+     * 
+     * @return The period (in seconds) between updates/changes to the current stardate.
+     */
+    public double getStardateFractionalPeriod() { return ( 1.0 / ( ms_stardateRates[ m_index ] / 24.0 / 60.0 / 60.0 ) / 10.0 ); }
+
+
+    /**
+	 * Sets a Gregorian date/time and converts to a stardate.
 	 *
-	 * @param gregorianCalendar The specified Gregorian Calendar object.
+	 * @param dateTime The specified Gregorian date/time.
 	 */
-	public void setGregorian( GregorianCalendar gregorianCalendar )
+	public void setGregorian( GregorianCalendar dateTime )
 	{
-		m_gregorianCalendar = gregorianCalendar;
-		m_recalculateStardate = true;
+		// Have found a difference in the final stardate calculation between setting a date/time from using 'new GregorianCalendar()'
+		// and setting each of year/month/day/hour/minute/second explicitly.
+		// Compared with the Python implementation, setting explicitly yields an exact match.
+		m_gregorian =
+			new GregorianCalendar
+			(
+				dateTime.get( Calendar.YEAR ), 
+				dateTime.get( Calendar.MONTH ), 
+				dateTime.get( Calendar.DAY_OF_MONTH ), 
+				dateTime.get( Calendar.HOUR_OF_DAY ), 
+				dateTime.get( Calendar.MINUTE), 
+				dateTime.get( Calendar.SECOND )
+			);
+
+		// Need to remove any timezone as this also gives an incorrect value.
+		m_gregorian.setTimeZone( TimeZone.getTimeZone( "UTC" ) ); //$NON-NLS-1$
+
+		gregorianToStardate();
 	}
 
 
     /**
      * Sets an issue/integer/fraction for conversion to a Gregorian date/time.
      *
-     * @param issue The issue number for the stardate.  Can be positive or negative.
-     * @param integer The (always positive) integer part of a stardate.
-     * @param fraction The (always positive) fractional part of a stardate.
+     * Rules:
+     *   issue <= 19: 0 <= integer <= 9999, fraction >= 0. 
+     *   issue == 20: 0 <= integer < 5006, fraction >= 0. 
+     *   issue >= 21: 0 <= integer <= 99999, fraction > 0. 
+     *
+     * @param issue The issue number for the stardate (can be negative).
+     * @param integer The integer part of a stardate.
+     * @param fraction The fractional part of a stardate.
      */
-    public void setStardate( int issue, int integer, int fraction ) throws StardateException
+    public void setStardate( int issue, int integer, int fraction )
     {
-        // Check if the integer and fractional parts are of valid length.
-        if( issue >= 21 )
-        {
-            if( integer > 99999 )
-            	throw new StardateException( StardateException.Type.INTEGER_PART_MUST_BE_BETWEEN_ZERO_AND_99999_INCLUSIVE );
+       	if( issue <= 19 && ( integer < 0 || integer > 9999 ) ) throw new IllegalArgumentException( "INTEGER PART MUST BE BETWEEN ZERO AND 9999 INCLUSIVE" ); //$NON-NLS-1$
 
-            if( fraction < 0 )
-               	throw new StardateException( StardateException.Type.FRACTIONAL_PART_MUST_BE_GREATER_THAN_OR_EQUAL_TO_ZERO );
-        }
-        else if( issue == 20 )
-        {
-        	if( integer >= 5006 )
-        		throw new StardateException( StardateException.Type.INTEGER_PART_MUST_BE_LESS_THAN_5006 );
+        if( issue == 20 && ( integer < 0 || integer >= 5006 ) ) throw new IllegalArgumentException( "INTEGER PART MUST BE GREATER THAN OR EQUAL TO ZERO AND LESS THAN 5006" ); //$NON-NLS-1$
 
-        	if( fraction < 0 )
-        		throw new StardateException( StardateException.Type.FRACTIONAL_PART_MUST_BE_GREATER_THAN_OR_EQUAL_TO_ZERO );
-        }
-        else
-        {
-        	if( integer > 9999 )
-        		throw new StardateException( StardateException.Type.INTEGER_PART_MUST_BE_BETWEEN_ZERO_AND_9999_INCLUSIVE );
+        if( issue >= 21 && ( integer < 0 || integer > 99999 ) ) throw new IllegalArgumentException( "INTEGER PART MUST BE BETWEEN ZERO AND 99999 INCLUSIVE" ); //$NON-NLS-1$
 
-        	if( fraction < 0 )
-        		throw new StardateException( StardateException.Type.FRACTIONAL_PART_MUST_BE_GREATER_THAN_OR_EQUAL_TO_ZERO );
-        }
+        if( fraction < 0 ) throw new IllegalArgumentException( "FRACTIONAL PART MUST BE GREATER THAN OR EQUAL TO ZERO" ); //$NON-NLS-1$
 
-    	m_issue = issue;
-        m_integer = integer;
-        m_fraction = fraction;
-        m_recalculateGregorian = true;
+        m_stardateIssue = issue;
+        m_stardateInteger = integer;
+        m_stardateFraction = fraction;
+        stardateToGregorian();
     }
 
 
     /**
-     * Returns the current stardate value converted to a Gregorian Calendar.
+     * Returns the current Gregorian date/time.
      *
-     * @return The current stardate converted to a Gregorian Calendar.
+     * @return The current Gregorian date/time.
      */
-    public GregorianCalendar getGregorian()
-    {
-        if( m_recalculateGregorian )
-        {
-            stardateToGregorian();
-            m_recalculateGregorian = false;
-        }
-
-        return m_gregorianCalendar;
-    }
+    public GregorianCalendar getGregorian() { return m_gregorian; }
 
 
     /**
-     * Returns the current stardate value converted to a Gregorian Calendar in string format.
+     * Returns the current stardate <code>issue</code> value.
      *
-     * @return The current stardate converted to a Gregorian Calendar in string format.
+     * @return The current stardate <code>issue</code> value.
      */
-    public String toGregorianString()
-    {
-        if( m_recalculateGregorian )
-        {
-            stardateToGregorian();
-            m_recalculateGregorian = false;
-        }
+    public int getStardateIssue() { return m_stardateIssue; }
 
-        return m_gregorianCalendar.toString();
-    }
+
+    /**
+     * Returns the current stardate <code>integer</code> value.
+     *
+     * @return The current stardate <code>integer</code> value.
+     */
+    public int getStardateInteger() { return m_stardateInteger; }
+
+
+    /**
+     * Returns the current stardate <code>fraction</code> value.
+     *
+     * @return The current stardate <code>fraction</code> value.
+     */
+    public int getStardateFraction() { return m_stardateFraction; }
 
 
     /**
      * Returns the current value of the stardate in string format.
-     *
-     * @return The current stardate as a formatted string.
-     */
-    public String toStardateString() { return toStardateString( false, true ); }
-
-
-    /**
-     * Returns the current value of the stardate in string format, padded if needed with leading zeros.
      *
      * @param padded If true, leading zeros will be inserted into the integer part of the stardate. 
      * @param showIssue If true, the issue part of the stardate will be included. 
@@ -196,105 +201,41 @@ public class Stardate
      */
     public String toStardateString( boolean padded, boolean showIssue )
     {
-        if( m_recalculateStardate )
-        {
-            gregorianToStardate();
-            m_recalculateStardate = false;
-        }
-
         StringBuilder stringBuilder = new StringBuilder();
+
         if( showIssue )
-        	stringBuilder.append( "[" ).append( Integer.valueOf( m_issue ) ).append( "] " ); //$NON-NLS-1$ //$NON-NLS-2$
+        	stringBuilder.append( "[" ).append( Integer.valueOf( m_stardateIssue ) ).append( "] " ); //$NON-NLS-1$ //$NON-NLS-2$
 
         if( padded )
         {
-            if( m_issue >= 21 )
+            if( m_stardateIssue >= 21 )
             {
             	// Need to pad up to 4 digits.
-                if( m_integer < 10 )
-                	stringBuilder.append( "0000" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
-                else if( m_integer < 100 )
-                	stringBuilder.append( "000" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
-                else if( m_integer < 1000 )
-                	stringBuilder.append( "00" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
-                else if( m_integer < 10000 )
-                	stringBuilder.append( "0" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
-                else
-                	stringBuilder.append( Integer.valueOf( m_integer ) );
+                if( m_stardateInteger < 10 ) stringBuilder.append( "0000" ); //$NON-NLS-1$
+                else if( m_stardateInteger < 100 ) stringBuilder.append( "000" ); //$NON-NLS-1$
+                else if( m_stardateInteger < 1000 ) stringBuilder.append( "00" ); //$NON-NLS-1$
+                else if( m_stardateInteger < 10000 ) stringBuilder.append( "0" ); //$NON-NLS-1$
             }
             else
             {
             	// Need to pad up to 3 digits.
-                if( m_integer < 10 )
-                	stringBuilder.append( "000" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
-                else if( m_integer < 100 )
-                	stringBuilder.append( "00" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
-                else if( m_integer < 1000 )
-                	stringBuilder.append( "0" ).append( Integer.valueOf( m_integer ) ); //$NON-NLS-1$
-                else
-                	stringBuilder.append( Integer.valueOf( m_integer ) );
+                if( m_stardateInteger < 10 ) stringBuilder.append( "000" ); //$NON-NLS-1$
+                else if( m_stardateInteger < 100 ) stringBuilder.append( "00" ); //$NON-NLS-1$
+                else if( m_stardateInteger < 1000 ) stringBuilder.append( "0" ); //$NON-NLS-1$
             }
         }
-        else
-        {
-        	stringBuilder.append( Integer.valueOf( m_integer ) );
-        }
 
-        stringBuilder.append( "." ).append( Integer.valueOf( m_fraction ) ); //$NON-NLS-1$
-
-        return stringBuilder.toString();
+        stringBuilder.append( Integer.valueOf( m_stardateInteger ) ).append( "." ).append( Integer.valueOf( m_stardateFraction ) ); //$NON-NLS-1$
+    	return stringBuilder.toString();
     }
 
 
     /**
-     * Returns the current stardate <code>issue</code> value.
+     * Returns the current value of the Gregorian date/time in string format "yyyy-MM-dd HH:mm:ss".
      *
-     * @return The current stardate <code>issue</code> value.
+     * @return The current Gregorian date/time as formatted string.
      */
-    public int getStardateIssue()
-    {
-        if( m_recalculateStardate )
-        {
-            gregorianToStardate();
-            m_recalculateStardate = false;
-        }
-
-        return m_issue;
-    }
-
-
-    /**
-     * Returns the current stardate <code>integer</code> value.
-     *
-     * @return The current stardate <code>integer</code> value.
-     */
-    public int getStardateInteger()
-    {
-        if( m_recalculateStardate )
-        {
-            gregorianToStardate();
-            m_recalculateStardate = false;
-        }
-
-        return m_integer;
-    }
-
-
-    /**
-     * Returns the current stardate <code>fraction</code> value.
-     *
-     * @return The current stardate <code>fraction</code> value.
-     */
-    public int getStardateFraction()
-    {
-        if( m_recalculateStardate )
-        {
-            gregorianToStardate();
-            m_recalculateStardate = false;
-        }
-
-        return m_fraction;
-    }
+    public String toGregorianString() { return new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" ).format( m_gregorian.getTime() ); } //$NON-NLS-1$
 
 
     /**
@@ -303,96 +244,66 @@ public class Stardate
      * @return a string representation of this object.
      */
     @Override
-	public String toString() { return toStardateString() + ", " + getGregorian().toString(); } //$NON-NLS-1$
+	public String toString() { return toStardateString( true, true ) + " | " + toGregorianString(); } //$NON-NLS-1$
 
 
-    /**
-     * Converts the current stardate to the equivalent Gregorian calendar.
-     */
+    /** Converts the current stardate to the equivalent Gregorian date/time. */
     private void stardateToGregorian()
     {
-        // Reset the internal representation of Gregorian dates.
-        m_gregorianCalendar = null;
-
-        // The index into the vector specifying the stardate rate to use.
-        int index = -1;
-
         // The stardate rate based on the current stardate era.
         double rate = 0.0;
 
-        // The number of units the current stardate reduces to, relative to the start of the its era.
+        // The number of units to which the current stardate reduces, relative to the start of its era.
         double units = 0.0;
 
         // The number of days, hours, minutes and seconds the current stardate exceeds the corresponding start date.
         double days = 0.0, hours = 0.0, minutes = 0.0, seconds = 0.0;
 
-        double fractionDivisor = 0.0;
-        int fractionLength = 0;
-
-        // Work out what stardate era we are in...
-        if( m_issue < 0 )
+        // Work out the stardate era...
+        int fractionLength = Integer.valueOf( m_stardateFraction ).toString().length();
+        double fractionDivisor = Math.pow( 10.0, fractionLength );
+        if( m_stardateIssue < 0 ) // Pre-stardate (pre 4/1/2162).
         {
-            // Pre-stardate (pre 4/1/2162).
-            index = 0;
-            fractionLength = Integer.valueOf( m_fraction ).toString().length();
-            fractionDivisor = Math.pow( 10.0, fractionLength );
-            units = m_issue * 10000.0 + m_integer + m_fraction / fractionDivisor;
+            m_index = 0;
+            units = m_stardateIssue * 10000.0 + m_stardateInteger + m_stardateFraction / fractionDivisor;
         }
-        else if( m_issue >= 0 && m_issue < 19 )
+        else if( m_stardateIssue >= 0 && m_stardateIssue < 19 ) // First period of stardates (4/1/2162 - 26/1/2270).
         {
-            // First period of stardates (4/1/2162 - 26/1/2270).
-            index = 1;
-            fractionLength = Integer.valueOf( m_fraction ).toString().length();
-            fractionDivisor = Math.pow( 10.0, fractionLength );
-            units = m_issue * 1000.0  + m_integer  + m_fraction / fractionDivisor;
+        	m_index = 1;
+            units = m_stardateIssue * 1000.0  + m_stardateInteger  + m_stardateFraction / fractionDivisor;
         }
-        else if( m_issue == 19 && m_integer < 7340 )
+        else if( m_stardateIssue == 19 && m_stardateInteger < 7340 ) // First period of stardates (4/1/2162 - 26/1/2270).
         {
-            // First period of stardates (4/1/2162 - 26/1/2270).
-            index = 1;
-            fractionLength = Integer.valueOf( m_fraction ).toString().length();
-            fractionDivisor = Math.pow( 10.0, fractionLength );
-            units = m_issue * 19.0 * 1000.0 +  m_integer  +  m_fraction / fractionDivisor;
+        	m_index = 1;
+            units = m_stardateIssue * 19.0 * 1000.0 +  m_stardateInteger  +  m_stardateFraction / fractionDivisor;
         }
-        else if( m_issue == 19 && m_integer >= 7340 && m_integer < 7840 )
+        else if( m_stardateIssue == 19 && m_stardateInteger >= 7340 && m_stardateInteger < 7840 ) // Second period of stardates (26/1/2270 - 5/10/2283)
         {
-            // Second period of stardates (26/1/2270 - 5/10/2283)
-            index = 2;
-            fractionLength = Integer.valueOf( m_fraction ).toString().length();
-            fractionDivisor = Math.pow( 10.0, fractionLength );
-            units = m_integer + m_fraction / fractionDivisor - 7340;
+        	m_index = 2;
+            units = m_stardateInteger + m_stardateFraction / fractionDivisor - 7340;
         }
-        else if( m_issue == 19 && m_integer >= 7840 )
+        else if( m_stardateIssue == 19 && m_stardateInteger >= 7840 ) // Third period of stardates (5/10/2283 - 1/1/2323)
         {
-            // Third period of stardates (5/10/2283 - 1/1/2323)
-            index = 3;
-            fractionLength = Integer.valueOf( m_fraction ).toString().length();
-            fractionDivisor = Math.pow( 10.0, fractionLength );
-            units = m_integer + m_fraction / fractionDivisor - 7840;
+        	m_index = 3;
+            units = m_stardateInteger + m_stardateFraction / fractionDivisor - 7840;
         }
-        else if( m_issue == 20 && m_integer < 5006 )
+        else if( m_stardateIssue == 20 && m_stardateInteger < 5006 ) // Third period of stardates (5/10/2283 - 1/1/2323)
         {
-            // Third period of stardates (5/10/2283 - 1/1/2323)
-            index = 3;
-            fractionLength = Integer.valueOf( m_fraction ).toString().length();
-            fractionDivisor = Math.pow( 10.0, fractionLength );
-            units = 1000.0 + m_integer + m_fraction / fractionDivisor;
+        	m_index = 3;
+            units = 1000.0 + m_stardateInteger + m_stardateFraction / fractionDivisor;
         }
-        else if( m_issue >= 21 )
+        else if( m_stardateIssue >= 21 ) // Fourth period of stardates (1/1/2323 - )
         {
-            // Fourth period of stardates (1/1/2323 - )
-            index = 4;
-            fractionLength = Integer.valueOf( m_fraction ).toString().length();
-            fractionDivisor = Math.pow( 10.0, fractionLength );
-            units = ( m_issue - 21 ) * 10000.0 + m_integer + m_fraction / fractionDivisor;
+        	m_index = 4;
+            units = ( m_stardateIssue - 21 ) * 10000.0 + m_stardateInteger + m_stardateFraction / fractionDivisor;
         }
         else
         {
-        	throw new IllegalStateException( "Invalid stardate: " + toStardateString() ); //$NON-NLS-1$
+        	throw new IllegalStateException( "Invalid stardate: " + toStardateString( true, true ) ); //$NON-NLS-1$
         }
 
         // Convert the current amount of units to the equivalent Gregorian date.
-        rate = m_stardateRates[ index ];
+        rate = ms_stardateRates[ m_index ];
         units = Math.round( 10.0 * units ) / 10.0;
         days = units / rate;
         hours = ( days - (int)days ) * 24.0;
@@ -400,152 +311,67 @@ public class Stardate
         seconds = ( minutes - (int)minutes ) * 60.0;
 
         // Get the start date for this era.
-        m_gregorianCalendar = (GregorianCalendar)m_gregorianDates[ index ].clone();
+        m_gregorian = (GregorianCalendar)ms_gregorianDates[ m_index ].clone();
 
         // Add the days, hours, minutes and seconds to the base date to get the current Gregorian date.
-        m_gregorianCalendar.add( Calendar.DATE, (int)days );
-        m_gregorianCalendar.add( Calendar.HOUR_OF_DAY, (int)hours );
-        m_gregorianCalendar.add( Calendar.MINUTE, (int)minutes );
-        m_gregorianCalendar.add( Calendar.SECOND, (int)seconds );
-
-        m_recalculateGregorian = false;
+        m_gregorian.add( Calendar.DATE, (int)days );
+        m_gregorian.add( Calendar.HOUR_OF_DAY, (int)hours );
+        m_gregorian.add( Calendar.MINUTE, (int)minutes );
+        m_gregorian.add( Calendar.SECOND, (int)seconds );
     }
 
 
-    /** Converts the current Gregorian calendar to the equivalent stardate. */
+    /** Converts the current Gregorian date/time to the equivalent stardate. */
     private void gregorianToStardate()
     {
         int stardateIssues[] = { -1, 0, 19, 19, 21 };
         int stardateIntegers[] = { 0, 0, 7340, 7840, 0 };
         int stardateRange[] = { 10000, 10000, 10000, 10000, 100000 };
 
-        int index = -1;
-        long milliseconds = 0;
-
         // Determine which era the given Gregorian date falls...
-        int year = m_gregorianCalendar.get( Calendar.YEAR );
-        int month = m_gregorianCalendar.get( Calendar.MONTH );
-        int day = m_gregorianCalendar.get( Calendar.DATE );
-
-        if( ( year < 2162 ) || ( year == 2162 && month == 1 && day < 4 ) )
+        int year = m_gregorian.get( Calendar.YEAR );
+        int month = m_gregorian.get( Calendar.MONTH ) + 1; // Month is zero-based.
+        int day = m_gregorian.get( Calendar.DATE );
+        if( ( year < 2162 ) || ( year == 2162 && month == 1 && day < 4 ) ) 
         {
-            // Pre-stardate (pre 4/1/2162).
-            // Need to do the conversion here because a negative time is generated and throws out all other cases.
-            milliseconds = m_gregorianCalendar.getTime().getTime();
-            long baseMilliseconds = m_gregorianDates[ 0 ].getTime().getTime();
-            double numberOfDays = ( baseMilliseconds - milliseconds ) / 1000.0 / 60.0 / 60.0 / 24.0;
-            double rate = m_stardateRates[ 0 ];
+            // Pre-stardate era (pre 4/1/2162)...do the conversion here because a negative time is generated and throws out all other cases.
+            long numberOfMillis = ms_gregorianDates[ 0 ].getTime().getTime() - m_gregorian.getTime().getTime();
+            double numberOfDays = numberOfMillis / 1000.0 / 60.0 / 60.0 / 24.0;
+            double rate = ms_stardateRates[ 0 ];
             double units = numberOfDays * rate;
             double remainder = units % stardateRange[ 0 ];
 
             if( (int)remainder == 0 )
-                m_issue = -1 * (int)units / stardateRange[ 0 ];
+                m_stardateIssue = -1 * (int)( units / stardateRange[ 0 ] );
             else
-                m_issue = -1 * (int)units / stardateRange[ 0 ] + stardateIssues[ 0 ];
+                m_stardateIssue = ( -1 * (int)( units / stardateRange[ 0 ] ) ) + stardateIssues[ 0 ];
 
-            remainder = ( -1 * m_issue * stardateRange[ 0 ] ) - units;
-            m_integer = (int)remainder;
-            m_fraction = (int)( remainder * 10.0 ) - ( (int)remainder * 10 );
-            m_recalculateStardate = false;
+            remainder = ( -1 * m_stardateIssue * stardateRange[ 0 ] ) - units;
+            m_stardateInteger = (int)remainder;
+            m_stardateFraction = (int)( remainder * 10.0 ) - ( (int)remainder * 10 );
             return;
         }
 
         // Remainder of time periods can be treated equally...
-        if( year == 2162 && month == 1 && day >= 4 )
-        {
-            // First period of stardates (4/1/2162 - 26/1/2270).
-            index = 1;
-            milliseconds = m_gregorianCalendar.getTime().getTime();
-        }
-        else if( year == 2162 && month != 1 )
-        {
-            // First period of stardates (4/1/2162 - 26/1/2270).
-            index = 1;
-            milliseconds = m_gregorianCalendar.getTime().getTime();
-        }
-        else if( year > 2162 && year < 2270 )
-        {
-            // First period of stardates (4/1/2162 - 26/1/2270).
-            index = 1;
-            milliseconds = m_gregorianCalendar.getTime().getTime();
-        }
-        else if( year == 2270 && month == 1 && day < 26 )
-        {
-            // First period of stardates (4/1/2162 - 26/1/2270).
-            index = 1;
-            milliseconds = m_gregorianCalendar.getTime().getTime();
-        }
-        else if( year == 2270 && month == 1 && day >= 26 )
-        {
-            // Second period of stardates (26/1/2270 - 5/10/2283)
-            index = 2;
-            milliseconds = m_gregorianCalendar.getTime().getTime();
-        }
-        else if( year == 2270 & month != 1 )
-        {
-            // Second period of stardates (26/1/2270 - 5/10/2283)
-            index = 2;
-            milliseconds = m_gregorianCalendar.getTime().getTime();
-        }
-        else if( year > 2270 && year < 2283 )
-        {
-            // Second period of stardates (26/1/2270 - 5/10/2283)
-            index = 2;
-            milliseconds = m_gregorianCalendar.getTime().getTime();
-        }
-        else if( year == 2283 && month == 10 && day < 5 )
-        {
-            // Second period of stardates (26/1/2270 - 5/10/2283)
-            index = 2;
-            milliseconds = m_gregorianCalendar.getTime().getTime();
-        }
-        else if( year == 2283 && month != 10 )
-        {
-            // Second period of stardates (26/1/2270 - 5/10/2283)
-            index = 2;
-            milliseconds = m_gregorianCalendar.getTime().getTime();
-        }
-        else if( year == 2283 && month == 10 && day >= 5 )
-        {
-            // Third period of stardates (5/10/2283 - 1/1/2323)
-            index = 3;
-            milliseconds = m_gregorianCalendar.getTime().getTime();
-        }
-        else if( year == 2283 && month > 10 )
-        {
-            // Third period of stardates (5/10/2283 - 1/1/2323)
-            index = 3;
-            milliseconds = m_gregorianCalendar.getTime().getTime();
-        }
-        else if( year > 2283 && year < 2323 )
-        {
-            // Third period of stardates (5/10/2283 - 1/1/2323)
-            index = 3;
-            milliseconds = m_gregorianCalendar.getTime().getTime();
-        }
-        else if( year >= 2323 )
-        {
-            // Fourth period of stardates (1/1/2323 - )
-            index = 4;
-            milliseconds = m_gregorianCalendar.getTime().getTime();
-        }
+        if( ( year == 2162 && month == 1 && day >= 4 ) || ( year == 2162 && month > 1 ) || ( year > 2162 && year < 2270 ) || ( year == 2270 && month == 1 && day < 26 ) ) 
+        	m_index = 1; // First period of stardates (4/1/2162 - 26/1/2270).
+        else if( ( year == 2270 && month == 1 && day >= 26 ) || ( year == 2270 & month > 1 ) || ( year > 2270 && year < 2283 ) || ( year == 2283 && month < 10 ) || ( year == 2283 && month == 10 && day < 5 ) )
+        	m_index = 2; // Second period of stardates (26/1/2270 - 5/10/2283)
+        else if( ( year == 2283 && month == 10 && day >= 5 ) || ( year == 2283 && month > 10 ) || ( year > 2283 && year < 2323 ) )
+        	m_index = 3; // Third period of stardates (5/10/2283 - 1/1/2323)
+        else if( year >= 2323 ) // Fourth period of stardates (1/1/2323 - )
+        	m_index = 4;
         else
-        {
-        	throw new IllegalStateException( "Invalid date: " + m_gregorianCalendar ); //$NON-NLS-1$
-        }
+        	throw new IllegalStateException( "Invalid date: " + m_gregorian ); //$NON-NLS-1$
 
         // Now convert...
-        long baseMilliseconds = m_gregorianDates[ index ].getTime().getTime();
-        double numberOfDays = ( milliseconds - baseMilliseconds ) / 1000.0 / 60.0 / 60.0 / 24.0;
-        numberOfDays = Math.round( 10.0 * numberOfDays ) / 10.0;
-        double rate = m_stardateRates[ index ];
+        long numberOfMillis = m_gregorian.getTime().getTime() - ms_gregorianDates[ m_index ].getTime().getTime();
+        double numberOfDays = numberOfMillis / 1000.0 / 60.0 / 60.0 / 24.0;
+        double rate = ms_stardateRates[ m_index ];
         double units = numberOfDays * rate;
-        m_issue = (int)units / stardateRange[ index ] + stardateIssues[ index ];
-        double remainder = units % stardateRange[ index ];
-        m_integer = (int)remainder + stardateIntegers[ index ];
-        remainder = ( remainder - (int)remainder ) * 10.0;
-        remainder = Math.round( remainder );
-        m_fraction = (int)( remainder );
-        m_recalculateStardate = false;
+        m_stardateIssue = (int)( units / stardateRange[ m_index ] ) + stardateIssues[ m_index ];
+        double remainder = units % stardateRange[ m_index ];
+        m_stardateInteger = (int)remainder + stardateIntegers[ m_index ];
+        m_stardateFraction = (int)( remainder * 10.0 ) - ( (int)remainder * 10 );
     }
 }

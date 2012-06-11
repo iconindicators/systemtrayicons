@@ -1,4 +1,5 @@
 /** Possible exceptions which a Stardate may throw. */
+@Deprecated
 public class StardateException extends Exception 
 {
 	private static final long serialVersionUID = 1L;

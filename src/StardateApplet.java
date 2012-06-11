@@ -7,9 +7,6 @@ import java.util.GregorianCalendar;
 
 public class StardateApplet extends Applet
 {
-	private static final long serialVersionUID = 1L;
-
-
 	public static final String PARAM_NAME_SHOW_ISSUE = "SHOW_ISSUE";  //$NON-NLS-1$
 	public static final String PARAM_NAME_PAD_INTEGER = "PAD_INTEGER";  //$NON-NLS-1$
 	public static final String PARAM_NAME_UPDATE_PERIOD_MILLIS = "UPDATE_PERIOD";  //$NON-NLS-1$

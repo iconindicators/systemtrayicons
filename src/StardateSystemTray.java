@@ -11,7 +11,7 @@ public class StardateSystemTray
 	public static final String APPLICATION_EXECUTABLE = "StardateSystemTray.exe";  //$NON-NLS-1$
 	public static final String APPLICATION_NAME = "Stardate System Tray";  //$NON-NLS-1$
 	public static final String APPLICATION_URL = "http://stardatesystray.sourceforge.net"; //$NON-NLS-1$
-	public static final String APPLICATION_VERSION_NUMBER = "1.8 (2011-10-19)"; //$NON-NLS-1$
+	public static final String APPLICATION_VERSION_NUMBER = "1.9 (2012-06-11)"; //$NON-NLS-1$
 
 
 	public StardateSystemTray()
@@ -36,7 +36,8 @@ public class StardateSystemTray
         	return;
         }
 
-        if( ! Properties.getInstance().canCreatePropertyDirectory() )
+        Properties.getInstance();
+		if( ! Properties.canCreatePropertyDirectory() )
         {
 	    	MessageDialog.showMessageDialog
 	    	( 
@@ -49,7 +50,7 @@ public class StardateSystemTray
 			return;
         }
 
-        if( ! Properties.getInstance().canReadPropertyFile() )
+        if( ! Properties.canReadPropertyFile() )
         {
 	    	MessageDialog.showMessageDialog
 	    	( 
@@ -62,7 +63,7 @@ public class StardateSystemTray
 			return;
         }
 
-        if( ! Properties.getInstance().canWritePropertyFile() )
+        if( ! Properties.canWritePropertyFile() )
         {
 	    	MessageDialog.showMessageDialog
 	    	( 

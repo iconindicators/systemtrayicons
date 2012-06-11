@@ -7,7 +7,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,15 +18,12 @@ import javax.swing.LayoutStyle;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 
 public class StardateConverter extends JFrame implements ActionListener, ChangeListener, FocusListener
 {
-	private static String APPLICATION_ICON_IMAGE = "stardatesystemtray16x16.gif";  //$NON-NLS-1$
-
     private JSpinner m_spinnerIssue, m_spinnerInteger, m_spinnerFraction, m_spinnerYYYYMMDD, m_spinnerHHMMSS;
     private boolean m_stardateToGregorian = true;
 
@@ -36,13 +33,13 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
         super( "Stardate/Gregorian Converter" ); //$NON-NLS-1$
 
         setDefaultCloseOperation( EXIT_ON_CLOSE );
-        setIconImage( new ImageIcon( ClassLoader.getSystemResource( APPLICATION_ICON_IMAGE ) ).getImage() );
         setContentPane( buildMainPanel() );
         pack();
 
         int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - getWidth() ) / 2;
         int originY = ( Toolkit.getDefaultToolkit().getScreenSize().height - getHeight() ) / 2;
         setLocation( originX, originY );
+        setVisible( true );
     }
 
 
@@ -64,20 +61,7 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
                 m_spinnerYYYYMMDD.setValue( starDate.getGregorian().getTime() );
                 m_spinnerHHMMSS.setValue( starDate.getGregorian().getTime() );
             }
-            catch( StardateException stardateException ) 
-            {
-            	String message = null;
-            	if( stardateException.getType() == StardateException.Type.FRACTIONAL_PART_MUST_BE_GREATER_THAN_OR_EQUAL_TO_ZERO )
-            		message = "Fractional part must be greater than or equal to zero."; //$NON-NLS-1$
-            	else if( stardateException.getType() == StardateException.Type.INTEGER_PART_MUST_BE_BETWEEN_ZERO_AND_99999_INCLUSIVE )
-            		message = "Integer part must be between zero and 9999 (inclusive)."; //$NON-NLS-1$
-            	else if( stardateException.getType() == StardateException.Type.INTEGER_PART_MUST_BE_BETWEEN_ZERO_AND_9999_INCLUSIVE )
-            		message = "Integer part must be between zero and 99999 (inclusive)."; //$NON-NLS-1$
-            	else if( stardateException.getType() == StardateException.Type.INTEGER_PART_MUST_BE_LESS_THAN_5006 )
-            		message = "Integer part must be less than 5006."; //$NON-NLS-1$
-
-            	JOptionPane.showMessageDialog( this, message );
-        	}
+            catch( IllegalArgumentException illegalArgumentException ) { JOptionPane.showMessageDialog( this, illegalArgumentException.getMessage() ); }
         }
         else
         {
@@ -134,9 +118,9 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
 
     private JPanel buildMainPanel()
     {
-        JLabel gregorianToStardateLabel = new JLabel( "Convert from a Gregorian date to a Stardate:" );
+        JLabel gregorianToStardateLabel = new JLabel( "Convert from a Gregorian date to a Stardate:" ); //$NON-NLS-1$
 
-        JLabel yearMonthDayLabel = new JLabel( "YYYY-MM-DD :" );
+        JLabel yearMonthDayLabel = new JLabel( "YYYY-MM-DD :" ); //$NON-NLS-1$
 
         m_spinnerYYYYMMDD = new JSpinner( new SpinnerDateModel() );
         JSpinner.DateEditor dateEditor = new JSpinner.DateEditor( m_spinnerYYYYMMDD, "yyyy-MM-dd" ); //$NON-NLS-1$
@@ -145,7 +129,7 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
         m_spinnerYYYYMMDD.setToolTipText( "Set the date in the format of YYYY-MM-DD" ); //$NON-NLS-1$
         m_spinnerYYYYMMDD.addChangeListener( this );
 
-        JLabel hourMinuteSecondLabel = new JLabel( "HH:MM:SS :" );
+        JLabel hourMinuteSecondLabel = new JLabel( "HH:MM:SS :" ); //$NON-NLS-1$
 
         m_spinnerHHMMSS = new JSpinner( new SpinnerDateModel() );
         dateEditor = new JSpinner.DateEditor( m_spinnerHHMMSS, "HH:mm:ss" ); //$NON-NLS-1$
@@ -154,23 +138,23 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
         m_spinnerHHMMSS.setToolTipText( "Set the time in the format of HH:MM:DD (in 24 hour time)" ); //$NON-NLS-1$
         m_spinnerHHMMSS.addChangeListener( this );
 
-        JLabel stardateToGregorianLabel = new JLabel( "Convert from a Stardate to a Gregorian date:" );
+        JLabel stardateToGregorianLabel = new JLabel( "Convert from a Stardate to a Gregorian date:" ); //$NON-NLS-1$
 
-        JLabel issueLabel = new JLabel( "Issue:" );
+        JLabel issueLabel = new JLabel( "Issue:" ); //$NON-NLS-1$
 
         m_spinnerIssue = new JSpinner( new SpinnerNumberModel() );
         m_spinnerIssue.setToolTipText( "Set the issue for the stardate (can be zero or negative)" ); //$NON-NLS-1$
         m_spinnerIssue.addChangeListener( this );
         ( (JSpinner.DefaultEditor)m_spinnerIssue.getEditor() ).getTextField().addFocusListener( this );
 
-        JLabel integerLabel = new JLabel( "Integer:" );
+        JLabel integerLabel = new JLabel( "Integer:" ); //$NON-NLS-1$
 
         m_spinnerInteger = new JSpinner( new SpinnerNumberModel() );
         m_spinnerInteger.setToolTipText( "Set the integer part of the stardate (must be greater than zero)" ); //$NON-NLS-1$
         m_spinnerInteger.addChangeListener( this );
         ( (JSpinner.DefaultEditor)m_spinnerInteger.getEditor() ).getTextField().addFocusListener( this );
 
-        JLabel fractionLabel = new JLabel( "Fraction:" );
+        JLabel fractionLabel = new JLabel( "Fraction:" ); //$NON-NLS-1$
 
         m_spinnerFraction = new JSpinner( new SpinnerNumberModel() );
         m_spinnerFraction.setToolTipText( "Set the fractional part of the stardate (must not be negative)" ); //$NON-NLS-1$
@@ -278,5 +262,5 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
     }
 
 
-    public static void main( String[] args ) { new StardateConverter().setVisible( true ); }
+    public static void main( String[] args ) { new StardateConverter(); }
 }

@@ -77,7 +77,7 @@ public class WindowsRegistry
    /**
     * Read a value from key and value name.
     * 
-    * @param hkey   HKEY_CURRENT_USER/HKEY_LOCAL_MACHINE
+    * @param hkey HKEY_CURRENT_USER/HKEY_LOCAL_MACHINE
     * @param key
     * @param valueName
     * 
@@ -101,7 +101,7 @@ public class WindowsRegistry
    /**
     * Read value(s) and value name(s) form given key.
     *  
-    * @param hkey  HKEY_CURRENT_USER/HKEY_LOCAL_MACHINE
+    * @param hkey HKEY_CURRENT_USER/HKEY_LOCAL_MACHINE
     * @param key
     * 
     * @return the value name(s) plus the value(s)
@@ -124,7 +124,7 @@ public class WindowsRegistry
    /**
     * Read the value name(s) from a given key
     * 
-    * @param hkey  HKEY_CURRENT_USER/HKEY_LOCAL_MACHINE
+    * @param hkey HKEY_CURRENT_USER/HKEY_LOCAL_MACHINE
     * @param key
     * 
     * @return the value name(s)
@@ -146,7 +146,7 @@ public class WindowsRegistry
    /**
     * Create a key.
     * 
-    * @param hkey  HKEY_CURRENT_USER/HKEY_LOCAL_MACHINE
+    * @param hkey HKEY_CURRENT_USER/HKEY_LOCAL_MACHINE
     * @param key
     * 
     * @throws IllegalArgumentException
