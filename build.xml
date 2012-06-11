@@ -1,8 +1,8 @@
 <project name="StardateSystemTray" default="CompileAndJar" basedir=".">
 
   <!-- Application and version properties. -->
-  <property name="version" value="1.8" />
-  <property name="JavaDocTitleVersion" value="Stardate v1.2 API Specification" />
+  <property name="version" value="1.9" />
+  <property name="JavaDocTitleVersion" value="Stardate v1.3 API Specification" />
 
   <!-- Compile properties -->
   <property name="classes" location="classes" />
@@ -29,7 +29,7 @@
 
     <javac srcdir="${src}" destdir="${classes}" includeantruntime="false">
       <classpath>
-        <pathelement location="${lib}/joda-time-2.0.jar" />                
+        <pathelement location="${lib}/joda-time-2.1.jar" />                
       </classpath>
       <compilerarg value="-Xlint:deprecation,fallthrough,finally,path,unchecked" />
     </javac>
@@ -57,7 +57,7 @@
     />
 
     <manifest file="${classes}/MANIFEST.MF">
-      <attribute name="Class-Path" value=". ${jar-filename} joda-time-2.0.jar" />
+      <attribute name="Class-Path" value=". ${jar-filename} joda-time-2.1.jar" />
       <attribute name="Main-Class" value="StardateSystemTray" />
     </manifest>
     <jar 
@@ -80,7 +80,7 @@
     <mkdir dir="${javadoc}" />
     
     <javadoc 
-      sourcefiles="${src}/Stardate.java,${src}/StardateException.java" 
+      sourcefiles="${src}/Stardate.java" 
       packagenames="*.*" 
       destdir="${javadoc}" 
       author="true" 
@@ -135,7 +135,7 @@
 
     <copy file="${release}/${jar-filename}" todir="${release}/working/usr/share/stardatesystemtray" preservelastmodified="true" />
     <copy file="${release}/${systemtray-jar-filename}" todir="${release}/working/usr/share/stardatesystemtray" preservelastmodified="true" />
-    <copy file="${lib}/joda-time-2.0.jar" todir="${release}/working/usr/share/stardatesystemtray" preservelastmodified="true" />
+    <copy file="${lib}/joda-time-2.1.jar" todir="${release}/working/usr/share/stardatesystemtray" preservelastmodified="true" />
 
     <copy file="TODO.txt" tofile="${release}/working/usr/share/doc/stardatesystemtray/TODO" preservelastmodified="true" />
     <copy file="License.txt" tofile="${release}/working/usr/share/doc/stardatesystemtray/copyright" preservelastmodified="true" />
