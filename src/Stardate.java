@@ -250,14 +250,8 @@ public class Stardate
     /** Converts the current stardate to the equivalent Gregorian date/time. */
     private void stardateToGregorian()
     {
-        // The stardate rate based on the current stardate era.
-        double rate = 0.0;
-
         // The number of units to which the current stardate reduces, relative to the start of its era.
         double units = 0.0;
-
-        // The number of days, hours, minutes and seconds the current stardate exceeds the corresponding start date.
-        double days = 0.0, hours = 0.0, minutes = 0.0, seconds = 0.0;
 
         // Work out the stardate era...
         int fractionLength = Integer.valueOf( m_stardateFraction ).toString().length();
@@ -270,12 +264,12 @@ public class Stardate
         else if( m_stardateIssue >= 0 && m_stardateIssue < 19 ) // First period of stardates (4/1/2162 - 26/1/2270).
         {
         	m_index = 1;
-            units = m_stardateIssue * 1000.0  + m_stardateInteger  + m_stardateFraction / fractionDivisor;
+            units = m_stardateIssue * 1000.0 + m_stardateInteger + m_stardateFraction / fractionDivisor;
         }
         else if( m_stardateIssue == 19 && m_stardateInteger < 7340 ) // First period of stardates (4/1/2162 - 26/1/2270).
         {
         	m_index = 1;
-            units = m_stardateIssue * 19.0 * 1000.0 +  m_stardateInteger  +  m_stardateFraction / fractionDivisor;
+            units = m_stardateIssue * 19.0 * 1000.0 + m_stardateInteger + m_stardateFraction / fractionDivisor;
         }
         else if( m_stardateIssue == 19 && m_stardateInteger >= 7340 && m_stardateInteger < 7840 ) // Second period of stardates (26/1/2270 - 5/10/2283)
         {
@@ -303,15 +297,14 @@ public class Stardate
         }
 
         // Convert the current amount of units to the equivalent Gregorian date.
-        rate = ms_stardateRates[ m_index ];
-        units = Math.round( 10.0 * units ) / 10.0;
-        days = units / rate;
-        hours = ( days - (int)days ) * 24.0;
-        minutes = ( hours - (int)hours ) * 60.0;
-        seconds = ( minutes - (int)minutes ) * 60.0;
+        double rate = ms_stardateRates[ m_index ];
+        double days = units / rate;
+        double hours = ( days - (int)days ) * 24.0;
+        double minutes = ( hours - (int)hours ) * 60.0;
+        double seconds = ( minutes - (int)minutes ) * 60.0;
 
         // Get the start date for this era.
-        m_gregorian = (GregorianCalendar)ms_gregorianDates[ m_index ].clone();
+        m_gregorian = new GregorianCalendar( ms_gregorianDates[ m_index ].get( Calendar.YEAR ), ms_gregorianDates[ m_index ].get( Calendar.MONTH ), ms_gregorianDates[ m_index ].get( Calendar.DAY_OF_MONTH ) );
 
         // Add the days, hours, minutes and seconds to the base date to get the current Gregorian date.
         m_gregorian.add( Calendar.DATE, (int)days );
