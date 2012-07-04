@@ -156,7 +156,7 @@
   </target>
 
 
-  <target name="Release" depends="Debian, Win32, JavaDoc" description="Packages up the various parts for a formal release.">
+  <target name="Release" depends="Win32, JavaDoc" description="Packages up the various parts for a formal release.">
     <zip destfile="${release}/StardateJavaDoc-${version}.zip" basedir="${javadoc}" />  
 
     <zip destfile="${release}/StardateJAR-${version}.zip">
