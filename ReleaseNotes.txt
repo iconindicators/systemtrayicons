@@ -4,15 +4,22 @@ Stardate and Stardate System Tray Release Notes
 
 2012-06-11 Version 1.9
 
-* Implemented a Python version of the Stardate API.
+* Implemented a new Python version of the Stardate API including an indicator
+  applet for Ubuntu, Lubuntu and Xubuntu 12.04.  This may work on other
+  Linuxes - your mileage may vary!  Refer to
 
-* Implemented an Ubuntu app indicator (equivalent of a Windows system tray
-  icon) which also has a fallback mode to work on Debian.  
-  PPA???
+   https://launchpad.net/~thebernmeister/+archive/indicator-stardate
 
-* Additions to the API: getStardateFractionalPeriod(). 
+  The Python indicator applet supercedes the Java system tray indicator for
+  Debian and will no longer built or supported.  The Debian-related files for
+  building, icons, etc will be kept in the repository for posterity.
+
+* Additions to the Java API: getStardateFractionalPeriod().  There is a one to
+  one match with the Python API.
 
 * Corrected calculations such that the Python and Java stardates match.
+
+* Updated Joda library.
 
 
 2011-10-19 Version 1.8
