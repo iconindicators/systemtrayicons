@@ -43,7 +43,7 @@ import java.util.TimeZone;
 public class Stardate
 {
 	/** API version. */
-	private static final String API_VERSION = "Version 1.3 (2012-06-11)"; //$NON-NLS-1$
+	private static final String API_VERSION = "Version 3.1 (2014-08-11)"; //$NON-NLS-1$
 
 
     /** Rates (in stardate units per day) for each stardate era. */
@@ -51,7 +51,7 @@ public class Stardate
 
 
     /**
-     * The Gregorian dates which reflect the start date for each rate.
+     * The Gregorian dates which reflect the start date for each rate in the 'classic' stardate era.
      * For example, an index of 3 (Gregorian date of 5/10/2283) corresponds to the rate of 0.5 stardate units per day.
      * The month is zero-based (January = 0).
      */
@@ -78,11 +78,11 @@ public class Stardate
     private GregorianCalendar m_gregorian = new GregorianCalendar( TimeZone.getTimeZone( "UTC" ) ); //$NON-NLS-1$
 
 
-    /** Internal representation for the stardate. */
+    /** Internal representation for the 'classic' stardate. */
     private int m_stardateIssue = 0, m_stardateInteger = 0, m_stardateFraction = 0;
 
 
-    /** The index specifying the specific stardate rate. */
+    /** The index specifying the specific 'classic' stardate rate. */
     private int m_index = 0;  
     
 
@@ -135,7 +135,7 @@ public class Stardate
 
 
     /**
-     * Sets an issue/integer/fraction for conversion to a Gregorian date/time.
+     * Sets a 'classic' stardate for conversion to a Gregorian date/time.
      *
      * Rules:
      *   issue <= 19: 0 <= integer <= 9999, fraction >= 0. 
@@ -198,8 +198,8 @@ public class Stardate
     /**
      * Returns the current value of the stardate in string format.
      *
-     * @param padded If true, leading zeros will be inserted into the integer part of the stardate. 
-     * @param showIssue If true, the issue part of the stardate will be included. 
+     * @param padded If true, leading zeros will be inserted into the integer part of the 'classic' stardate (ignored for '2009 revised').
+     * @param showIssue If true, the issue part of the 'classic' stardate will be included (ignored for '2009 revised').
      *
      * @return The current stardate as formatted string.
      */
