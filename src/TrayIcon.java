@@ -7,6 +7,7 @@ import java.util.GregorianCalendar;
 import javax.swing.ImageIcon;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.EthiopicChronology;
@@ -73,7 +74,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     public static String getMessageString( boolean html )
     {
     	StringBuilder message = new StringBuilder();
-    	DateTime currentDateTime = new DateTime();
+    	DateTime currentDateTime = new DateTime( DateTimeZone.UTC );
     	DateTime conversionDateTime = null;
 
 		String newLine = html ? "<br>" : System.getProperty( "line.separator" ); //$NON-NLS-1$ //$NON-NLS-2$
