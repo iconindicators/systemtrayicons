@@ -7,8 +7,7 @@ public class SystemStart
 
     public static boolean runOnSystemStart()
     {
-    	if( OperatingSystem.isWindows() )
-    		return runOnSystemStartMicrosoftWindows();
+    	if( OperatingSystem.isWindows() ) return runOnSystemStartMicrosoftWindows();
 
     	return false;
     }
@@ -27,8 +26,7 @@ public class SystemStart
     
     public static boolean setRunOnSystemStart( boolean runOnSystemStart )
     {
-    	if( OperatingSystem.isWindows() )
-    		return setRunOnSystemStartMicrosoftWindows( runOnSystemStart );
+    	if( OperatingSystem.isWindows() ) return setRunOnSystemStartMicrosoftWindows( runOnSystemStart );
 
     	return true;
     }
@@ -49,8 +47,7 @@ public class SystemStart
         	}
 	    	else
 	    	{
-	    		// Delete the value.
-	    		WindowsRegistry.deleteValue( WindowsRegistry.HKEY_CURRENT_USER, MICROSOFT_WINDOWS_REGISTRY_KEY, MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME );
+	    		WindowsRegistry.deleteValue( WindowsRegistry.HKEY_CURRENT_USER, MICROSOFT_WINDOWS_REGISTRY_KEY, MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME ); // Delete the value.
 	    	}
 
 	    	return true;
