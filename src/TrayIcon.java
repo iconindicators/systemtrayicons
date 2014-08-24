@@ -143,7 +143,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 
     		boolean showStardateIssue = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_ISSUE, true );
     		boolean padStardate = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_PAD_STARDATE, true );
-    		message.append( MESSAGE_STARDATE ).append( stardate.toStardateString( padStardate, showStardateIssue ) );
+    		message.append( MESSAGE_STARDATE ).append( stardate.toStardateString( showStardateIssue, padStardate ) );
     	}
 
 		if( html )
@@ -167,7 +167,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 
 		boolean showStardateIssue = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_ISSUE, true );
 		boolean padStardate = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_PAD_STARDATE, true );
-		setToolTip( MESSAGE_TOOL_TIP + stardate.toStardateString( padStardate, showStardateIssue ) );
+		setToolTip( MESSAGE_TOOL_TIP + stardate.toStardateString( showStardateIssue, padStardate ) );
 	}
 
     

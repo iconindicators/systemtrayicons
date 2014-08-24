@@ -124,7 +124,7 @@ public class StardateApplet extends Applet
 
 		graphics.drawString
 		(
-			m_textBefore + m_stardate.toStardateString( m_padInteger, m_showIssue ) + m_textAfter,
+			m_textBefore + m_stardate.toStardateString( m_showIssue, m_padInteger ) + m_textAfter,
 			graphics.getFontMetrics().charWidth( ' ' ),
 			graphics.getFontMetrics().getHeight() 
 		);

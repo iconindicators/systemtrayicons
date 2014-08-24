@@ -53,7 +53,7 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
             Stardate starDate = new Stardate();
             try 
             {
-                starDate.setStardate
+                starDate.setStardateClassic
                 (
                     ( (Integer)m_spinnerIssue.getValue() ).intValue(),
                     ( (Integer)m_spinnerInteger.getValue() ).intValue(),
