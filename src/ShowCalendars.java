@@ -20,6 +20,8 @@ import javax.swing.border.EtchedBorder;
 
 public class ShowCalendars extends JDialog implements ClipboardOwner
 {
+	private static final long serialVersionUID = 1L;
+
 	private static final int BORDER_INDENT = 10;
 	
 	protected GregorianCalendar m_gregorianCalendar = new GregorianCalendar();
