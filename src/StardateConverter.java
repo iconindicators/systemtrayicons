@@ -24,7 +24,9 @@ import javax.swing.event.ChangeListener;
 
 public class StardateConverter extends JFrame implements ActionListener, ChangeListener, FocusListener
 {
-    private JSpinner m_spinnerIssue, m_spinnerInteger, m_spinnerFraction, m_spinnerYYYYMMDD, m_spinnerHHMMSS;
+	private static final long serialVersionUID = 1L;
+
+	private JSpinner m_spinnerIssue, m_spinnerInteger, m_spinnerFraction, m_spinnerYYYYMMDD, m_spinnerHHMMSS;
     private boolean m_stardateToGregorian = true;
 
 
