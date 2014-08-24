@@ -12,6 +12,8 @@ import javax.swing.JOptionPane;
 
 public class PopupMenu extends java.awt.PopupMenu implements ActionListener, ItemListener
 {
+	private static final long serialVersionUID = 1L;
+
 	static final String POPUP_ABOUT = Messages.getString( "PopupMenu.0" );  //$NON-NLS-1$
 	static final String POPUP_EXIT = Messages.getString( "PopupMenu.1" );  //$NON-NLS-1$
 	static final String POPUP_CHRONOLOGY = Messages.getString( "PopupMenu.2" );  //$NON-NLS-1$
