@@ -29,7 +29,7 @@
 
     <javac srcdir="${src}" destdir="${classes}" includeantruntime="false">
       <classpath>
-        <pathelement location="${lib}/joda-time-2.1.jar" />                
+        <pathelement location="${lib}/joda-time-2.4.jar" />                
       </classpath>
       <compilerarg value="-Xlint:deprecation,fallthrough,finally,path,unchecked" />
     </javac>
@@ -57,7 +57,7 @@
     />
 
     <manifest file="${classes}/MANIFEST.MF">
-      <attribute name="Class-Path" value=". ${jar-filename} joda-time-2.1.jar" />
+      <attribute name="Class-Path" value=". ${jar-filename} joda-time-2.4.jar" />
       <attribute name="Main-Class" value="StardateSystemTray" />
     </manifest>
     <jar 
