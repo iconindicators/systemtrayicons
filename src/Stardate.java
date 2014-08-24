@@ -27,18 +27,22 @@ import java.util.TimeZone;
  * The Gregorian calendar commenced in 1582 and is in use to this day.<br>
  * It is based on a modified version of the Julian calendar.<br><br>
  * 
- * In 2162, stardates were developed by Starfleet.  Stardate [0]0000.0 commenced on midnight 4/1/2162.<br>
+ * In 2162, stardates were developed by Starfleet.<br>
+ * Stardate [0]0000.0 commenced on midnight 4/1/2162.<br>
  * The stardate rate from this date to 26/1/2270 was 5 units per day.<br><br>
  * 
- * Between 26/1/2270 and 5/10/2283 ([19]7340.0 and [19]7840.0, respectively) the stardate rate changes to 0.1 units per day.<br><br>
+ * Between 26/1/2270 and 5/10/2283 ([19]7340.0 and [19]7840.0, respectively)<br>
+ * the rate changes to 0.1 units per day.<br><br>
  * 
- * Between 5/10/2283 to 1/1/2323 ([19]7840.0 and [20]5006.0, respectively) the rate changes once again, this time to 0.5 units per day.<br><br>
+ * Between 5/10/2283 to 1/1/2323 ([19]7840.0 and [20]5006.0, respectively),<br>
+ * the rate changes to 0.5 units per day.<br><br>
  * 
  * From 1/1/2323 ([20]5006.0) the rate changed to 1000 units per mean solar year (365.2425 days).<br>
  * Also, stardate [20]5006.0 becomes [21]00000.0.<br><br>
  * 
  * <b><u>'2009 revised' stardates</u></b><br>
- * The '2009 revised' stardate is based on http://en.wikipedia.org/wiki/Stardate.
+ * The '2009 revised' stardate is based on
+ * <a href="http://en.wikipedia.org/wiki/Stardate">http://en.wikipedia.org/wiki/Stardate</a>.
  */
 public class Stardate
 {
@@ -324,6 +328,7 @@ public class Stardate
         int stardateIssues[] = { -1, 0, 19, 19, 21 };
         int stardateIntegers[] = { 0, 0, 7340, 7840, 0 };
         int stardateRange[] = { 10000, 10000, 10000, 10000, 100000 };
+        m_index = -1;
 
         // Determine which era the given Gregorian date falls...
         int year = m_gregorian.get( Calendar.YEAR );
@@ -332,18 +337,22 @@ public class Stardate
         if( ( year < 2162 ) || ( year == 2162 && month == 1 && day < 4 ) ) 
         {
             // Pre-stardate era (pre 4/1/2162)...do the conversion here because a negative time is generated and throws out all other cases.
-            long numberOfMillis = ms_gregorianDates[ 0 ].getTime().getTime() - m_gregorian.getTime().getTime();
+        	m_index = 0;
+        	long numberOfMillis = ms_gregorianDates[ m_index ].getTime().getTime() - m_gregorian.getTime().getTime();
             double numberOfDays = numberOfMillis / 1000.0 / 60.0 / 60.0 / 24.0;
-            double rate = ms_stardateRates[ 0 ];
+            double rate = ms_stardateRates[ m_index ];
             double units = numberOfDays * rate;
-            double remainder = units % stardateRange[ 0 ];
+//            double remainder = units % stardateRange[ 0 ];
 
-            if( (int)remainder == 0 )
-                m_stardateIssue = -1 * (int)( units / stardateRange[ 0 ] );
-            else
-                m_stardateIssue = ( -1 * (int)( units / stardateRange[ 0 ] ) ) + stardateIssues[ 0 ];
+            m_stardateIssue = stardateIssues[ m_index ] - (int)( units / stardateRange[ m_index ] );
 
-            remainder = ( -1 * m_stardateIssue * stardateRange[ 0 ] ) - units;
+//            if( (int)remainder == 0 )
+//                m_stardateIssue = -1 * (int)( units / stardateRange[ 0 ] );
+//            else
+//                m_stardateIssue = ( -1 * (int)( units / stardateRange[ 0 ] ) ) + stardateIssues[ 0 ];
+
+//            remainder = ( -1 * m_stardateIssue * stardateRange[ 0 ] ) - units;
+            double remainder = stardateRange[ m_index ] - ( units % stardateRange[ m_index ] );
             m_stardateInteger = (int)remainder;
             m_stardateFraction = (int)( remainder * 10.0 ) - ( (int)remainder * 10 );
             return;
