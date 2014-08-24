@@ -2,13 +2,31 @@ Stardate and Stardate System Tray Release Notes
 -----------------------------------------------
 
 
+2014-08-11 Version 2.0
+
+* Implemented stardate '2009 revised' version to bring into line with the
+  Python version of the Stardate API.  Some API changes have occurred.
+
+* The Debian files have been removed from the repository as they are obsolete.
+
+* Uses UTC rather than the local date/time.
+
+* Fixed a bug when calculating present day stardates.
+
+* Added option to pad the INTEGER part of classic stardates.
+
+* Reorganised the source code and sample application/applet into one tree.
+
+* Updated Joda library.
+
+
 2012-06-11 Version 1.9
 
 * Implemented a new Python version of the Stardate API including an indicator
   applet for Ubuntu, Lubuntu and Xubuntu 12.04.  This may work on other
   Linuxes - your mileage may vary!  Refer to
 
-   https://launchpad.net/~thebernmeister/+archive/indicator-stardate
+   http://launchpad.net/~thebernmeister/+archive/ppa
 
   The Python indicator applet supercedes the Java system tray indicator for
   Debian and will no longer built or supported.  The Debian-related files for
