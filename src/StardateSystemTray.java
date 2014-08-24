@@ -16,10 +16,6 @@ public class StardateSystemTray
 
 	public StardateSystemTray()
 	{
-    	// On Ubuntu, running the application on startup failed as the system tray was not ready, so sleep (on all platforms, can't hurt).    	
-    	try { Thread.sleep( 2500 ); }
-		catch( InterruptedException interruptedException ) { /** Do nothing. */ }
-
     	try { UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() ); }
         catch( Exception exception ) { /** Do nothing. */ }
 
