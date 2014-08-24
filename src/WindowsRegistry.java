@@ -89,12 +89,11 @@ public class WindowsRegistry
    	*/
 	public static String readString( int hkey, String key, String valueName ) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException 
 	{
-		if( hkey == HKEY_LOCAL_MACHINE )
-			return readString( systemRoot, hkey, key, valueName );
-		else if( hkey == HKEY_CURRENT_USER )
-			return readString( userRoot, hkey, key, valueName );
-		else
-			throw new IllegalArgumentException( "hkey = " + hkey ); //$NON-NLS-1$
+		if( hkey == HKEY_LOCAL_MACHINE ) return readString( systemRoot, hkey, key, valueName );
+
+		if( hkey == HKEY_CURRENT_USER ) return readString( userRoot, hkey, key, valueName );
+
+		throw new IllegalArgumentException( "hkey = " + hkey ); //$NON-NLS-1$
 	}
 
 
@@ -112,12 +111,11 @@ public class WindowsRegistry
     */
 	public static Map<String, String> readStringValues( int hkey, String key ) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException 
 	{
-		if( hkey == HKEY_LOCAL_MACHINE )
-			return readStringValues( systemRoot, hkey, key );
-		else if( hkey == HKEY_CURRENT_USER )
-			return readStringValues( userRoot, hkey, key );
-		else
-			throw new IllegalArgumentException( "hkey = " + hkey ); //$NON-NLS-1$
+		if( hkey == HKEY_LOCAL_MACHINE ) return readStringValues( systemRoot, hkey, key );
+		
+		if( hkey == HKEY_CURRENT_USER ) return readStringValues( userRoot, hkey, key );
+
+		throw new IllegalArgumentException( "hkey = " + hkey ); //$NON-NLS-1$
 	}
 
 
@@ -135,10 +133,10 @@ public class WindowsRegistry
     */
 	public static List<String> readStringSubKeys( int hkey, String key ) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException 
 	{
-		if( hkey == HKEY_LOCAL_MACHINE )
-			return readStringSubKeys( systemRoot, hkey, key );
-		else if( hkey == HKEY_CURRENT_USER )
-			return readStringSubKeys( userRoot, hkey, key );
+		if( hkey == HKEY_LOCAL_MACHINE ) return readStringSubKeys( systemRoot, hkey, key );
+		
+		if( hkey == HKEY_CURRENT_USER ) return readStringSubKeys( userRoot, hkey, key );
+
 		throw new IllegalArgumentException( "hkey = " + hkey ); //$NON-NLS-1$
 	}
 
