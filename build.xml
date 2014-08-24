@@ -110,52 +110,6 @@
   </target>
 
 
-  <target name="Debian" depends="CompileAndJar" description="Builds the Debian installer file...must be run as root!">
-    <echo message="" />
-    <echo message="********************************************************************************" />
-    <echo message="This task must be run as root and only on a Linux Debian based operating system." />
-    <echo message="For example, on Ubuntu: 'sudo ant Debian'" />
-    <echo message="After this task, run 'lintian' on the deb file to check for errors/warnings." />
-    <echo message="********************************************************************************" />
-    <echo message="" />
-
-    <copy todir="${release}/working" preservelastmodified="true">
-      <fileset dir="packaging/debian" excludes="**/*.svn"/>
-    </copy>
-
-    <chmod file="${release}/working/DEBIAN/postinst" perm="755"/>
-    <chgrp file="${release}/working/DEBIAN/postinst" group="root"/>
-    <chown file="${release}/working/DEBIAN/postinst" owner="root"/>
-
-    <chmod file="${release}/working/DEBIAN/postrm" perm="755"/>
-    <chgrp file="${release}/working/DEBIAN/postrm" group="root"/>
-    <chown file="${release}/working/DEBIAN/postrm" owner="root"/>
-
-    <chmod file="${release}/working/usr/bin/stardatesystemtray" perm="ugo+x"/>
-
-    <copy file="${release}/${jar-filename}" todir="${release}/working/usr/share/stardatesystemtray" preservelastmodified="true" />
-    <copy file="${release}/${systemtray-jar-filename}" todir="${release}/working/usr/share/stardatesystemtray" preservelastmodified="true" />
-    <copy file="${lib}/joda-time-2.1.jar" todir="${release}/working/usr/share/stardatesystemtray" preservelastmodified="true" />
-
-    <copy file="TODO.txt" tofile="${release}/working/usr/share/doc/stardatesystemtray/TODO" preservelastmodified="true" />
-    <copy file="License.txt" tofile="${release}/working/usr/share/doc/stardatesystemtray/copyright" preservelastmodified="true" />
-
-    <copy file="changelog.Debian" tofile="${release}/working/usr/share/doc/stardatesystemtray/changelog" preservelastmodified="true" />
-    <exec executable="gzip">
-      <arg line="-9 ${release}/working/usr/share/doc/stardatesystemtray/changelog" />
-    </exec>
-
-    <copy file="${img}/stardatesystemtray16x16.xpm" todir="${release}/working/usr/share/pixmaps" preservelastmodified="true" />
-    <copy file="${img}/stardatesystemtray32x32.xpm" todir="${release}/working/usr/share/pixmaps" preservelastmodified="true" />  
-
-    <exec executable="dpkg">
-      <arg line="--build ${release}/working ${release}/stardatesystemtray_${version}_all.deb" />
-    </exec>
-
-    <delete dir="${release}/working" />
-  </target>
-
-
   <target name="Release" depends="Win32, JavaDoc" description="Packages up the various parts for a formal release.">
     <zip destfile="${release}/StardateJavaDoc-${version}.zip" basedir="${javadoc}" />  
 
