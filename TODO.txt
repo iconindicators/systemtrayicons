@@ -1,6 +1,0 @@
-* Debian/Ubuntu tooltip and balloon do not observe new line character.
-  See Sun bug http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6440297.
-  Note that the Debian version of the system tray indicator is no longer
-  supported.  A Python equivalent can be found here:
-  
-    https://launchpad.net/~thebernmeister/+archive/indicator-stardate
