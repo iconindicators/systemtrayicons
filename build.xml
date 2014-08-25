@@ -1,12 +1,14 @@
 <project name="StardateSystemTray" default="CompileAndJar" basedir=".">
 
 
-  <!-- Version numbers and names. -->
+  <!-- Version numbers. -->
   <property name="libraryVersion" value="3.2" />
-  <property name="javaDocTitleVersion" value="Stardate Version 3.2 (2014-08-25) API Specification" />
-  <property name="systemTrayVersion" value="2.0" />
-  <property name="libraryJar" value="stardate.jar" />
-  <property name="converterJar" value="stardateconverter.jar" />
+  <property name="applicationVersion" value="2.0" />
+
+
+  <!-- Jars/files. -->
+  <property name="libraryJar" value="stardate-${libraryVersion}.jar" />
+  <property name="sampleApplicationJar" value="StardateSampleApplication.jar" />
   <property name="systemTrayJar" value="stardatesystemtray.jar" />
   <property name="joda" value="joda-time-2.4.jar" />
 
@@ -22,7 +24,7 @@
   <property name="src" location="src" />
 
 
-  <target name="CompileAndJar" description="Compiles the Java source and build various JAR files.">
+  <target name="CompileAndJar">
     <delete dir="${classes}" />
     <mkdir dir="${classes}" />
 
@@ -50,11 +52,12 @@
       <attribute name="Main-Class" value="StardateConverter" />
     </manifest>
     <jar 
-      jarfile="${release}/${converterJar}" 
+      jarfile="${release}/${sampleApplicationJar}" 
       basedir="${classes}" 
       includes="StardateConverter.class stardatesystemtray16x16.gif" 
       manifest="${classes}/MANIFEST.MF" 
     />
+  	<chmod file="${release}/${sampleApplicationJar}" perm="ugo+x"/>
 
     <manifest file="${classes}/MANIFEST.MF">
       <attribute name="Class-Path" value=". ${libraryJar} ${joda}" />
@@ -71,14 +74,16 @@
   </target>
 
 
-  <target name="JavaDoc" depends="CompileAndJar" description="Create Javadoc for the Stardate API.">
-    <property name="windowtitle" value="${javaDocTitleVersion}" />
-    <property name="doctitle" value="${javaDocTitleVersion}" />
-    <property name="header" value="${javaDocTitleVersion}" />
+  <target name="JavaDoc" depends="CompileAndJar">
+    <property name="windowtitle" value="Stardate Version ${libraryVersion} API Specification" />
+    <property name="doctitle" value="${windowtitle}" />
+    <property name="header" value="${windowtitle}" />
 
     <delete dir="${javadoc}" />
     <mkdir dir="${javadoc}" />
-    
+
+    <echo file="${javadoc}/overview.html" append="true"><![CDATA[<body>${windowtitle}</body>]]></echo>
+
     <javadoc 
       sourcefiles="${src}/Stardate.java" 
       packagenames="*.*" 
@@ -87,7 +92,7 @@
       version="true" 
       use="true" 
       splitindex="true" 
-      overview="${src}/overview.html" 
+      overview="${javadoc}/overview.html" 
       windowtitle="${windowtitle}" 
       header="${header}" 
       doctitle="${doctitle}"
@@ -96,7 +101,7 @@
   </target>
 
 
-  <target name="Win32" depends="CompileAndJar" description="Build the Microsoft Windows installer and executable using NSIS.">
+  <target name="Win32" depends="CompileAndJar">
     <exec executable="makensis">
       <arg line="packaging/win32/Launcher.nsi"/>
     </exec>
@@ -105,25 +110,19 @@
       <arg line="packaging/win32/Installer.nsi"/>
     </exec>
 
-    <move file="packaging/win32/StardateSystemTraySetup.exe" tofile="${release}/StardateSystemTraySetup-${version}.exe" />
+    <move file="packaging/win32/StardateSystemTraySetup.exe" tofile="${release}/StardateSystemTray-${applicationVersion}-Setup.exe" />
     <delete file="packaging/win32/StardateSystemTray.exe" />
   </target>
 
 
-  <target name="Release" depends="Win32, JavaDoc" description="Packages up the various parts for a formal release.">
-    <zip destfile="${release}/StardateJavaDoc-${version}.zip" basedir="${javadoc}" />  
-
-    <zip destfile="${release}/StardateJAR-${version}.zip">
-      <fileset file="${release}/${jar-filename}"/>
-    </zip>
-
-    <zip destfile="${release}/SampleApplication-${version}.zip">
-      <fileset file="${release}/${jar-filename}"/>
-      <fileset file="${release}/${application-jar-filename}"/>
-    </zip>
-
-    <zip destfile="${release}/StardateSystemTraySource-${version}.zip" basedir="${src}" includes="*.java" />    
-
+  <target name="Release" depends="Win32, JavaDoc">
+    <mkdir dir="${release}/sourceAndJavaDoc" />
+    <copy file="${src}/Stardate.java" todir="${release}/sourceAndJavaDoc/source" />
+  	<copy todir="${release}/sourceAndJavaDoc/javadoc">
+      <fileset dir="${javadoc}"/>
+    </copy>
+    <zip destfile="${release}/Stardate-${libraryVersion}-SourceAndJavaDoc.zip" basedir="${release}/sourceAndJavaDoc" />  
+    <delete dir="${release}/sourceAndJavaDoc" />
   </target>
 
 </project>
