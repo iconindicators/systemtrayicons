@@ -50,7 +50,7 @@ public class Stardate
 	private static final String API_VERSION = "Version 3.1 (2014-08-11)"; //$NON-NLS-1$
 
 
-    /** Rates (in stardate units per day) for each stardate era. */
+    /** Rates (in stardate units per day) for each 'classic' stardate era. */
     private static final double[] ms_stardateRates = { 5.0, 5.0, 0.1, 0.5, 1000.0 / 365.2425 };
 
 
@@ -87,7 +87,11 @@ public class Stardate
 
 
     /** The index specifying the specific 'classic' stardate rate. */
-    private int m_index = 0;  
+    private int m_index = -1;
+    
+
+    /** true = 'classic' conversion; false = '2009 revised' conversion. */
+    private boolean m_classic = true;
     
 
     /** Stardate constructor. */
@@ -107,19 +111,41 @@ public class Stardate
      * 
      * @return The period (in seconds) between updates/changes to the current stardate.
      */
-    public double getStardateFractionalPeriod() { return ( 1.0 / ( ms_stardateRates[ m_index ] / 24.0 / 60.0 / 60.0 ) / 10.0 ); }
+    public double getStardateFractionalPeriod()
+    {
+    	if( m_index == -1 ) throw new IllegalStateException( "Please set a valid gregorian date or stardate." ); //$NON-NLS-1$
+
+    	return ( 1.0 / ( ms_stardateRates[ m_index ] / 24.0 / 60.0 / 60.0 ) / 10.0 );
+    }
 
 
     /**
-	 * Sets a Gregorian date/time and converts to a stardate.
-	 *
-	 * @param dateTime The specified Gregorian date/time.
+     * Sets the conversion method, either 'classic' or '2009 revised'.
+     * 
+     * @param classic If true, 'classic' conversion is used; otherwise '2009 revised' conversion. 
+     */
+    public void setClassic( boolean classic ) { m_classic = classic; }
+
+
+    /**
+     * Gets the conversion method, either 'classic' or '2009 revised'.
+     * 
+     * @return Returns true if 'classic' conversion is used; false if '2009 revised' conversion.
+     */
+    public boolean getClassic() { return m_classic; }
+
+
+    /**
+	 * Sets a Gregorian date/time in UTC and converts to a ('classic' or '2009 revised') stardate.
+	 * Note the 'classic' status must be set PRIOR to setting the Gregorian date/time.
+	 * 
+	 * @param dateTime The specified Gregorian date/time in UTC.
 	 */
 	public void setGregorian( GregorianCalendar dateTime )
 	{
 		// Have found a difference in the final stardate calculation between setting a date/time from using 'new GregorianCalendar()'
 		// and setting each of year/month/day/hour/minute/second explicitly.
-		// Compared with the Python implementation, setting explicitly yields an exact match.
+		// Compared with the Python implementation, setting explicitly yields an exact match.	
 		m_gregorian =
 			new GregorianCalendar
 			(
@@ -134,7 +160,8 @@ public class Stardate
 		// Need to remove any timezone as this also gives an incorrect value.
 		m_gregorian.setTimeZone( TimeZone.getTimeZone( "UTC" ) ); //$NON-NLS-1$
 
-		gregorianToStardate();
+		if( m_classic ) gregorianToStardateClassic();
+		else gregorianToStardate2009Revised();
 	}
 
 
@@ -150,7 +177,7 @@ public class Stardate
      * @param integer The integer part of a stardate.
      * @param fraction The fractional part of a stardate.
      */
-    public void setStardate( int issue, int integer, int fraction )
+    public void setStardateClassic( int issue, int integer, int fraction )
     {
        	if( issue <= 19 && ( integer < 0 || integer > 9999 ) ) throw new IllegalArgumentException( "INTEGER PART MUST BE BETWEEN ZERO AND 9999 INCLUSIVE" ); //$NON-NLS-1$
 
@@ -163,14 +190,40 @@ public class Stardate
         m_stardateIssue = issue;
         m_stardateInteger = integer;
         m_stardateFraction = fraction;
-        stardateToGregorian();
+        stardateToGregorianClassic();
     }
 
 
     /**
-     * Returns the current Gregorian date/time.
+     * Sets a '2009 revised' stardate for conversion to a Gregorian date/time.
+     * 
+     * @param integer The integer part of a stardate (corresponds to a Gregorian year).
+     * @param fraction The fractional part of a stardate (0 <= fraction <= 365, or 366 if integer corresponds to a leap year). 
+     */
+    public void setStardate2009Revised( int integer, int fraction )
+    {
+        if( fraction < 0 ) throw new IllegalArgumentException( "Fraction cannot be negative." );
+
+        boolean isLeapYear = ( integer % 4 == 0 && integer % 100 != 0 ) || integer % 400 == 0;
+        if( isLeapYear )
+        {
+            if( fraction > 366 ) throw new IllegalArgumentException( "Integer cannot exceed 366." );
+        }
+        else
+        {
+            if( fraction > 365 ) throw new IllegalArgumentException( "Integer cannot exceed 365." );
+        }
+
+        m_stardateInteger = integer;
+        m_stardateFraction = fraction;
+        stardateToGregorian2009Revised();
+    }
+
+
+    /**
+     * Returns the current Gregorian date/time in UTC.
      *
-     * @return The current Gregorian date/time.
+     * @return The current Gregorian date/time in UTC.
      */
     public GregorianCalendar getGregorian() { return m_gregorian; }
 
@@ -202,38 +255,40 @@ public class Stardate
     /**
      * Returns the current value of the stardate in string format.
      *
-     * @param padded If true, leading zeros will be inserted into the integer part of the 'classic' stardate (ignored for '2009 revised').
      * @param showIssue If true, the issue part of the 'classic' stardate will be included (ignored for '2009 revised').
+     * @param padded If true, leading zeros will be inserted into the integer part of the 'classic' stardate (ignored for '2009 revised').
      *
      * @return The current stardate as formatted string.
      */
-    public String toStardateString( boolean padded, boolean showIssue )
+    public String toStardateString( boolean showIssue, boolean padded )
     {
         StringBuilder stringBuilder = new StringBuilder();
 
-        if( showIssue )
-        	stringBuilder.append( "[" ).append( Integer.valueOf( m_stardateIssue ) ).append( "] " ); //$NON-NLS-1$ //$NON-NLS-2$
-
-        if( padded )
+        if( m_classic )
         {
-            if( m_stardateIssue >= 21 )
-            {
-            	// Need to pad up to 4 digits.
-                if( m_stardateInteger < 10 ) stringBuilder.append( "0000" ); //$NON-NLS-1$
-                else if( m_stardateInteger < 100 ) stringBuilder.append( "000" ); //$NON-NLS-1$
-                else if( m_stardateInteger < 1000 ) stringBuilder.append( "00" ); //$NON-NLS-1$
-                else if( m_stardateInteger < 10000 ) stringBuilder.append( "0" ); //$NON-NLS-1$
-            }
-            else
-            {
-            	// Need to pad up to 3 digits.
-                if( m_stardateInteger < 10 ) stringBuilder.append( "000" ); //$NON-NLS-1$
-                else if( m_stardateInteger < 100 ) stringBuilder.append( "00" ); //$NON-NLS-1$
-                else if( m_stardateInteger < 1000 ) stringBuilder.append( "0" ); //$NON-NLS-1$
-            }
+	        if( showIssue ) stringBuilder.append( "[" ).append( Integer.toString( m_stardateIssue ) ).append( "] " ); //$NON-NLS-1$ //$NON-NLS-2$
+
+	        if( padded )
+	        {
+	        	int padding;
+	        	if( m_stardateIssue < 21 )
+	            	padding = "1000".length() - Integer.toString( m_stardateInteger ).length();
+	        	else
+	        		padding = "10000".length() - Integer.toString( m_stardateInteger ).length();
+
+	        	String integer = Integer.toString( m_stardateInteger );
+	        	for( int i = 0; i < padding; i++ )
+	        		stringBuilder.append( integer );
+	        }
+	        else { stringBuilder.append( Integer.toString( m_stardateInteger ) ); }
+
+	        stringBuilder.append( "." ).append( Integer.toString( m_stardateFraction ) ); //$NON-NLS-1$
+        }
+        else
+        {
+            stringBuilder.append( Integer.toString( m_stardateInteger ) ).append( "." ).append( Integer.toString( m_stardateFraction ) );
         }
 
-        stringBuilder.append( Integer.valueOf( m_stardateInteger ) ).append( "." ).append( Integer.valueOf( m_stardateFraction ) ); //$NON-NLS-1$
     	return stringBuilder.toString();
     }
 
@@ -252,11 +307,27 @@ public class Stardate
      * @return a string representation of this object.
      */
     @Override
-	public String toString() { return toStardateString( true, true ) + " | " + toGregorianString(); } //$NON-NLS-1$
+	public String toString()
+    {
+    	String s;
+
+    	if( m_classic )
+    	{
+    		s = toGregorianString();
+        	if( m_index != -1 )
+        		s = toStardateString( true, true ) + " | " + s; //$NON-NLS-1$
+    	}
+    	else
+    	{
+    		s = toStardateString( true, true ) + " | " + toGregorianString(); //$NON-NLS-1$    		
+    	}
+
+    	return s;
+    }
 
 
     /** Converts the current stardate to the equivalent Gregorian date/time. */
-    private void stardateToGregorian()
+    private void stardateToGregorianClassic()
     {
         // The number of units to which the current stardate reduces, relative to the start of its era.
         double units = 0.0;
@@ -323,7 +394,7 @@ public class Stardate
 
 
     /** Converts the current Gregorian date/time to the equivalent stardate. */
-    private void gregorianToStardate()
+    private void gregorianToStardateClassic()
     {
         int stardateIssues[] = { -1, 0, 19, 19, 21 };
         int stardateIntegers[] = { 0, 0, 7340, 7840, 0 };
@@ -342,16 +413,9 @@ public class Stardate
             double numberOfDays = numberOfMillis / 1000.0 / 60.0 / 60.0 / 24.0;
             double rate = ms_stardateRates[ m_index ];
             double units = numberOfDays * rate;
-//            double remainder = units % stardateRange[ 0 ];
 
             m_stardateIssue = stardateIssues[ m_index ] - (int)( units / stardateRange[ m_index ] );
 
-//            if( (int)remainder == 0 )
-//                m_stardateIssue = -1 * (int)( units / stardateRange[ 0 ] );
-//            else
-//                m_stardateIssue = ( -1 * (int)( units / stardateRange[ 0 ] ) ) + stardateIssues[ 0 ];
-
-//            remainder = ( -1 * m_stardateIssue * stardateRange[ 0 ] ) - units;
             double remainder = stardateRange[ m_index ] - ( units % stardateRange[ m_index ] );
             m_stardateInteger = (int)remainder;
             m_stardateFraction = (int)( remainder * 10.0 ) - ( (int)remainder * 10 );
@@ -379,5 +443,23 @@ public class Stardate
         double remainder = units % stardateRange[ m_index ];
         m_stardateInteger = (int)remainder + stardateIntegers[ m_index ];
         m_stardateFraction = (int)( remainder * 10.0 ) - ( (int)remainder * 10 );
+    }
+
+
+    /** Converts the current '2009 revised' stardate to the equivalent Gregorian date/time. */
+    private void stardateToGregorian2009Revised()
+    {
+        m_gregorian = new GregorianCalendar();
+        m_gregorian.set( Calendar.YEAR, m_stardateInteger );
+        m_gregorian.set( Calendar.DAY_OF_YEAR, m_stardateFraction );
+    }
+
+
+    /** Converts the current Gregorian date/time to the equivalent '2009 revised' stardate. */
+    private void gregorianToStardate2009Revised()
+    {
+    	m_stardateIssue = 0; // Set to zero as it has no meaning here.
+    	m_stardateInteger = m_gregorian.get( Calendar.YEAR );
+    	m_stardateFraction = m_gregorian.get( Calendar.DAY_OF_YEAR );
     }
 }
