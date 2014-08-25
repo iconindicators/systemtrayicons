@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
@@ -13,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.LayoutStyle;
 import javax.swing.SpinnerDateModel;
@@ -26,6 +28,7 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
 {
 	private static final long serialVersionUID = 1L;
 
+	private JRadioButton m_radioClassic, m_radio2009Revised;
 	private JSpinner m_spinnerIssue, m_spinnerInteger, m_spinnerFraction, m_spinnerYYYYMMDD, m_spinnerHHMMSS;
     private boolean m_stardateToGregorian = true;
 
@@ -45,51 +48,61 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
     @Override
 	public void actionPerformed( ActionEvent actionEvent )
     {
-        if( m_stardateToGregorian )
-        {
-            Stardate starDate = new Stardate();
-            try 
-            {
-                starDate.setStardateClassic
-                (
-                    ( (Integer)m_spinnerIssue.getValue() ).intValue(),
-                    ( (Integer)m_spinnerInteger.getValue() ).intValue(),
-                    ( (Integer)m_spinnerFraction.getValue() ).intValue()
-                );
+    	if( actionEvent.getSource() == m_radioClassic || actionEvent.getSource() == m_radio2009Revised )
+    	{
+    		m_spinnerIssue.setEnabled( m_radioClassic.isSelected() );
+    	}
+    	else
+    	{
+	    	// Default to the convert button.
+	    	if( m_stardateToGregorian )
+	        {
+	            Stardate starDate = new Stardate();
+	            try 
+	            {
+	                starDate.setStardateClassic
+	                (
+	                    ( (Integer)m_spinnerIssue.getValue() ).intValue(),
+	                    ( (Integer)m_spinnerInteger.getValue() ).intValue(),
+	                    ( (Integer)m_spinnerFraction.getValue() ).intValue()
+	                );
+	
+	                m_spinnerYYYYMMDD.setValue( starDate.getGregorian().getTime() );
+	                m_spinnerHHMMSS.setValue( starDate.getGregorian().getTime() );
+	            }
+	            catch( IllegalArgumentException illegalArgumentException ) { JOptionPane.showMessageDialog( this, illegalArgumentException.getMessage() ); }
+	        }
+	        else
+	        {
+	            GregorianCalendar yyyyMMdd = new GregorianCalendar();
+	            yyyyMMdd.setTime( ( (SpinnerDateModel)m_spinnerYYYYMMDD.getModel() ).getDate() );
+	
+	            GregorianCalendar hhmmss = new GregorianCalendar();
+	            hhmmss.setTime( ( (SpinnerDateModel)m_spinnerHHMMSS.getModel() ).getDate() );
+	
+	            GregorianCalendar gc =
+	            	new GregorianCalendar
+	            	(
+	            		yyyyMMdd.get( Calendar.YEAR ),
+	                    yyyyMMdd.get( Calendar.MONTH ),
+	                    yyyyMMdd.get( Calendar.DAY_OF_MONTH ),
+	                    hhmmss.get( Calendar.HOUR_OF_DAY ),
+	                    hhmmss.get( Calendar.MINUTE ),
+	                    hhmmss.get( Calendar.SECOND )
+	            	);
+	
+	        	GregorianCalendar utc = new GregorianCalendar( TimeZone.getTimeZone( "UTC" ) );
+	            utc.setTimeInMillis( gc.getTimeInMillis() );
+	
+	            Stardate starDate = new Stardate();
+	            starDate.setClassic( m_radioClassic.isSelected() );
+	            starDate.setGregorian( utc );
 
-                m_spinnerYYYYMMDD.setValue( starDate.getGregorian().getTime() );
-                m_spinnerHHMMSS.setValue( starDate.getGregorian().getTime() );
-            }
-            catch( IllegalArgumentException illegalArgumentException ) { JOptionPane.showMessageDialog( this, illegalArgumentException.getMessage() ); }
-        }
-        else
-        {
-            GregorianCalendar yyyyMMdd = new GregorianCalendar();
-            yyyyMMdd.setTime( ( (SpinnerDateModel)m_spinnerYYYYMMDD.getModel() ).getDate() );
-
-            GregorianCalendar hhmmss = new GregorianCalendar();
-            hhmmss.setTime( ( (SpinnerDateModel)m_spinnerHHMMSS.getModel() ).getDate() );
-
-            GregorianCalendar gc =
-            	new GregorianCalendar
-            	(
-            		yyyyMMdd.get( Calendar.YEAR ),
-                    yyyyMMdd.get( Calendar.MONTH ),
-                    yyyyMMdd.get( Calendar.DAY_OF_MONTH ),
-                    hhmmss.get( Calendar.HOUR_OF_DAY ),
-                    hhmmss.get( Calendar.MINUTE ),
-                    hhmmss.get( Calendar.SECOND )
-            	);
-
-        	GregorianCalendar utc = new GregorianCalendar( TimeZone.getTimeZone( "UTC" ) );
-            utc.setTimeInMillis( gc.getTimeInMillis() );
-
-            Stardate starDate = new Stardate();
-            starDate.setGregorian( utc );
-            m_spinnerIssue.setValue( Integer.valueOf( starDate.getStardateIssue() ) );
-            m_spinnerInteger.setValue( Integer.valueOf( starDate.getStardateInteger() ) );
-            m_spinnerFraction.setValue( Integer.valueOf( starDate.getStardateFraction() ) );            	
-        }
+	            m_spinnerIssue.setValue( Integer.valueOf( starDate.getStardateIssue() ) );
+	            m_spinnerInteger.setValue( Integer.valueOf( starDate.getStardateInteger() ) );
+	            m_spinnerFraction.setValue( Integer.valueOf( starDate.getStardateFraction() ) );            		            	
+	        }
+    	}
     }
 
 
@@ -121,7 +134,7 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
     {
         JLabel gregorianToStardateLabel = new JLabel( "Convert from a Gregorian date to a Stardate:" ); //$NON-NLS-1$
 
-        JLabel yearMonthDayLabel = new JLabel( "YYYY-MM-DD :" ); //$NON-NLS-1$
+        JLabel yearMonthDayLabel = new JLabel( "YYYY-MM-DD" ); //$NON-NLS-1$
 
         m_spinnerYYYYMMDD = new JSpinner( new SpinnerDateModel() );
         JSpinner.DateEditor dateEditor = new JSpinner.DateEditor( m_spinnerYYYYMMDD, "yyyy-MM-dd" ); //$NON-NLS-1$
@@ -130,7 +143,7 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
         m_spinnerYYYYMMDD.setToolTipText( "Set the date in the format of YYYY-MM-DD" ); //$NON-NLS-1$
         m_spinnerYYYYMMDD.addChangeListener( this );
 
-        JLabel hourMinuteSecondLabel = new JLabel( "HH:MM:SS :" ); //$NON-NLS-1$
+        JLabel hourMinuteSecondLabel = new JLabel( "HH:MM:SS" ); //$NON-NLS-1$
 
         m_spinnerHHMMSS = new JSpinner( new SpinnerDateModel() );
         dateEditor = new JSpinner.DateEditor( m_spinnerHHMMSS, "HH:mm:ss" ); //$NON-NLS-1$
@@ -141,24 +154,54 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
 
         JLabel stardateToGregorianLabel = new JLabel( "Convert from a Stardate to a Gregorian date:" ); //$NON-NLS-1$
 
-        JLabel issueLabel = new JLabel( "Issue:" ); //$NON-NLS-1$
+		m_radioClassic = new JRadioButton( "'classic' stardate", true ); //$NON-NLS-1$
+		m_radioClassic.addActionListener( this );
+
+		m_radio2009Revised = new JRadioButton( "'2009 revised' stardate", false ); //$NON-NLS-1$
+		m_radio2009Revised.addActionListener( this );
+
+		ButtonGroup buttonGroup = new ButtonGroup();
+		buttonGroup.add( m_radioClassic );
+		buttonGroup.add( m_radio2009Revised );
+
+		JLabel issueLabel = new JLabel( "Issue" ); //$NON-NLS-1$
 
         m_spinnerIssue = new JSpinner( new SpinnerNumberModel() );
-        m_spinnerIssue.setToolTipText( "Set the issue for the stardate (can be zero or negative)" ); //$NON-NLS-1$
+        m_spinnerIssue.setToolTipText( "Only applies to 'classic'." ); //$NON-NLS-1$
         m_spinnerIssue.addChangeListener( this );
         ( (JSpinner.DefaultEditor)m_spinnerIssue.getEditor() ).getTextField().addFocusListener( this );
 
-        JLabel integerLabel = new JLabel( "Integer:" ); //$NON-NLS-1$
+        JLabel integerLabel = new JLabel( "Integer" ); //$NON-NLS-1$
 
         m_spinnerInteger = new JSpinner( new SpinnerNumberModel() );
-        m_spinnerInteger.setToolTipText( "Set the integer part of the stardate (must be greater than zero)" ); //$NON-NLS-1$
+        m_spinnerInteger.setToolTipText
+        (
+        	"<html>" +
+    		"For <b>'classic'</b>:<br>" +
+			"issue <= 19: 0 <= integer <= 9999<br>" +
+			"issue == 20: 0 <= integer < 5006<br>" +
+			"issue >= 21: 0 <= integer <= 99999<br><br>" + 
+    		"For <b>'2009 revised'</b>:<br>" +
+			"integer > 0" +
+    		"</html>"
+        );
         m_spinnerInteger.addChangeListener( this );
         ( (JSpinner.DefaultEditor)m_spinnerInteger.getEditor() ).getTextField().addFocusListener( this );
 
-        JLabel fractionLabel = new JLabel( "Fraction:" ); //$NON-NLS-1$
+        JLabel fractionLabel = new JLabel( "Fraction" ); //$NON-NLS-1$
 
         m_spinnerFraction = new JSpinner( new SpinnerNumberModel() );
-        m_spinnerFraction.setToolTipText( "Set the fractional part of the stardate (must not be negative)" ); //$NON-NLS-1$
+        m_spinnerFraction.setToolTipText
+        (
+        	"<html>" +
+    		"For <b>'classic'</b>:<br>" +
+			"issue <= 19, 0 <= integer <= 9999: fraction >= 0<br>" +
+			"issue == 20, 0 <= integer < 5006: fraction >= 0<br>" +
+			"issue >= 21, 0 <= integer <= 99999: fraction > 0<br><br>" + 
+    		"For <b>'2009 revised'</b>:<br>" +
+			"0 <= fraction <= 365, or 366 if integer corresponds to a leap year" +
+    		"</html>"
+        );
         m_spinnerFraction.addChangeListener( this );
         ( (JSpinner.DefaultEditor)m_spinnerFraction.getEditor() ).getTextField().addFocusListener( this );
 
@@ -197,6 +240,8 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
 		    			.addComponent( yearMonthDayLabel )
 				)
 				.addComponent( stardateToGregorianLabel )
+    			.addComponent( m_radioClassic )
+    			.addComponent( m_radio2009Revised )
 				.addGroup
 				(
 		    		layout.createSequentialGroup()
@@ -237,6 +282,8 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
 				)
 				.addPreferredGap( LayoutStyle.ComponentPlacement.UNRELATED )
 				.addComponent( stardateToGregorianLabel )
+    			.addComponent( m_radioClassic )
+    			.addComponent( m_radio2009Revised )
 				.addGroup
 				(
 		    		layout.createParallelGroup()
