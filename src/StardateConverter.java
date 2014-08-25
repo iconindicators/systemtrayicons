@@ -1,10 +1,10 @@
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -37,10 +37,7 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
         setDefaultCloseOperation( EXIT_ON_CLOSE );
         setContentPane( buildMainPanel() );
         pack();
-
-        int originX = ( Toolkit.getDefaultToolkit().getScreenSize().width - getWidth() ) / 2;
-        int originY = ( Toolkit.getDefaultToolkit().getScreenSize().height - getHeight() ) / 2;
-        setLocation( originX, originY );
+        setLocationRelativeTo( null );
         setVisible( true );
     }
 
@@ -67,15 +64,13 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
         }
         else
         {
-            Stardate starDate = new Stardate();
             GregorianCalendar yyyyMMdd = new GregorianCalendar();
             yyyyMMdd.setTime( ( (SpinnerDateModel)m_spinnerYYYYMMDD.getModel() ).getDate() );
 
             GregorianCalendar hhmmss = new GregorianCalendar();
             hhmmss.setTime( ( (SpinnerDateModel)m_spinnerHHMMSS.getModel() ).getDate() );
 
-            starDate.setGregorian
-            (
+            GregorianCalendar gc =
             	new GregorianCalendar
             	(
             		yyyyMMdd.get( Calendar.YEAR ),
@@ -84,12 +79,16 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
                     hhmmss.get( Calendar.HOUR_OF_DAY ),
                     hhmmss.get( Calendar.MINUTE ),
                     hhmmss.get( Calendar.SECOND )
-            	)
-            );
+            	);
 
-            m_spinnerIssue.setValue( Integer.valueOf(starDate.getStardateIssue() ) );
-            m_spinnerInteger.setValue( Integer.valueOf(starDate.getStardateInteger() ) );
-            m_spinnerFraction.setValue( Integer.valueOf(starDate.getStardateFraction() ) );
+        	GregorianCalendar utc = new GregorianCalendar( TimeZone.getTimeZone( "UTC" ) );
+            utc.setTimeInMillis( gc.getTimeInMillis() );
+
+            Stardate starDate = new Stardate();
+            starDate.setGregorian( utc );
+            m_spinnerIssue.setValue( Integer.valueOf( starDate.getStardateIssue() ) );
+            m_spinnerInteger.setValue( Integer.valueOf( starDate.getStardateInteger() ) );
+            m_spinnerFraction.setValue( Integer.valueOf( starDate.getStardateFraction() ) );            	
         }
     }
 
