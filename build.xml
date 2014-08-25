@@ -1,19 +1,21 @@
 <project name="StardateSystemTray" default="CompileAndJar" basedir=".">
 
-  <!-- Application and version properties. -->
-  <property name="version" value="1.9" />
-  <property name="JavaDocTitleVersion" value="Stardate v1.3 API Specification" />
 
-  <!-- Compile properties -->
+  <!-- Version numbers and names. -->
+  <property name="libraryVersion" value="3.1" />
+  <property name="javaDocTitleVersion" value="Stardate Version ${LibraryVersion} (2014-08-11) API Specification" />
+  <property name="systemTrayVersion" value="2.0" />
+  <property name="libraryJar" value="stardate.jar" />
+  <property name="converterJar" value="stardateconverter.jar" />
+  <property name="systemTrayJar" value="stardatesystemtray.jar" />
+  <property name="joda" value="joda-time-2.4.jar" />
+
+
+  <!-- Directories. -->
   <property name="classes" location="classes" />
-  <property name="doc" location="doc" />
   <property name="i18n" location="i18n" />
   <property name="img" location="img" />
   <property name="javadoc" value="javadoc" />
-  <property name="jar-filename" value="stardate.jar" />
-  <property name="applet-jar-filename" value="stardateapplet.jar" />
-  <property name="application-jar-filename" value="stardateconverter.jar" />
-  <property name="systemtray-jar-filename" value="stardatesystemtray.jar" />
   <property name="lib" location="lib" />
   <property name="packaging" location="packaging" />
   <property name="release" location="release" />
@@ -29,7 +31,7 @@
 
     <javac srcdir="${src}" destdir="${classes}" includeantruntime="false">
       <classpath>
-        <pathelement location="${lib}/joda-time-2.4.jar" />                
+        <pathelement location="${lib}/${joda}" />                
       </classpath>
       <compilerarg value="-Xlint:deprecation,fallthrough,finally,path,unchecked" />
     </javac>
@@ -41,27 +43,25 @@
     <copy file="${img}/stardatesystemtray16x16.gif" todir="${classes}" />
     <copy file="${img}/stardatesystemtray20x20.gif" todir="${classes}" />
 
-    <jar jarfile="${release}/${jar-filename}" basedir="${classes}" includes="Stardate.class StardateException*.class" />
-
-    <jar jarfile="${release}/${applet-jar-filename}" basedir="${classes}" includes="StardateApplet*.class" />
+    <jar jarfile="${release}/${libraryJar}" basedir="${classes}" includes="Stardate.class" />
 
     <manifest file="${classes}/MANIFEST.MF">
-      <attribute name="Class-Path" value=". ${jar-filename}" />
+      <attribute name="Class-Path" value=". ${libraryJar}" />
       <attribute name="Main-Class" value="StardateConverter" />
     </manifest>
     <jar 
-      jarfile="${release}/${application-jar-filename}" 
+      jarfile="${release}/${converterJar}" 
       basedir="${classes}" 
       includes="StardateConverter.class stardatesystemtray16x16.gif" 
       manifest="${classes}/MANIFEST.MF" 
     />
 
     <manifest file="${classes}/MANIFEST.MF">
-      <attribute name="Class-Path" value=". ${jar-filename} joda-time-2.4.jar" />
+      <attribute name="Class-Path" value=". ${libraryJar} ${joda}" />
       <attribute name="Main-Class" value="StardateSystemTray" />
     </manifest>
     <jar 
-      jarfile="${release}/${systemtray-jar-filename}"
+      jarfile="${release}/${systemTrayJar}"
       basedir="${classes}"
       includes=" i18n/* MessageDialog*.class Messages*.class OperatingSystem*.class PopupMenu*.class Properties*.class ShowCalendars*.class StardateSystemTray*.class SystemStart*.class TrayIcon*.class WindowsRegistry*.class stardatesystemtray16x16.gif stardatesystemtray20x20.gif"
       manifest="${classes}/MANIFEST.MF"
@@ -72,9 +72,9 @@
 
 
   <target name="JavaDoc" depends="CompileAndJar" description="Create Javadoc for the Stardate API.">
-    <property name="windowtitle" value="${JavaDocTitleVersion}" />
-    <property name="doctitle" value="${JavaDocTitleVersion}" />
-    <property name="header" value="${JavaDocTitleVersion}" />
+    <property name="windowtitle" value="${javaDocTitleVersion}" />
+    <property name="doctitle" value="${javaDocTitleVersion}" />
+    <property name="header" value="${javaDocTitleVersion}" />
 
     <delete dir="${javadoc}" />
     <mkdir dir="${javadoc}" />
@@ -115,12 +115,6 @@
 
     <zip destfile="${release}/StardateJAR-${version}.zip">
       <fileset file="${release}/${jar-filename}"/>
-    </zip>
-
-    <zip destfile="${release}/SampleApplet-${version}.zip">
-      <fileset file="${release}/${jar-filename}"/>
-      <fileset file="${release}/${applet-jar-filename}"/>
-      <fileset file="${src}/stardate.html"/>
     </zip>
 
     <zip destfile="${release}/SampleApplication-${version}.zip">
