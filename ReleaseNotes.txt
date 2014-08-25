@@ -2,7 +2,7 @@ Stardate System Tray Release Notes
 ----------------------------------
 
 
-2014-08-11 Version 2.0
+2014-08-25 Version 2.0
 
 * Implemented stardate '2009 revised' version to bring into line with the
   Python version of the Stardate API.  Some API changes have occurred.
