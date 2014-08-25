@@ -13,7 +13,7 @@ Stardate and Stardate System Tray Release Notes
 
 * Fixed a bug when calculating present day stardates.
 
-* Added option to pad the INTEGER part of classic stardates.
+* Fixed a bug when padding the INTEGER part of classic stardates.
 
 * Reorganised the source code and sample application/applet into one tree.
 
