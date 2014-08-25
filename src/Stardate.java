@@ -47,7 +47,7 @@ import java.util.TimeZone;
 public class Stardate
 {
 	/** API version. */
-	private static final String API_VERSION = "Version 3.1 (2014-08-11)"; //$NON-NLS-1$
+	private static final String API_VERSION = "Version 3.2 (2014-08-25)"; //$NON-NLS-1$
 
 
     /** Rates (in stardate units per day) for each 'classic' stardate era. */

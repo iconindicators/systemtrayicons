@@ -2,8 +2,8 @@
 
 
   <!-- Version numbers and names. -->
-  <property name="libraryVersion" value="3.1" />
-  <property name="javaDocTitleVersion" value="Stardate Version 3.1 (2014-08-11) API Specification" />
+  <property name="libraryVersion" value="3.2" />
+  <property name="javaDocTitleVersion" value="Stardate Version 3.2 (2014-08-25) API Specification" />
   <property name="systemTrayVersion" value="2.0" />
   <property name="libraryJar" value="stardate.jar" />
   <property name="converterJar" value="stardateconverter.jar" />
