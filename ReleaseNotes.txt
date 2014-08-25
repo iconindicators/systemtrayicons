@@ -1,5 +1,5 @@
-Stardate and Stardate System Tray Release Notes
------------------------------------------------
+Stardate System Tray Release Notes
+----------------------------------
 
 
 2014-08-11 Version 2.0
