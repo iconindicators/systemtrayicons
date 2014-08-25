@@ -2,7 +2,6 @@ import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.GregorianCalendar;
 
 import javax.swing.ImageIcon;
 
@@ -138,6 +137,7 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_STARDATE, true ) )
     	{
     		Stardate stardate = new Stardate();
+    		stardate.setClassic( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_CLASSIC, true ) );
     		stardate.setGregorian( currentDateTime.toGregorianCalendar() );
         	message.append( message.length() > 0 ? newLine : "" );  //$NON-NLS-1$ 
 
@@ -163,7 +163,8 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 	public void mouseMoved( MouseEvent mouseEvent )
 	{
 		Stardate stardate = new Stardate();
-		stardate.setGregorian( new GregorianCalendar() );
+		stardate.setClassic( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_CLASSIC, true ) );
+		stardate.setGregorian( new DateTime( DateTimeZone.UTC ).toGregorianCalendar() );
 
 		boolean showStardateIssue = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_ISSUE, true );
 		boolean padStardate = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_PAD_STARDATE, true );
