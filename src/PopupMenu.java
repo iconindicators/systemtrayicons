@@ -241,6 +241,12 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     		Properties.getInstance().setProperty( Properties.PROPERTY_PAD_STARDATE, Boolean.toString( checkboxMenuItem.getState() ) );
     	}
 
+    	// Toggle the show 'classic' Stardate.
+    	else if( POPUP_SHOW_STARDATE_CLASSIC.equals( label ) )
+    	{
+    		Properties.getInstance().setProperty( Properties.PROPERTY_SHOW_STARDATE_CLASSIC, Boolean.toString( checkboxMenuItem.getState() ) );
+    	}
+
     	// Toggle the run on system start option.
     	else if( POPUP_RUN_ON_SYSTEM_START.equals( label ) )
     	{
