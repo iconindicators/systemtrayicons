@@ -11,7 +11,7 @@ public class StardateSystemTray
 	public static final String APPLICATION_EXECUTABLE = "StardateSystemTray.exe";  //$NON-NLS-1$
 	public static final String APPLICATION_NAME = "Stardate System Tray";  //$NON-NLS-1$
 	public static final String APPLICATION_URL = "http://stardatesystray.sourceforge.net"; //$NON-NLS-1$
-	public static final String APPLICATION_VERSION_NUMBER = "2.0 (2014-08-11)"; //$NON-NLS-1$
+	public static final String APPLICATION_VERSION_NUMBER = "2.0 (2014-08-25)"; //$NON-NLS-1$
 
 
 	public StardateSystemTray()
