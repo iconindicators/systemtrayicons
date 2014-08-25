@@ -9,6 +9,7 @@ import java.util.TimeZone;
 import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -37,7 +38,8 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
     {
         super( "Stardate/Gregorian Converter" ); //$NON-NLS-1$
 
-        setDefaultCloseOperation( EXIT_ON_CLOSE );
+        try{ setIconImage( new ImageIcon( getClass().getResource( "stardatesystemtray16x16.gif" ) ).getImage() ); } catch( Exception exception ) { /** Ignore...not fatal. */ } 
+     	setDefaultCloseOperation( EXIT_ON_CLOSE );
         setContentPane( buildMainPanel() );
         pack();
         setLocationRelativeTo( null );
