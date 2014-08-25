@@ -22,6 +22,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	static final String POPUP_SHOW_CALENDARS = Messages.getString( "PopupMenu.27" );  //$NON-NLS-1$
 	static final String POPUP_SHOW_STARDATE_ISSUE = Messages.getString( "PopupMenu.5" );  //$NON-NLS-1$
 	static final String POPUP_PAD_STARDATE = Messages.getString( "PopupMenu.26" );  //$NON-NLS-1$
+	static final String POPUP_SHOW_STARDATE_CLASSIC = Messages.getString( "PopupMenu.24" );  //$NON-NLS-1$
 
 	static final String SUBPOPUP_SHOW_MESSAGE_BUDDHIST = Messages.getString( "PopupMenu.6" );  //$NON-NLS-1$
 	static final String SUBPOPUP_SHOW_MESSAGE_COPTIC = Messages.getString( "PopupMenu.7" );  //$NON-NLS-1$
@@ -143,6 +144,11 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 
 	    boolean showStardateIssue = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_ISSUE, true );
 	    checkboxMenuItem = new CheckboxMenuItem( POPUP_SHOW_STARDATE_ISSUE, showStardateIssue );
+	    checkboxMenuItem.addItemListener( this );
+	    add( checkboxMenuItem );
+
+	    boolean showStardateClassic= Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_ISSUE, true );
+	    checkboxMenuItem = new CheckboxMenuItem( POPUP_SHOW_STARDATE_CLASSIC, showStardateClassic );
 	    checkboxMenuItem.addItemListener( this );
 	    add( checkboxMenuItem );
 
