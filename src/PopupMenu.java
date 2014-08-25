@@ -147,7 +147,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	    checkboxMenuItem.addItemListener( this );
 	    add( checkboxMenuItem );
 
-	    boolean showStardateClassic= Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_ISSUE, true );
+	    boolean showStardateClassic= Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_CLASSIC, true );
 	    checkboxMenuItem = new CheckboxMenuItem( POPUP_SHOW_STARDATE_CLASSIC, showStardateClassic );
 	    checkboxMenuItem.addItemListener( this );
 	    add( checkboxMenuItem );
