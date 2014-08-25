@@ -117,6 +117,8 @@
 
   <target name="Release" depends="Win32, JavaDoc">
     <mkdir dir="${release}/sourceAndJavaDoc" />
+    <copy file="ReleaseNotes.txt" todir="${release}/sourceAndJavaDoc" />
+    <copy file="README" todir="${release}/sourceAndJavaDoc" />
     <copy file="${src}/Stardate.java" todir="${release}/sourceAndJavaDoc/source" />
   	<copy todir="${release}/sourceAndJavaDoc/javadoc">
       <fileset dir="${javadoc}"/>
@@ -124,5 +126,4 @@
     <zip destfile="${release}/Stardate-${libraryVersion}-SourceAndJavaDoc.zip" basedir="${release}/sourceAndJavaDoc" />  
     <delete dir="${release}/sourceAndJavaDoc" />
   </target>
-
 </project>
