@@ -14,6 +14,7 @@ public class Properties
     private static boolean ms_canReadPropertiesFile = true;
     private static boolean ms_canWritePropertiesFile = true;
 
+	public static final String PROPERTY_SHOW_STARDATE_CLASSIC = "ShowStardateClassic"; //$NON-NLS-1$
 	public static final String PROPERTY_SHOW_STARDATE_ISSUE = "ShowStardateIssue"; //$NON-NLS-1$
 	public static final String PROPERTY_PAD_STARDATE = "PadStardate"; //$NON-NLS-1$
 
