@@ -3,8 +3,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-import javax.swing.JOptionPane;
-
 
 /**
  * Converts between Star Trek&#8482; stardates and Gregorian date/times.<br>
