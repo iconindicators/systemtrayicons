@@ -80,8 +80,8 @@ Section "Install"
   SetOutPath "$INSTDIR"
   SetOverwrite on
 
+  File ..\..\README
   File ..\..\ReleaseNotes.txt
-  File ..\..\TODO.txt
   File ..\..\License.txt
   File ..\..\img\stardatesystemtray48x48.ico		
   File ..\..\release\stardate.jar
