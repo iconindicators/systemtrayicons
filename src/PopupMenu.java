@@ -165,8 +165,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     public static boolean isPopupDisabled() { return ms_popupDisabled; }
 
 
-    @Override
-	public void show( Component origin, int x, int y ) 
+    @Override public void show( Component origin, int x, int y ) 
     {
 		// To block the right click action we check here if the right mouse button is clicked.
 		// If a dialog is already showing, then we don't want to show the popup.
@@ -176,11 +175,11 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	}
 
 
-    @Override
-	public void actionPerformed( ActionEvent actionEvent )
+    @Override public void actionPerformed( ActionEvent actionEvent )
 	{
     	String menuItem = ( (MenuItem)actionEvent.getSource() ).getLabel();
 
+    	boolean systemExit = false;
     	if( POPUP_ABOUT.equals( menuItem ) )
     	{
     		String message =
@@ -197,100 +196,70 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 
     		MessageDialog.showMessageDialog( POPUP_ABOUT, MessageDialog.createURLLabel( message ), JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION );
 	        ms_popupDisabled = false;
-
-			return;
     	}
-
-    	if( POPUP_SHOW_CALENDARS.equals( menuItem ) )
+    	else if( POPUP_SHOW_CALENDARS.equals( menuItem ) )
     	{
         	if( TrayIcon.getMessageString( false ).length() == 0 )
-    		{
         		MessageDialog.showMessageDialog( Messages.getString( "PopupMenu.28" ), Messages.getString( "PopupMenu.29" ), JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION ); //$NON-NLS-1$ //$NON-NLS-2$
-        		return;
-    		}
-
-    		ms_popupDisabled = true;
-        	ShowCalendars.create();
-    		ms_popupDisabled = false;
-    		return;
+        	else
+        	{
+	    		ms_popupDisabled = true;
+	        	ShowCalendars.create();
+	    		ms_popupDisabled = false;
+        	}
     	}
-
-    	if( POPUP_EXIT.equals( menuItem ) )
+    	else if( POPUP_EXIT.equals( menuItem ) )
     	{
     		Properties.getInstance().store();
-    		System.exit( 0 );
+    		systemExit = true;
     	}
-    }
+
+    	if( systemExit )
+    		System.exit( 0 );
+	}
 
 
-	@Override
-	public void itemStateChanged( ItemEvent itemEvent )
+	@Override public void itemStateChanged( ItemEvent itemEvent )
     {
     	CheckboxMenuItem checkboxMenuItem = (CheckboxMenuItem)itemEvent.getSource();
     	String label = checkboxMenuItem.getLabel();
 
     	// Toggle the show/hide Stardate ISSUE.
     	if( POPUP_SHOW_STARDATE_ISSUE.equals( label ) )
-    	{
     		Properties.getInstance().setProperty( Properties.PROPERTY_SHOW_STARDATE_ISSUE, Boolean.toString( checkboxMenuItem.getState() ) );
-    	}
 
     	// Toggle the pad Stardate.
     	else if( POPUP_PAD_STARDATE.equals( label ) )
-    	{
     		Properties.getInstance().setProperty( Properties.PROPERTY_PAD_STARDATE, Boolean.toString( checkboxMenuItem.getState() ) );
-    	}
 
     	// Toggle the show 'classic' Stardate.
     	else if( POPUP_SHOW_STARDATE_CLASSIC.equals( label ) )
-    	{
     		Properties.getInstance().setProperty( Properties.PROPERTY_SHOW_STARDATE_CLASSIC, Boolean.toString( checkboxMenuItem.getState() ) );
-    	}
 
     	// Toggle the run on system start option.
     	else if( POPUP_RUN_ON_SYSTEM_START.equals( label ) )
-    	{
     		if( ! SystemStart.setRunOnSystemStart( checkboxMenuItem.getState() ) )
     			MessageDialog.showMessageDialog( Messages.getString( "PopupMenu.31" ), Messages.getString( "PopupMenu.32" ), JOptionPane.ERROR_MESSAGE, JOptionPane.DEFAULT_OPTION );  //$NON-NLS-1$//$NON-NLS-2$
-    	}
 
     	// Handle each chronology.
     	else if( SUBPOPUP_SHOW_MESSAGE_BUDDHIST.equals( label ) )
-    	{
     		Properties.getInstance().setProperty( Properties.PROPERTY_CHRONOLOGY_BUDDHIST, Boolean.toString( checkboxMenuItem.getState() ) );
-    	}
     	else if( SUBPOPUP_SHOW_MESSAGE_COPTIC.equals( label ) )
-    	{
     		Properties.getInstance().setProperty( Properties.PROPERTY_CHRONOLOGY_COPTIC, Boolean.toString( checkboxMenuItem.getState() ) );
-    	}
     	else if( SUBPOPUP_SHOW_MESSAGE_ETHIOPIC.equals( label ) )
-    	{
     		Properties.getInstance().setProperty( Properties.PROPERTY_CHRONOLOGY_ETHIOPIC, Boolean.toString( checkboxMenuItem.getState() ) );
-    	}
     	else if( SUBPOPUP_SHOW_MESSAGE_GREGORIAN.equals( label ) )
-    	{
     		Properties.getInstance().setProperty( Properties.PROPERTY_CHRONOLOGY_GREGORIAN, Boolean.toString( checkboxMenuItem.getState() ) );
-    	}
     	else if( SUBPOPUP_SHOW_MESSAGE_GREGORIAN_JULIAN.equals( label ) )
-    	{
     		Properties.getInstance().setProperty( Properties.PROPERTY_CHRONOLOGY_GREGORIAN_JULIAN, Boolean.toString( checkboxMenuItem.getState() ) );
-    	}
     	else if( SUBPOPUP_SHOW_MESSAGE_ISLAMIC.equals( label ) )
-    	{
     		Properties.getInstance().setProperty( Properties.PROPERTY_CHRONOLOGY_ISLAMIC, Boolean.toString( checkboxMenuItem.getState() ) );
-    	}
     	else if( SUBPOPUP_SHOW_MESSAGE_ISO8601.equals( label ) )
-    	{
     		Properties.getInstance().setProperty( Properties.PROPERTY_CHRONOLOGY_ISO8601, Boolean.toString( checkboxMenuItem.getState() ) );
-    	}
     	else if( SUBPOPUP_SHOW_MESSAGE_JULIAN.equals( label ) )
-    	{
     		Properties.getInstance().setProperty( Properties.PROPERTY_CHRONOLOGY_JULIAN, Boolean.toString( checkboxMenuItem.getState() ) );
-    	}
     	else if( SUBPOPUP_SHOW_MESSAGE_STARDATE.equals( label ) )
-    	{
     		Properties.getInstance().setProperty( Properties.PROPERTY_CHRONOLOGY_STARDATE, Boolean.toString( checkboxMenuItem.getState() ) );
-    	}
 
     	// Handle each date format.
     	else if( SUBPOPUP_DATE_TIME_FORMAT_LONG.equals( label ) )

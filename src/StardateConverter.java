@@ -13,7 +13,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
@@ -29,6 +28,7 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
 {
 	private static final long serialVersionUID = 1L;
 
+	private JButton m_convert;
 	private JRadioButton m_radioClassic, m_radio2009Revised;
 	private JSpinner m_spinnerIssue, m_spinnerInteger, m_spinnerFraction, m_spinnerYYYYMMDD, m_spinnerHHMMSS;
     private boolean m_stardateToGregorian = true;
@@ -38,7 +38,7 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
     {
         super( "Stardate/Gregorian Converter" ); //$NON-NLS-1$
 
-        try{ setIconImage( new ImageIcon( getClass().getResource( "stardatesystemtray16x16.gif" ) ).getImage() ); } catch( Exception exception ) { /** Ignore...not fatal. */ } 
+        try{ setIconImage( new ImageIcon( getClass().getResource( "stardatesystemtray16x16.gif" ) ).getImage() ); } catch( Exception exception ) { /** Ignore...not fatal. */ }  //$NON-NLS-1$
      	setDefaultCloseOperation( EXIT_ON_CLOSE );
         setContentPane( buildMainPanel() );
         pack();
@@ -47,32 +47,34 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
     }
 
 
-    @Override
-	public void actionPerformed( ActionEvent actionEvent )
+    @Override public void actionPerformed( ActionEvent actionEvent )
     {
     	if( actionEvent.getSource() == m_radioClassic || actionEvent.getSource() == m_radio2009Revised )
-    	{
     		m_spinnerIssue.setEnabled( m_radioClassic.isSelected() );
-    	}
-    	else
+
+    	else if( actionEvent.getSource() == m_convert )
     	{
-	    	// Default to the convert button.
 	    	if( m_stardateToGregorian )
 	        {
-	            Stardate starDate = new Stardate();
-	            try 
-	            {
-	                starDate.setStardateClassic
-	                (
-	                    ( (Integer)m_spinnerIssue.getValue() ).intValue(),
-	                    ( (Integer)m_spinnerInteger.getValue() ).intValue(),
-	                    ( (Integer)m_spinnerFraction.getValue() ).intValue()
-	                );
-	
-	                m_spinnerYYYYMMDD.setValue( starDate.getGregorian().getTime() );
-	                m_spinnerHHMMSS.setValue( starDate.getGregorian().getTime() );
-	            }
-	            catch( IllegalArgumentException illegalArgumentException ) { JOptionPane.showMessageDialog( this, illegalArgumentException.getMessage() ); }
+    			GregorianCalendar gregorianCalendar;
+	    		if( m_radioClassic.isSelected() )
+	    			gregorianCalendar =
+    					Stardate.getGregorianFromStardateClassic
+    					(
+							( (Integer)m_spinnerIssue.getValue() ).intValue(),
+							( (Integer)m_spinnerInteger.getValue() ).intValue(),
+							( (Integer)m_spinnerFraction.getValue() ).intValue()
+						);
+	    		else
+	    			gregorianCalendar =
+    					Stardate.getGregorianFromStardate2009Revised
+    					(
+							( (Integer)m_spinnerInteger.getValue() ).intValue(),
+							( (Integer)m_spinnerFraction.getValue() ).intValue()
+						);
+
+                m_spinnerYYYYMMDD.setValue( gregorianCalendar.getTime() );
+                m_spinnerHHMMSS.setValue( gregorianCalendar.getTime() );
 	        }
 	        else
 	        {
@@ -93,23 +95,30 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
 	                    hhmmss.get( Calendar.SECOND )
 	            	);
 	
-	        	GregorianCalendar utc = new GregorianCalendar( TimeZone.getTimeZone( "UTC" ) );
+	        	GregorianCalendar utc = new GregorianCalendar( TimeZone.getTimeZone( "UTC" ) ); //$NON-NLS-1$
 	            utc.setTimeInMillis( gc.getTimeInMillis() );
 	
-	            Stardate starDate = new Stardate();
-	            starDate.setClassic( m_radioClassic.isSelected() );
-	            starDate.setGregorian( utc );
+	    		if( m_radioClassic.isSelected() )
+	    		{
+	    			int[] stardate = Stardate.getStardateClassic( utc );
+		            m_spinnerIssue.setValue( Integer.valueOf( stardate[ 0 ] ) );
+		            m_spinnerInteger.setValue( Integer.valueOf( stardate[ 1 ] ) );
+		            m_spinnerFraction.setValue( Integer.valueOf( stardate[ 2 ] ) );
+	    		}
+	    		else
+	    		{
+	    			int[] stardate = Stardate.getStardate2009Revised( utc );
+		            m_spinnerInteger.setValue( Integer.valueOf( stardate[ 0 ] ) );
+		            m_spinnerFraction.setValue( Integer.valueOf( stardate[ 1 ] ) );
+	    		}
 
-	            m_spinnerIssue.setValue( Integer.valueOf( starDate.getStardateIssue() ) );
-	            m_spinnerInteger.setValue( Integer.valueOf( starDate.getStardateInteger() ) );
-	            m_spinnerFraction.setValue( Integer.valueOf( starDate.getStardateFraction() ) );            		            	
+                m_stardateToGregorian = ! m_stardateToGregorian; // When writing the result to the spinner, the focus changes causing the sense of conversion, so flip back.
 	        }
     	}
     }
 
 
-    @Override
-	public void stateChanged( ChangeEvent changeEvent )
+    @Override public void stateChanged( ChangeEvent changeEvent )
     {
     	if( changeEvent.getSource() == m_spinnerHHMMSS || changeEvent.getSource() == m_spinnerYYYYMMDD )
     		m_stardateToGregorian = false;
@@ -118,8 +127,7 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
     }
 
 
-    @Override
-	public void focusGained( FocusEvent focusEvent )
+    @Override public void focusGained( FocusEvent focusEvent )
     {
     	if( focusEvent.getSource() == ( (JSpinner.DefaultEditor)m_spinnerHHMMSS.getEditor() ).getTextField() || focusEvent.getSource() == ( (JSpinner.DefaultEditor)m_spinnerYYYYMMDD.getEditor() ).getTextField() )
     		m_stardateToGregorian = false;
@@ -128,8 +136,7 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
     }
 
 
-    @Override
-	public void focusLost( FocusEvent focusEvent ) { /** Do nothing. */ }
+    @Override public void focusLost( FocusEvent focusEvent ) { /** Do nothing. */ }
 
 
     private JPanel buildMainPanel()
@@ -207,8 +214,8 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
         m_spinnerFraction.addChangeListener( this );
         ( (JSpinner.DefaultEditor)m_spinnerFraction.getEditor() ).getTextField().addFocusListener( this );
 
-        JButton convert = new JButton( "Convert" ); //$NON-NLS-1$
-        convert.addActionListener( this );
+        m_convert = new JButton( "Convert" ); //$NON-NLS-1$
+        m_convert.addActionListener( this );
 
         JPanel panel = new JPanel();
         GroupLayout layout = new GroupLayout( panel );
@@ -263,7 +270,7 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
 						)
 		    			.addComponent( yearMonthDayLabel )
 				)
-				.addComponent( convert, Alignment.CENTER )
+				.addComponent( m_convert, Alignment.CENTER )
 		);
 
         layout.setVerticalGroup
@@ -305,7 +312,7 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
 		    			.addComponent( m_spinnerFraction )
 				)
 				.addPreferredGap( LayoutStyle.ComponentPlacement.UNRELATED )
-				.addComponent( convert )
+				.addComponent( m_convert )
 		);
 
         return panel;

@@ -36,34 +36,38 @@ public class Properties
 	
 	private Properties()
     {
-        try
-		{
-        	File propertyDirectory = new File( PROPERTY_DIRECTORY );
-        	if( ! propertyDirectory.exists() )
-        	{
-        		if( ! propertyDirectory.mkdir() )
-        		{
-        			ms_canCreatePropertyDirectory = false;
-        			return;
-        		}
-        	}
-
+    	File propertyDirectory = new File( PROPERTY_DIRECTORY );
+    	if( ! propertyDirectory.exists() && ! propertyDirectory.mkdir() )
+			ms_canCreatePropertyDirectory = false;
+    	else
+    	{
         	File propertyFile = new File( PROPERTY_FILE );
         	if( ! propertyFile.canRead() )
-        	{
         		ms_canReadPropertiesFile = false;
-        		return;
-        	}
-
-        	if( ! propertyFile.canWrite() )
+        	else
         	{
-        		ms_canWritePropertiesFile = false;
-        		return;
+            	if( ! propertyFile.canWrite() )
+            		ms_canWritePropertiesFile = false;
+            	else
+            	{
+					FileInputStream fileInputStream = null;
+            		try
+            		{
+						fileInputStream = new FileInputStream( PROPERTY_FILE );
+	            		m_properties.load( fileInputStream );
+					}
+            		catch( Exception e ) { /** Handle in finally. */ }
+            		finally
+            		{
+                	    if( fileInputStream != null )
+                	    {
+                	        try { fileInputStream.close(); }
+                	        catch( Exception exception ) { m_properties = new java.util.Properties(); }
+                	    }
+            		}
+            	}
         	}
-
-            m_properties.load( new FileInputStream( PROPERTY_FILE ) );
-        }
-        catch( Exception exception ) { m_properties = new java.util.Properties(); }
+    	}
     }
 
 
@@ -92,12 +96,15 @@ public class Properties
     {
         if( key == null ) throw new IllegalArgumentException( "Key cannot be null." ); //$NON-NLS-1$
 
+        boolean returnValue;
         String val = m_properties.getProperty( key );
         if( val == null || val.length() == 0 )
-            return defaultValue;
+            returnValue = defaultValue;
+        else
+	        try { returnValue = Boolean.valueOf( val ).booleanValue(); }
+	        catch( Exception exception ) { returnValue = defaultValue; }
 
-        try { return Boolean.valueOf( val ).booleanValue(); }
-        catch( Exception exception ) { return defaultValue; }
+        return returnValue;
     }
 
 

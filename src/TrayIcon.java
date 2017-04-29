@@ -2,6 +2,7 @@ import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.GregorianCalendar;
 
 import javax.swing.ImageIcon;
 
@@ -136,14 +137,8 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 
     	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_CHRONOLOGY_STARDATE, true ) )
     	{
-    		Stardate stardate = new Stardate();
-    		stardate.setClassic( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_CLASSIC, true ) );
-    		stardate.setGregorian( currentDateTime.toGregorianCalendar() );
         	message.append( message.length() > 0 ? newLine : "" );  //$NON-NLS-1$ 
-
-    		boolean showStardateIssue = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_ISSUE, true );
-    		boolean padStardate = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_PAD_STARDATE, true );
-    		message.append( MESSAGE_STARDATE ).append( stardate.toStardateString( showStardateIssue, padStardate ) );
+    		message.append( MESSAGE_STARDATE ).append( toStardateString( currentDateTime.toGregorianCalendar() ) );
     	}
 
 		if( html )
@@ -154,26 +149,18 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 
     	return message.toString();
     }
-    
-    
+
+
 	@Override public void mouseDragged( MouseEvent mouseEvent ) { /** Do nothing. */ }
 
 
-	@Override 
-	public void mouseMoved( MouseEvent mouseEvent )
+	@Override public void mouseMoved( MouseEvent mouseEvent )
 	{
-		Stardate stardate = new Stardate();
-		stardate.setClassic( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_CLASSIC, true ) );
-		stardate.setGregorian( new DateTime( DateTimeZone.UTC ).toGregorianCalendar() );
-
-		boolean showStardateIssue = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_ISSUE, true );
-		boolean padStardate = Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_PAD_STARDATE, true );
-		setToolTip( MESSAGE_TOOL_TIP + stardate.toStardateString( showStardateIssue, padStardate ) );
+		setToolTip( MESSAGE_TOOL_TIP + toStardateString( new DateTime( DateTimeZone.UTC ).toGregorianCalendar() ) );
 	}
 
-    
-	@Override 
-	public void mousePressed( MouseEvent mouseEvent )
+
+	@Override public void mousePressed( MouseEvent mouseEvent )
 	{
 		if( mouseEvent.getButton() == MouseEvent.BUTTON1 )
 		{
@@ -223,4 +210,30 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 	    
 	    return dateTimeFormatter;
     }
+
+
+	private static String toStardateString( GregorianCalendar gregorianCalendar )
+	{
+    	String stardateString;
+    	if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_CLASSIC, true ) )
+    	{
+    		int[] issueIntegerFractionPeriod = Stardate.getStardateClassic( gregorianCalendar );
+    		stardateString =
+				Stardate.toStardateClassicString
+				(
+					issueIntegerFractionPeriod[ 0 ],
+					issueIntegerFractionPeriod[ 1 ],
+					issueIntegerFractionPeriod[ 2 ],
+					Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_STARDATE_ISSUE, true ),
+					Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_PAD_STARDATE, true )
+				);
+    	}
+    	else
+    	{
+    		int[] issueIntegerFraction = Stardate.getStardate2009Revised( gregorianCalendar );
+    		stardateString = Stardate.toStardateRevised2009String( issueIntegerFraction[ 0 ], issueIntegerFraction[ 1 ] );
+    	}
+
+    	return stardateString;
+	}
 }

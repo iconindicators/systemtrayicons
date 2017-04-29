@@ -7,33 +7,40 @@ public class SystemStart
 
     public static boolean runOnSystemStart()
     {
-    	if( OperatingSystem.isWindows() ) return runOnSystemStartMicrosoftWindows();
+    	boolean runOnSystemStart = false;
+    	if( OperatingSystem.isWindows() ) 
+    		runOnSystemStart = runOnSystemStartMicrosoftWindows();
 
-    	return false;
+    	return runOnSystemStart;
     }
 
 
     private static boolean runOnSystemStartMicrosoftWindows()
     {
+    	boolean runOnSystemStart;
     	try
     	{
 			String registryValue = WindowsRegistry.readString( WindowsRegistry.HKEY_CURRENT_USER, MICROSOFT_WINDOWS_REGISTRY_KEY, MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME );
-			return registryValue != null && registryValue.contentEquals( MICROSOFT_WINDOWS_REGISTRY_VALUE_DATA ); 
+			runOnSystemStart = registryValue != null && registryValue.contentEquals( MICROSOFT_WINDOWS_REGISTRY_VALUE_DATA ); 
     	}
-    	catch( Exception exception ) { return false; }
+    	catch( Exception exception ) { runOnSystemStart = false; }
+    	return runOnSystemStart;
     }
 
     
     public static boolean setRunOnSystemStart( boolean runOnSystemStart )
     {
-    	if( OperatingSystem.isWindows() ) return setRunOnSystemStartMicrosoftWindows( runOnSystemStart );
+    	boolean setRunOnSystemStart = true;
+    	if( OperatingSystem.isWindows() )
+    		setRunOnSystemStart = setRunOnSystemStartMicrosoftWindows( runOnSystemStart );
 
-    	return true;
+    	return setRunOnSystemStart;
     }
 
     
     private static boolean setRunOnSystemStartMicrosoftWindows( boolean runOnSystemStart )
     {
+    	boolean setRunOnSystemStart;
     	try
     	{
 	    	if( runOnSystemStart )
@@ -50,8 +57,14 @@ public class SystemStart
 	    		WindowsRegistry.deleteValue( WindowsRegistry.HKEY_CURRENT_USER, MICROSOFT_WINDOWS_REGISTRY_KEY, MICROSOFT_WINDOWS_REGISTRY_VALUE_NAME ); // Delete the value.
 	    	}
 
-	    	return true;
+	    	setRunOnSystemStart = true;
     	}
-    	catch( Exception exception ) { exception.printStackTrace(); return false; } // Not the best way to handle it...but at least running from the command line will give the stack trace.
+    	catch( Exception exception )
+    	{
+    		exception.printStackTrace(); // Not the best way to handle it...but at least running from the command line will give the stack trace.
+    		setRunOnSystemStart = false;
+    	}
+
+    	return setRunOnSystemStart;
     }
 }
