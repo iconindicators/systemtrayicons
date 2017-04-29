@@ -2,15 +2,15 @@
 
 
   <!-- Version numbers. -->
-  <property name="libraryVersion" value="3.2" />
-  <property name="applicationVersion" value="2.0" />
+  <property name="libraryVersion" value="4.0" />
+  <property name="applicationVersion" value="3.0" />
 
 
   <!-- Jars/files. -->
   <property name="libraryJar" value="stardate-${libraryVersion}.jar" />
   <property name="sampleApplicationJar" value="StardateSampleApplication.jar" />
   <property name="systemTrayJar" value="stardatesystemtray.jar" />
-  <property name="joda" value="joda-time-2.4.jar" />
+  <property name="joda" value="joda-time-2.9.9.jar" />
 
 
   <!-- Directories. -->
