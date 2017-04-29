@@ -84,9 +84,9 @@ Section "Install"
   File ..\..\ReleaseNotes.txt
   File ..\..\License.txt
   File ..\..\img\stardatesystemtray48x48.ico		
-  File ..\..\release\stardate-3.2.jar
+  File ..\..\release\stardate-4.0.jar
   File ..\..\release\stardatesystemtray.jar
-  File ..\..\lib\joda-time-2.4.jar
+  File ..\..\lib\joda-time-2.9.9.jar
   File ..\..\packaging\win32\StardateSystemTray.exe	
 
   WriteUninstaller "$INSTDIR\${UNINSTALLER_NAME}"
