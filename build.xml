@@ -57,51 +57,7 @@
   </target>
 
 
-  <target name="Debian" depends="CompileAndJar" description="Builds the Debian installer file...must be run as root!">
-    <echo message="" />
-    <echo message="********************************************************************************" />
-    <echo message="This task must be run as root and only on a Linux Debian based operating system." />
-    <echo message="For example, on Ubuntu: 'sudo ant Debian'" />
-    <echo message="After this task, run 'lintian' on the deb file to check for errors/warnings." />
-    <echo message="********************************************************************************" />
-    <echo message="" />
-
-    <copy todir="${release}/working" preservelastmodified="true">
-      <fileset dir="packaging/debian" excludes="**/*.svn"/>
-    </copy>
-
-    <chmod file="${release}/working/DEBIAN/postinst" perm="755"/>
-    <chgrp file="${release}/working/DEBIAN/postinst" group="root"/>
-    <chown file="${release}/working/DEBIAN/postinst" owner="root"/>
-
-    <chmod file="${release}/working/DEBIAN/postrm" perm="755"/>
-    <chgrp file="${release}/working/DEBIAN/postrm" group="root"/>
-    <chown file="${release}/working/DEBIAN/postrm" owner="root"/>
-
-    <chmod file="${release}/working/usr/bin/worldtimesystemtray" perm="ugo+x"/>
-
-    <copy file="${release}/${jar-filename}" todir="${release}/working/usr/share/worldtimesystemtray" preservelastmodified="true" />
-
-    <copy file="TODO.txt" tofile="${release}/working/usr/share/doc/worldtimesystemtray/TODO" preservelastmodified="true" />
-    <copy file="License.txt" tofile="${release}/working/usr/share/doc/worldtimesystemtray/copyright" preservelastmodified="true" />
-
-    <copy file="changelog.Debian" tofile="${release}/working/usr/share/doc/worldtimesystemtray/changelog" preservelastmodified="true" />
-    <exec executable="gzip">
-      <arg line="-9 ${release}/working/usr/share/doc/worldtimesystemtray/changelog" />
-    </exec>
-
-    <copy file="${img}/worldtimesystemtray16x16.xpm" todir="${release}/working/usr/share/pixmaps" preservelastmodified="true" />
-    <copy file="${img}/worldtimesystemtray32x32.xpm" todir="${release}/working/usr/share/pixmaps" preservelastmodified="true" />  
-
-    <exec executable="dpkg">
-      <arg line="--build ${release}/working ${release}/worldtimesystemtray_${version}_all.deb" />
-    </exec>
-
-    <delete dir="${release}/working" />
-  </target>
-
-
-  <target name="Release" depends="Debian, Win32" description="Packages up the various parts for a formal release.">
+  <target name="Release" depends="Win32" description="Packages up the various parts for a formal release.">
     <zip destfile="${release}/WorldTimeSystemTrayJAR-${version}.zip">
       <fileset file="${release}/${jar-filename}"/>
     </zip>
