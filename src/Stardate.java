@@ -5,7 +5,7 @@ import java.util.TimeZone;
 
 /**
  * Converts between Star Trek&#8482; stardates and Gregorian date/times.<br>
- * There are two types of stardates: 'classic' and '2009 revised'.<br><br>
+ * There are two types of stardates: 'classic' and '2009 revised'.<br><br><br>
  *
  * <b><u>'classic' stardates</u></b><br>
  * The 'classic' stardate is based on STARDATES IN STAR TREK FAQ V1.6 by Andrew Main.<br>
@@ -37,7 +37,7 @@ import java.util.TimeZone;
  * the rate changes to 0.5 units per day.<br><br>
  * 
  * From 1/1/2323 ([20]5006.0) the rate changed to 1000 units per mean solar year (365.2425 days).<br>
- * Also, stardate [20]5006.0 becomes [21]00000.0.<br><br>
+ * Also, stardate [20]5006.0 becomes [21]00000.0.<br><br><br>
  * 
  * <b><u>'2009 revised' stardates</u></b><br>
  * The '2009 revised' stardate is based on
@@ -46,7 +46,7 @@ import java.util.TimeZone;
 public class Stardate
 {
     /**
-     * Gets the API version.
+     * Get the API version.
      *
      * @return The API version.
      */
@@ -121,7 +121,11 @@ public class Stardate
 	 * 
      * @param gregorianCalendar The specified Gregorian date/time in UTC.
      * 
-     * @return A 'classic' stardate.
+     * @return A 'classic' stardate as an array of integers comprising:
+     * 			stardate issue
+     * 			stardate integer
+     * 			stardate fraction
+     * 			fractionalPeriod (time in seconds when the fractional part changes).
      */
     public static int[] getStardateClassic( GregorianCalendar gregorianCalendar )
     {
@@ -189,7 +193,10 @@ public class Stardate
 	 * 
      * @param gregorianCalendar The specified Gregorian date/time in UTC.
      * 
-     * @return A '2009 revised' stardate.
+     * @return A '2009 revised' stardate as an array of integers comprising:
+     * 			stardate integer
+     * 			stardate fraction
+     * 			fractionalPeriod (time in seconds when the fractional part changes).
      */
     public static int[] getStardate2009Revised( GregorianCalendar gregorianCalendar )
     {
