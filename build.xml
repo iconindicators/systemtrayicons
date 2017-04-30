@@ -92,7 +92,6 @@
       version="true" 
       use="true" 
       splitindex="true" 
-      overview="${javadoc}/overview.html" 
       windowtitle="${windowtitle}" 
       header="${header}" 
       doctitle="${doctitle}"

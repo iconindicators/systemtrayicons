@@ -7,7 +7,7 @@ import java.util.TimeZone;
  * Converts between Star Trek&#8482; stardates and Gregorian date/times.<br>
  * There are two types of stardates: 'classic' and '2009 revised'.<br><br><br>
  *
- * <b><u>'classic' stardates</u></b><br>
+ * <b><u>'classic' stardates</u></b><br><br>
  * The 'classic' stardate is based on STARDATES IN STAR TREK FAQ V1.6 by Andrew Main.<br>
  * <pre> 
  *      <------x------x------x------x------x------x------x------>
@@ -39,7 +39,7 @@ import java.util.TimeZone;
  * From 1/1/2323 ([20]5006.0) the rate changed to 1000 units per mean solar year (365.2425 days).<br>
  * Also, stardate [20]5006.0 becomes [21]00000.0.<br><br><br>
  * 
- * <b><u>'2009 revised' stardates</u></b><br>
+ * <b><u>'2009 revised' stardates</u></b><br><br>
  * The '2009 revised' stardate is based on
  * <a href="http://en.wikipedia.org/wiki/Stardate">http://en.wikipedia.org/wiki/Stardate</a>.
  */
