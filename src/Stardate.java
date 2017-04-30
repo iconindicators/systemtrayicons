@@ -121,11 +121,11 @@ public class Stardate
 	 * 
      * @param gregorianCalendar The specified Gregorian date/time in UTC.
      * 
-     * @return A 'classic' stardate as an array of integers comprising:
-     * 			stardate issue
-     * 			stardate integer
-     * 			stardate fraction
-     * 			fractionalPeriod (time in seconds when the fractional part changes).
+     * @return A 'classic' stardate as an array of integers comprising:</br>
+     * stardate issue</br>
+     * stardate integer</br>
+     * stardate fraction</br>
+     * fractionalPeriod (time in seconds when the fractional part changes).
      */
     public static int[] getStardateClassic( GregorianCalendar gregorianCalendar )
     {
@@ -193,10 +193,10 @@ public class Stardate
 	 * 
      * @param gregorianCalendar The specified Gregorian date/time in UTC.
      * 
-     * @return A '2009 revised' stardate as an array of integers comprising:
-     * 			stardate integer
-     * 			stardate fraction
-     * 			fractionalPeriod (time in seconds when the fractional part changes).
+     * @return A '2009 revised' stardate as an array of integers comprising:</br>
+     * stardate integer</br>
+     * stardate fraction</br>
+     * fractionalPeriod (time in seconds when the fractional part changes).
      */
     public static int[] getStardate2009Revised( GregorianCalendar gregorianCalendar )
     {
