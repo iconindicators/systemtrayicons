@@ -1,3 +1,1 @@
-If building this project, ensure you check it out to a directory which contains no spaces.
-
-The ant build (which only works on Linux for now) has an issue when doing the Debian build. 
+If building this project, ensure you check it out to a directory which contains no spaces. 

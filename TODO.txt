@@ -1,6 +1,3 @@
-* Debian/Ubuntu tooltip and balloon do not observe new line character.
-  See Sun bug http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6440297.
-
 * When Java 1.6 update 10 is officially released consider using:
     http://weblogs.java.net/blog/alexfromsun/archive/2008/02/jtrayicon_updat.html
     JPopupTrayIcon.java - http://java.net/projects/fishfarm

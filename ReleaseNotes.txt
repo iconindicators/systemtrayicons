@@ -2,6 +2,11 @@ World Time System Tray Release Notes
 ------------------------------------
 
 
+2017-05-01 Version 1.8
+
+* Removed Debian target.
+
+
 2011-10-19 Version 1.7
 
 * Changed the installer to install as local user.
