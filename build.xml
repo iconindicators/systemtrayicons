@@ -57,7 +57,6 @@
       includes="StardateConverter.class stardatesystemtray16x16.gif" 
       manifest="${classes}/MANIFEST.MF" 
     />
-  	<chmod file="${release}/${sampleApplicationJar}" perm="ugo+x"/>
 
     <manifest file="${classes}/MANIFEST.MF">
       <attribute name="Class-Path" value=". ${libraryJar} ${joda}" />
