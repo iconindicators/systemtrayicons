@@ -6,13 +6,15 @@ Stardate System Tray Release Notes
 
 * Overhaul of Stardate API.
 
-* Changes to Stardate System Tray and Stardate Converter base on Stardate API
-  changes. 
+* Stardate System Tray and Stardate Converter updated to reflect changes to
+  the Stardate API.
 
 * Fixed a bug when converting from '2009 revised' stardate to Gregorian
   (was out by one day).
 
 * Updated Joda library.
+
+* Tidy up of code.
 
 
 2014-08-25 Version 2.0
