@@ -383,4 +383,29 @@ public class Stardate
     {
     	return Integer.toString( stardateInteger ) + "." + Integer.toString( stardateFraction ); //$NON-NLS-1$
     }
+
+
+    /**
+     * Determines if a 'classic' stardate requires zero padding.
+     * A 'classic' stardate with issue < 21 will have up to four digits in the integer part.
+     * However the integer part could be a single digit.
+     * If the integer part has fewer than four digits, the stardate is deemed to require padding.
+     * 
+     * Similarly for a 'clasic' stardate with issue >= 21, but there are five digits.
+     * 
+     * @param stardateIssue The stardate issue.
+     * @param stardateInteger The stardate integer.
+     * 
+     * @return Returns True if the integer part contains fewer digits than the maximum for the particular issue.
+     */
+    public static boolean requiresPadding( int stardateIssue, int stardateInteger )
+    {
+    	boolean paddingRequired;
+    	if( stardateIssue < 21 )
+    		paddingRequired = stardateInteger < 1000;
+    	else
+    		paddingRequired = stardateInteger < 10000;
+
+    	return paddingRequired;
+    }
 }
