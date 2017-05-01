@@ -186,8 +186,7 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
     }
 
 
-	@Override 
-	public void itemStateChanged( ItemEvent itemEvent )
+	@Override public void itemStateChanged( ItemEvent itemEvent )
 	{
     	if( itemEvent.getSource() == m_showAllTimeZonesCheckbox )
     	{
@@ -215,8 +214,7 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
 	}
 
 
-	@Override 
-	public void actionPerformed( ActionEvent actionEvent )
+	@Override public void actionPerformed( ActionEvent actionEvent )
 	{
     	if( actionEvent.getSource() == m_calculate )
     	{
@@ -229,10 +227,8 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
 				appendTimeZoneToProperties( timeZone );
 			}
 			else
-			{
 				timeZone = m_timeZones.get( m_timeZoneComboBox.getSelectedIndex() );
-			}
-			
+
 			if( m_includeLocalCheckbox.isSelected() )
 				appendTimeZoneToProperties( TimeZone.getDefault().getID() );
 
@@ -243,8 +239,6 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
 	        m_output.setText( Message.getMessageString( gregorianCalendar, true ) );
 
 	        pack();
-	        
-    		return;
     	}
 	}
 
@@ -296,7 +290,7 @@ public class TimeTravel extends JDialog implements ActionListener, ItemListener,
     }
 
 
-    private void appendTimeZoneToProperties( String timeZone )
+    private static void appendTimeZoneToProperties( String timeZone )
     {
     	Vector<String> timeZones = Properties.getInstance().getPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED );
     	Vector<String> timeZonesDisplayable = Properties.getInstance().getPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED_DISPLAY_NAMES );

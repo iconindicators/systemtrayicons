@@ -74,32 +74,29 @@ public class CheckboxList extends JList
     
     protected class CheckboxListener implements ListSelectionListener
     {
-    	@Override 
-    	public void valueChanged( ListSelectionEvent listSelectionEvent )
+    	@Override public void valueChanged( ListSelectionEvent listSelectionEvent )
         {
-            if( listSelectionEvent.getValueIsAdjusting() )
-                return;
-
-            int selectedRow = getSelectedIndex();
-            if( selectedRow == -1 )
-                return;
-
-            // This allows the user to select a row (that wasn't selected before), 
-            // but doesn't toggle the check box of that row until they click a second time.
-            clearSelection();
-
-            if( m_currentRow != selectedRow )
+            if( ! listSelectionEvent.getValueIsAdjusting() )
             {
-                m_currentRow = selectedRow;
-            }
-            else
-            {
-            	String selectedItem = m_listData.get( m_currentRow );
+                int selectedRow = getSelectedIndex();
+                if( selectedRow != -1 )
+                {
+                    // This allows the user to select a row (that wasn't selected before), 
+                    // but doesn't toggle the check box of that row until they click a second time.
+                    clearSelection();
 
-				if( m_itemsChecked.containsKey( selectedItem ) )
-            		m_itemsChecked.remove( selectedItem );
-            	else
-            		m_itemsChecked.put( selectedItem, "" ); //$NON-NLS-1$
+                    if( m_currentRow != selectedRow )
+                        m_currentRow = selectedRow;
+                    else
+                    {
+                    	String selectedItem = m_listData.get( m_currentRow );
+
+        				if( m_itemsChecked.containsKey( selectedItem ) )
+                    		m_itemsChecked.remove( selectedItem );
+                    	else
+                    		m_itemsChecked.put( selectedItem, "" ); //$NON-NLS-1$
+                    }
+                }
             }
         }
     }
@@ -107,8 +104,7 @@ public class CheckboxList extends JList
 
     protected class CheckboxRenderer implements ListCellRenderer
     {
-    	@Override 
-    	public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
+    	@Override public Component getListCellRendererComponent( JList list, Object value, int index, boolean isSelected, boolean cellHasFocus )
         {
             JPanel panel = new JPanel();
             panel.setLayout( new BoxLayout( panel, BoxLayout.X_AXIS ) );

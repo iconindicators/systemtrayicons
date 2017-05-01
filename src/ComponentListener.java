@@ -22,40 +22,39 @@ public class ComponentListener implements java.awt.event.ComponentListener
     }
 
 
-	@Override 
-	public void componentResized( ComponentEvent componentEvent )
+	@Override  public void componentResized( ComponentEvent componentEvent )
     {
-        if( ! ( componentEvent.getComponent() instanceof Window ) )
-            return;
-
-        Window window = (Window)componentEvent.getComponent();
-
-        // Ensure that the width never falls below the minimum width.
-        if( window.getWidth() < m_width )
+        if( componentEvent.getComponent() instanceof Window )
         {
-            window.setSize( new Dimension( m_width, window.getHeight() ) );
-            centreWindowAboutScreen( window );
-        }
+            Window window = (Window)componentEvent.getComponent();
 
-        // Check if the width is to be restricted.
-        if( m_restrictWidth && window.getWidth() != m_width )
-        {
-            window.setSize( new Dimension( m_width, window.getHeight() ) );
-            centreWindowAboutScreen( window );
-        }
+            // Ensure that the width never falls below the minimum width.
+            if( window.getWidth() < m_width )
+            {
+                window.setSize( new Dimension( m_width, window.getHeight() ) );
+                centreWindowAboutScreen( window );
+            }
 
-        // Ensure that the height never falls below the minimum height.
-        if( window.getHeight() < m_height )
-        {
-            window.setSize( new Dimension( window.getWidth(), m_height ) );
-            centreWindowAboutScreen( window );
-        }
+            // Check if the width is to be restricted.
+            if( m_restrictWidth && window.getWidth() != m_width )
+            {
+                window.setSize( new Dimension( m_width, window.getHeight() ) );
+                centreWindowAboutScreen( window );
+            }
 
-        // Check if the height is to be restricted.
-        if( m_restrictHeight && window.getHeight() != m_height )
-        {
-            window.setSize( new Dimension( window.getWidth(), m_height ) );
-            centreWindowAboutScreen( window );
+            // Ensure that the height never falls below the minimum height.
+            if( window.getHeight() < m_height )
+            {
+                window.setSize( new Dimension( window.getWidth(), m_height ) );
+                centreWindowAboutScreen( window );
+            }
+
+            // Check if the height is to be restricted.
+            if( m_restrictHeight && window.getHeight() != m_height )
+            {
+                window.setSize( new Dimension( window.getWidth(), m_height ) );
+                centreWindowAboutScreen( window );
+            }
         }
     }
 

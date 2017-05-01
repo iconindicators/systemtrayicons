@@ -39,14 +39,13 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 	public static final Image getApplicationIconImage() { return new ImageIcon( ClassLoader.getSystemResource( APPLICATION_ICON_IMAGE ) ).getImage(); }
 
 
-	private String getMessageString() { return Message.getMessageString( new GregorianCalendar(), false ); }
+	private static String getMessageString() { return Message.getMessageString( new GregorianCalendar(), false ); }
 
 
 	@Override public void mouseDragged( MouseEvent mouseEvent ) { /** Do nothing. */ }
 
 
-	@Override 
-	public void mouseMoved( MouseEvent mouseEvent ) 
+	@Override public void mouseMoved( MouseEvent mouseEvent ) 
 	{
 		if( Properties.getInstance().getPropertyBoolean( Properties.PROPERTY_SHOW_TIMES_IN_TOOL_TIP, true ) )
 			setToolTip( getMessageString() );
@@ -55,19 +54,16 @@ public class TrayIcon extends java.awt.TrayIcon implements MouseListener, MouseM
 	}
 
 
-	@Override 
-	public void mousePressed( MouseEvent mouseEvent )
+	@Override public void mousePressed( MouseEvent mouseEvent )
 	{
     	if( mouseEvent.getButton() == MouseEvent.BUTTON1 )
-    	{
     		( (TrayIcon)mouseEvent.getSource() ).displayMessage( WorldTimeSystemTray.APPLICATION_NAME, getMessageString(), TrayIcon.MessageType.NONE );
-    	}
     	else if( mouseEvent.getButton() == MouseEvent.BUTTON3 && OperatingSystem.isWindows() )
     	{
     		// To block the right click action we check here if the right mouse button is clicked.
     		// If a dialog is already showing, then we don't want to show the popup.
     		// This only works for Microsoft Windows...we have another "hack" in PopupMenu::show().
-    		if( ms_popupMenu.isPopupDisabled() )
+    		if( PopupMenu.isPopupDisabled() )
     			setPopupMenu( null );
     		else
     			setPopupMenu( ms_popupMenu );

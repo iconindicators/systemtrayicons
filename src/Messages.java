@@ -13,7 +13,9 @@ public class Messages
 
 	public static String getString( String key ) 
 	{
-		try { return RESOURCE_BUNDLE.getString( key ); } 
-		catch( MissingResourceException missingResourceException ) { return '!' + key + '!'; }
+		String s;
+		try { s = RESOURCE_BUNDLE.getString( key ); } 
+		catch( MissingResourceException missingResourceException ) { s = '!' + key + '!'; }
+		return s;
 	}
 }

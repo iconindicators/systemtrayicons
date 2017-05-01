@@ -45,9 +45,7 @@ public class UserTimeZones
 				}
 
 				if( timezone.contains( TIME_ZONE_FORWARD_SLASH ) )
-				{
 					m_availableTimeZones.add( timezone );
-				}
 			}
 		}
 
@@ -71,9 +69,7 @@ public class UserTimeZones
 		for( int i = 0; i < timeZones.size(); i++ )
 		{
 			if( isValidTimeZone( timeZones.get( i ) ) )
-			{
 				userTimeZoneItems.add( new UserTimeZoneItem( timeZones.get( i ), timeZonesDisplayNames.get( i ) ) );
-			}
 			else
 			{
 				// Invalid Time Zone...so drop it.

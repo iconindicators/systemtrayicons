@@ -198,11 +198,10 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	}
 
 
-    public boolean isPopupDisabled() { return ms_popupDisabled; }
+    public static boolean isPopupDisabled() { return ms_popupDisabled; }
 
 
-    @Override
-	public void show( Component origin, int x, int y ) 
+    @Override public void show( Component origin, int x, int y ) 
     {
 		// To block the right click action we check here if the right mouse button is clicked.
 		// If a dialog is already showing, then we don't want to show the popup.
@@ -222,9 +221,10 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     }
 
 
-	@Override 
-	public void actionPerformed( ActionEvent actionEvent )
+	@Override public void actionPerformed( ActionEvent actionEvent )
 	{
+		boolean systemExit = false;
+
 		Object source = actionEvent.getSource();
 
     	if( source instanceof MenuItem && POPUP_ABOUT.equals( ( (MenuItem)source ).getLabel() ) )
@@ -240,76 +240,61 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 				"</center></html>";  //$NON-NLS-1$
 
     		MessageDialog.showMessageDialog( POPUP_ABOUT, MessageDialog.createURLLabel( message ), JOptionPane.PLAIN_MESSAGE, JOptionPane.DEFAULT_OPTION );
-			return;
     	}
 
-
-    	if( source instanceof MenuItem && POPUP_ADD_REMOVE_TIME_ZONES.equals( ( (MenuItem)source ).getLabel() ) )
+    	else if( source instanceof MenuItem && POPUP_ADD_REMOVE_TIME_ZONES.equals( ( (MenuItem)source ).getLabel() ) )
     	{
     		ms_popupDisabled = true;
     		AddRemoveTimeZones.create();
     		ms_popupDisabled = false;
-    		return;
     	}
 
-
-    	if( source instanceof MenuItem && POPUP_RENAME_TIME_ZONES.equals( ( (MenuItem)source ).getLabel() ) )
+    	else if( source instanceof MenuItem && POPUP_RENAME_TIME_ZONES.equals( ( (MenuItem)source ).getLabel() ) )
     	{
         	if( Properties.getInstance().getPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED ).isEmpty() )
-    		{
         		showMessageDialog( Messages.getString( "PopupMenu.41" ), Messages.getString( "PopupMenu.40" ), JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION );  //$NON-NLS-1$//$NON-NLS-2$
-        		return;
-    		}
-
-        	ms_popupDisabled = true;
-    		RenameTimeZones.create();
-    		ms_popupDisabled = false;
-    		return;
+        	else
+        	{
+	        	ms_popupDisabled = true;
+	    		RenameTimeZones.create();
+	    		ms_popupDisabled = false;
+        	}
     	}
 
-
-    	if( source instanceof MenuItem && POPUP_SHOW_DATE_TIME.equals( ( (MenuItem)source ).getLabel() ) )
+    	else if( source instanceof MenuItem && POPUP_SHOW_DATE_TIME.equals( ( (MenuItem)source ).getLabel() ) )
     	{
         	Vector<String> userTimeZones = Properties.getInstance().getPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED );
         	if( userTimeZones.isEmpty() )
-    		{
         		showMessageDialog( Messages.getString( "PopupMenu.41" ), Messages.getString( "PopupMenu.40" ), JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION ); //$NON-NLS-1$ //$NON-NLS-2$
-        		return;
-    		}
-
-    		ms_popupDisabled = true;
-        	ShowDateTime.create();
-    		ms_popupDisabled = false;
-    		return;
+        	else
+        	{
+	    		ms_popupDisabled = true;
+	        	ShowDateTime.create();
+	    		ms_popupDisabled = false;
+        	}
     	}
 
-
-    	if( source instanceof MenuItem && POPUP_TIME_TRAVEL.equals( ( (MenuItem)source ).getLabel() ) )
+    	else if( source instanceof MenuItem && POPUP_TIME_TRAVEL.equals( ( (MenuItem)source ).getLabel() ) )
     	{
         	Vector<String> userTimeZones = Properties.getInstance().getPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED );
         	if( userTimeZones.isEmpty() )
-    		{
         		showMessageDialog( Messages.getString( "PopupMenu.41" ), Messages.getString( "PopupMenu.40" ), JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION );  //$NON-NLS-1$//$NON-NLS-2$
-        		return;
-    		}
-
-    		ms_popupDisabled = true;
-    		TimeTravel.create();
-    		ms_popupDisabled = false;
-    		return;
+        	else
+        	{
+	    		ms_popupDisabled = true;
+	    		TimeTravel.create();
+	    		ms_popupDisabled = false;
+        	}
     	}
 
-
-    	if( source instanceof MenuItem && POPUP_SET_DIFFERENT_DAY_INDICATOR.equals( ( (MenuItem)source ).getLabel() ) )
+    	else if( source instanceof MenuItem && POPUP_SET_DIFFERENT_DAY_INDICATOR.equals( ( (MenuItem)source ).getLabel() ) )
     	{
     		ms_popupDisabled = true;
     		DifferentDayIndicator.create();
     		ms_popupDisabled = false;
-    		return;
     	}
 
-
-    	if( source instanceof MenuItem && POPUP_SET_TIME_ZONE_SEPARATOR.equals( ( (MenuItem)source ).getLabel() ) )
+    	else if( source instanceof MenuItem && POPUP_SET_TIME_ZONE_SEPARATOR.equals( ( (MenuItem)source ).getLabel() ) )
     	{
     		ms_popupDisabled = true;
     		String inputValue = Properties.getInstance().getProperty( Properties.PROPERTY_COMBINE_TIME_ZONES_SEPARATOR, Properties.PROPERTY_COMBINE_TIME_ZONES_SEPARATOR_DEFAULT, false );
@@ -319,60 +304,47 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     			Properties.getInstance().setProperty( Properties.PROPERTY_COMBINE_TIME_ZONES_SEPARATOR, inputValue );
 
     		ms_popupDisabled = false;
-    		return;
     	}
 
-
-    	if( source instanceof MenuItem && POPUP_SET_LAYOUT.equals( ( (MenuItem)source ).getLabel() ) )
+    	else if( source instanceof MenuItem && POPUP_SET_LAYOUT.equals( ( (MenuItem)source ).getLabel() ) )
     	{
         	if( Properties.getInstance().getPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED ).isEmpty() )
-    		{
         		showMessageDialog( Messages.getString( "PopupMenu.41" ), Messages.getString( "PopupMenu.40" ), JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION );  //$NON-NLS-1$//$NON-NLS-2$
-        		return;
-    		}
-
-    		ms_popupDisabled = true;
-    		MessageLayout.create();
-    		ms_popupDisabled = false;
-    		return;
+        	else
+        	{
+	    		ms_popupDisabled = true;
+	    		MessageLayout.create();
+	    		ms_popupDisabled = false;
+        	}
     	}
 
-
-    	if( source instanceof MenuItem && POPUP_EXIT.equals( ( (MenuItem)source ).getLabel() ) )
+    	else if( source instanceof MenuItem && POPUP_EXIT.equals( ( (MenuItem)source ).getLabel() ) )
     	{
     		Properties.getInstance().store();
-    		System.exit( 0 );
+    		systemExit = true;
     	}
-    }
+
+    	if( systemExit )
+    		System.exit( 0 );
+	}
 
 
-	@Override 
-	public void itemStateChanged( ItemEvent itemEvent )
+	@Override public void itemStateChanged( ItemEvent itemEvent )
     {
     	CheckboxMenuItem checkboxMenuItem = (CheckboxMenuItem)itemEvent.getSource();
     	String label = checkboxMenuItem.getLabel();
 
-
     	// Toggle the run on system start option.
     	if( POPUP_RUN_ON_SYSTEM_START.equals( label ) )
-    	{
     		SystemStart.setRunOnSystemStart( checkboxMenuItem.getState() );
-    	}
-
 
     	// Handle the show times in the tool tip option.
     	else if( POPUP_SHOW_TIMES_IN_TOOL_TIP.equals( label ) )
-    	{
     		Properties.getInstance().setProperty( Properties.PROPERTY_SHOW_TIMES_IN_TOOL_TIP, Boolean.toString( checkboxMenuItem.getState() ) );
-    	}
-
 
     	// Handle the combine time zones option.
     	else if( POPUP_COMBINE_TIME_ZONES.equals( label ) )
-    	{
     		Properties.getInstance().setProperty( Properties.PROPERTY_COMBINE_TIME_ZONES_OPTION, Boolean.toString( checkboxMenuItem.getState() ) );
-    	}
-
 
     	// Handle the date/time sort option.
     	else if( SUBPOPUP_SORT_DATE_TIME_BY_DATE_TIME .equals( label ) )
@@ -387,7 +359,6 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
     		m_checkboxMenuItemSortDateTimeByTimeZone.setState( true );
     		Properties.getInstance().setProperty( Properties.PROPERTY_SORT_DATE_TIME, Properties.PROPERTY_SORT_DATE_TIME_BY_TIME_ZONE );
     	}
-
 
     	// Handle each date/time format.
     	else if( SUBPOPUP_FORMAT_DATE_AND_TIME_FULL.equals( label ) )
@@ -519,7 +490,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	}
 
 
-	private void showMessageDialog( String title, Object message, int messageType, int optionType )
+	private static void showMessageDialog( String title, Object message, int messageType, int optionType )
 	{
 		ms_popupDisabled = true;
 		JDialog messageDialog = new JOptionPane( message, messageType, optionType ).createDialog( title ); 
@@ -531,7 +502,7 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 	}
 
 
-	private String showInputDialog( String title, Object message, String initialValue )
+	private static String showInputDialog( String title, Object message, String initialValue )
 	{	
 		JOptionPane optionPane = new JOptionPane( message, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION, null, null, initialValue );
 		optionPane.setWantsInput( true );
@@ -545,9 +516,10 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 
         Object value = optionPane.getInputValue();
 
-		if( value == JOptionPane.UNINITIALIZED_VALUE )
-            return null;
+        String returnValue = null;
+		if( value != JOptionPane.UNINITIALIZED_VALUE )
+			returnValue = (String)value;
 
-        return (String)value;
+		return returnValue;
 	}
 }

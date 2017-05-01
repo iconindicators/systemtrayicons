@@ -42,8 +42,7 @@ public class DifferentDayIndicator extends JDialog
     	( 
 			new ActionListener() 
 			{ 
-				@Override 
-				public void actionPerformed( ActionEvent actionEvent ) 
+				@Override public void actionPerformed( ActionEvent actionEvent ) 
 				{ 
 		    		Properties.getInstance().setProperty( Properties.PROPERTY_DIFFERENT_DAY_INDICATOR_PREVIOUS_DAY, previousDayTextfield.getText() );
 		    		Properties.getInstance().setProperty( Properties.PROPERTY_DIFFERENT_DAY_INDICATOR_NEXT_DAY, nextDayTextfield.getText() );

@@ -234,8 +234,7 @@ public class MessageLayout extends JDialog implements ActionListener, ItemListen
     	(
 			new ActionListener()
 			{
-				@Override 
-				public void actionPerformed( ActionEvent actionEvent )
+				@Override public void actionPerformed( ActionEvent actionEvent )
 				{
 					messageLayout.storeProperties();
 					messageLayout.dispose(); 
@@ -248,8 +247,7 @@ public class MessageLayout extends JDialog implements ActionListener, ItemListen
     	(
 			new ActionListener()
 			{
-				@Override 
-				public void actionPerformed( ActionEvent actionEvent )
+				@Override public void actionPerformed( ActionEvent actionEvent )
 				{
 					Properties.getInstance().setProperty( Properties.PROPERTY_LAYOUT_LEFT_TEXT, messageLayout.m_leftText );
 					setLayoutProperty( Properties.PROPERTY_LAYOUT_LEFT_OPTION, messageLayout.m_leftOption );
@@ -382,8 +380,7 @@ public class MessageLayout extends JDialog implements ActionListener, ItemListen
     }
 
 
-	@Override 
-	public void itemStateChanged( ItemEvent itemEvent )
+	@Override public void itemStateChanged( ItemEvent itemEvent )
     {
     	getContentPane().removeAll();
     	GroupLayout layout = new GroupLayout( getContentPane() );
@@ -589,20 +586,16 @@ public class MessageLayout extends JDialog implements ActionListener, ItemListen
     }    
 
 
-    @Override
-	public void keyPressed( KeyEvent keyEvent ) { updateSampleText(); }
+    @Override public void keyPressed( KeyEvent keyEvent ) { updateSampleText(); }
 
 
-    @Override
-	public void keyReleased( KeyEvent keyEvent ) { updateSampleText(); }
+    @Override public void keyReleased( KeyEvent keyEvent ) { updateSampleText(); }
 
 
-	@Override
-	public void keyTyped( KeyEvent keyEvent ) { updateSampleText(); }
+	@Override public void keyTyped( KeyEvent keyEvent ) { updateSampleText(); }
 
 
-	@Override
-	public void actionPerformed( ActionEvent actionEvent ) { updateSampleText(); }
+	@Override public void actionPerformed( ActionEvent actionEvent ) { updateSampleText(); }
 
 
 	private void updateSampleText()

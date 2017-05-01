@@ -10,8 +10,9 @@ public class Properties
 	public static final String PROPERTY_DIRECTORY = System.getProperty( "user.home" ) + File.separator + "." + WorldTimeSystemTray.APPLICATION_NAME.toLowerCase().replace( " ", "" ) ; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	public static final String PROPERTY_FILE = PROPERTY_DIRECTORY + File.separator + "properties" ; //$NON-NLS-1$
 
-	private static java.util.Properties ms_properties = new java.util.Properties();
+	private java.util.Properties m_properties = new java.util.Properties();
     private static Properties ms_instance = new Properties();
+
     private static boolean ms_canCreatePropertyDirectory = true;
     private static boolean ms_canReadPropertiesFile = true;
     private static boolean ms_canWritePropertiesFile = true;
@@ -98,54 +99,58 @@ public class Properties
 
 	private Properties()
     {
-        try
-		{
-        	File propertyDirectory = new File( PROPERTY_DIRECTORY );
-        	if( ! propertyDirectory.exists() )
-        	{
-        		if( ! propertyDirectory.mkdir() )
-        		{
-        			ms_canCreatePropertyDirectory = false;
-        			return;
-        		}
-        	}
-
+    	File propertyDirectory = new File( PROPERTY_DIRECTORY );
+    	if( ! propertyDirectory.exists() && ! propertyDirectory.mkdir() )
+			ms_canCreatePropertyDirectory = false;
+    	else
+    	{
         	File propertyFile = new File( PROPERTY_FILE );
         	if( ! propertyFile.canRead() )
-        	{
         		ms_canReadPropertiesFile = false;
-        		return;
-        	}
-
-        	if( ! propertyFile.canWrite() )
+        	else
         	{
-        		ms_canWritePropertiesFile = false;
-        		return;
+            	if( ! propertyFile.canWrite() )
+            		ms_canWritePropertiesFile = false;
+            	else
+            	{
+					FileInputStream fileInputStream = null;
+            		try
+            		{
+						fileInputStream = new FileInputStream( PROPERTY_FILE );
+	            		m_properties.load( fileInputStream );
+					}
+            		catch( Exception e ) { /** Handle in finally. */ }
+            		finally
+            		{
+                	    if( fileInputStream != null )
+                	    {
+                	        try { fileInputStream.close(); }
+                	        catch( Exception exception ) { m_properties = new java.util.Properties(); }
+                	    }
+            		}
+            	}
         	}
-
-            ms_properties.load( new FileInputStream( PROPERTY_FILE ) );
-        }
-        catch( Exception exception ) { ms_properties = new java.util.Properties(); }
+    	}
     }
 
 
     public static Properties getInstance() { return ms_instance; }
 
 
-    public boolean canCreatePropertyDirectory() { return ms_canCreatePropertyDirectory; }
+    public static boolean canCreatePropertyDirectory() { return ms_canCreatePropertyDirectory; }
 
 
-    public boolean canReadPropertyFile() { return ms_canReadPropertiesFile; }
+    public static boolean canReadPropertyFile() { return ms_canReadPropertiesFile; }
 
 
-    public boolean canWritePropertyFile() { return ms_canWritePropertiesFile; }
+    public static boolean canWritePropertyFile() { return ms_canWritePropertiesFile; }
 
 
     public String getProperty( String key, String defaultValue, boolean allowEmptyValue )
     {
         if( key == null ) throw new IllegalArgumentException( "Key cannot be null." ); //$NON-NLS-1$
 
-        Object value = ms_properties.getProperty( key );
+        Object value = m_properties.getProperty( key );
         if( value == null )
         	return defaultValue;
         else if( allowEmptyValue )
@@ -159,12 +164,15 @@ public class Properties
     {
         if( key == null ) throw new IllegalArgumentException( "Key cannot be null." ); //$NON-NLS-1$
 
-        String val = ms_properties.getProperty( key );
+        boolean returnValue;
+        String val = m_properties.getProperty( key );
         if( val == null || val.length() == 0 )
-            return defaultValue;
+            returnValue = defaultValue;
+        else
+	        try { returnValue = Boolean.valueOf( val ).booleanValue(); }
+	        catch( Exception exception ) { returnValue = defaultValue; }
 
-        try { return Boolean.valueOf( val ).booleanValue(); }
-        catch( Exception exception ) { return defaultValue; }
+        return returnValue;
     }
 
 
@@ -172,12 +180,15 @@ public class Properties
     {
         if( key == null ) throw new IllegalArgumentException( "Key cannot be null." ); //$NON-NLS-1$
 
-        String val = ms_properties.getProperty( key );
+        int returnValue;
+        String val = m_properties.getProperty( key );
         if( val == null || val.length() == 0 )
-            return defaultValue;
+            returnValue = defaultValue;
 
-        try { return Integer.valueOf( val ).intValue(); }
-        catch( Exception exception ) { return defaultValue; }
+        try { returnValue = Integer.valueOf( val ).intValue(); }
+        catch( Exception exception ) { returnValue = defaultValue; }
+
+        return returnValue;
     }
 
 
@@ -185,32 +196,35 @@ public class Properties
     {
         if( key == null ) throw new IllegalArgumentException( "Key cannot be null." ); //$NON-NLS-1$
 
-        String value = ms_properties.getProperty( key );
+    	Vector<String> returnValue = null;
+        String value = m_properties.getProperty( key );
         if( value == null || value.length() == 0 )
-        	return new Vector<String>();
-
-        // Read in each value, separated by a comma.
-        // Some tokens are part of a larger token, so we need to read subsequent token(s) before the entire token is complete.
-        Vector<String> v = new Vector<String>();
-        StringTokenizer tokenizer = new StringTokenizer( value, "," ); //$NON-NLS-1$
-        String oldToken = ""; //$NON-NLS-1$
-        while( tokenizer.hasMoreElements() )
+        	returnValue = new Vector<String>();
+        else
         {
-        	String token = tokenizer.nextToken();
-        	if( token.contains( "\\" ) ) //$NON-NLS-1$
-        	{
-        		// This token is part of a larger token containing "," so keep building it.
-        		oldToken = oldToken + token.replace( "\\", "," ); //$NON-NLS-1$  //$NON-NLS-2$
-        		continue;
-        	}
+            // Read in each value, separated by a comma.
+            // Some tokens are part of a larger token, so we need to read subsequent token(s) before the entire token is complete.
+            returnValue = new Vector<String>();
+            StringTokenizer tokenizer = new StringTokenizer( value, "," ); //$NON-NLS-1$
+            String oldToken = ""; //$NON-NLS-1$
+            while( tokenizer.hasMoreElements() )
+            {
+            	String token = tokenizer.nextToken();
+            	if( token.contains( "\\" ) ) //$NON-NLS-1$
+            	{
+            		// This token is part of a larger token containing "," so keep building it.
+            		oldToken = oldToken + token.replace( "\\", "," ); //$NON-NLS-1$  //$NON-NLS-2$
+            		continue;
+            	}
 
-        	// This token does not contain any "," but may be part of a preceding token...
-        	oldToken = oldToken + token;
-        	v.add( oldToken );
-        	oldToken = ""; //$NON-NLS-1$
+            	// This token does not contain any "," but may be part of a preceding token...
+            	oldToken = oldToken + token;
+            	returnValue.add( oldToken );
+            	oldToken = ""; //$NON-NLS-1$
+            }
         }
 
-        return v;
+        return returnValue;
     }
 
 
@@ -226,9 +240,9 @@ public class Properties
 
         // Trim the last "," character if it exists.
         if( ! values.isEmpty() )
-        	ms_properties.setProperty( key, value.substring( 0, value.length() - 1 ) );
+        	m_properties.setProperty( key, value.substring( 0, value.length() - 1 ) );
         else
-        	ms_properties.setProperty( key, value.toString() );
+        	m_properties.setProperty( key, value.toString() );
     }
 
 
@@ -238,13 +252,13 @@ public class Properties
 
         if( value == null ) throw new IllegalArgumentException( "Value cannot be null." ); //$NON-NLS-1$
 
-        ms_properties.setProperty( key, value );
+        m_properties.setProperty( key, value );
     }
 
 
     public void store()
 	{
-        try { ms_properties.store( new FileOutputStream( PROPERTY_FILE ), null ); }
+        try { m_properties.store( new FileOutputStream( PROPERTY_FILE ), null ); }
         catch( Exception exception ) { /** Do nothing. */ }
 	}
 }

@@ -124,8 +124,7 @@ public class RenameTimeZones extends JDialog
 
     protected class OKActionListener implements ActionListener
     {
-    	@Override 
-    	public void actionPerformed( ActionEvent actionEvent )
+    	@Override public void actionPerformed( ActionEvent actionEvent )
     	{
 			// Check for empty values.
 			for( int i = 0; i < m_timeZoneTextfields.size(); i++ )
