@@ -391,7 +391,7 @@ public class Stardate
      * However the integer part could be a single digit.
      * If the integer part has fewer than four digits, the stardate is deemed to require padding.
      * 
-     * Similarly for a 'clasic' stardate with issue >= 21, but there are five digits.
+     * Similarly for a 'classic' stardate with issue >= 21, but there are five digits.
      * 
      * @param stardateIssue The stardate issue.
      * @param stardateInteger The stardate integer.
