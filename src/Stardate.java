@@ -46,18 +46,6 @@ import java.util.TimeZone;
 public class Stardate
 {
     /**
-     * Get the API version.
-     *
-     * @return The API version.
-     */
-	public static String getVersion() { return "Version 4.0 (2017-04-28)"; } //$NON-NLS-1$
-
-
-    /** Rates (in 'classic' stardate units per day) for each 'classic' stardate era. */
-    private static double[] ms_stardateClassicRates = new double[] { 5.0, 5.0, 0.1, 0.5, 1000.0 / 365.2425 };
-
-
-    /**
      * The Gregorian dates which reflect the start date for each rate in the 'classic' stardate era.
      * 
      * For example, an index of 3 (Gregorian date of 5/10/2283,
@@ -81,6 +69,10 @@ public class Stardate
     	for( GregorianCalendar gregorianCalendar : ms_stardateClassicGregorianStartDates )
     		gregorianCalendar.setTimeZone( TimeZone.getTimeZone( "UTC" ) ); //$NON-NLS-1$
     }
+
+
+    /** Rates (in 'classic' stardate units per day) for each 'classic' stardate era. */
+    private static double[] ms_stardateClassicRates = new double[] { 5.0, 5.0, 0.1, 0.5, 1000.0 / 365.2425 };
 
 
     /**
@@ -117,7 +109,15 @@ public class Stardate
 
 
     /**
-	 * Converts the Gregorian date/time in UTC to a 'classic' stardate.
+     * Get the API version.
+     *
+     * @return The API version.
+     */
+	public static String getVersion() { return "Version 4.0 (2017-04-28)"; } //$NON-NLS-1$
+
+
+	/**
+	 * Convert a Gregorian date/time in UTC to a 'classic' stardate.
 	 * 
      * @param gregorianCalendar The specified Gregorian date/time in UTC.
      * 
@@ -189,7 +189,7 @@ public class Stardate
 
 
     /**
-	 * Converts the Gregorian date/time in UTC to a '2009 revised' stardate.
+	 * Convert a Gregorian date/time in UTC to a '2009 revised' stardate.
 	 * 
      * @param gregorianCalendar The specified Gregorian date/time in UTC.
      * 
@@ -211,7 +211,7 @@ public class Stardate
 
 
     /**
-     * Converts a 'classic' stardate to a Gregorian date/time.
+     * Convert a 'classic' stardate to a Gregorian date/time.
      *
      * Rules:
      *   issue <= 19: 0 <= integer <= 9999, fraction >= 0. 
@@ -334,23 +334,23 @@ public class Stardate
 
 
     /**
-     * Returns a stardate in string format.
+     * Returns a 'classic' stardate in string format.
      * 
      * @param stardateIssue The stardate issue.
      * @param stardateInteger The stardate integer.
      * @param stardateFraction The stardate fraction.
      * @param showIssue If true, the issue will be included in the string.
-     * @param padded If true, the integer part of the string will be zero padded (if required).
+     * @param padInteger If true, the integer part of the string will be zero padded (if required).
      * 
-     * @return A stardate in string format.
+     * @return A 'classic' stardate in string format.
      */
-    public static String toStardateClassicString( int stardateIssue, int stardateInteger, int stardateFraction, boolean showIssue, boolean padded )
+    public static String toStardateClassicString( int stardateIssue, int stardateInteger, int stardateFraction, boolean showIssue, boolean padInteger )
     {
         StringBuilder stringBuilder = new StringBuilder();
 
         if( showIssue ) stringBuilder.append( "[" ).append( Integer.toString( stardateIssue ) ).append( "] " ); //$NON-NLS-1$ //$NON-NLS-2$
 
-        if( padded )
+        if( padInteger )
         {
         	int padding;
         	if( stardateIssue < 21 )
@@ -372,12 +372,12 @@ public class Stardate
 
 
     /**
-     * Returns a stardate in string format.
+     * Returns a '2009 revised' stardate in string format.
      * 
      * @param stardateInteger The stardate integer.
      * @param stardateFraction The stardate fraction.
      * 
-     * @return A stardate in string format.
+     * @return A '2009 revised' stardate in string format.
 	 */
     public static String toStardateRevised2009String( int stardateInteger, int stardateFraction )
     {
