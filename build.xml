@@ -1,7 +1,7 @@
 <project name="WorldTimeSystemTray" default="CompileAndJar" basedir=".">
 
   <!-- Application and version properties. -->
-  <property name="version" value="1.7" />
+  <property name="version" value="2.0" />
 
   <!-- Compile properties -->
   <property name="classes" location="classes" />
