@@ -10,6 +10,7 @@ public class Properties
 
 	private java.util.Properties m_properties = new java.util.Properties();
     private static Properties ms_instance = new Properties();
+
     private static boolean ms_canCreatePropertyDirectory = true;
     private static boolean ms_canReadPropertiesFile = true;
     private static boolean ms_canWritePropertiesFile = true;

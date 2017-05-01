@@ -177,9 +177,9 @@ public class PopupMenu extends java.awt.PopupMenu implements ActionListener, Ite
 
     @Override public void actionPerformed( ActionEvent actionEvent )
 	{
-    	String menuItem = ( (MenuItem)actionEvent.getSource() ).getLabel();
-
     	boolean systemExit = false;
+
+    	String menuItem = ( (MenuItem)actionEvent.getSource() ).getLabel();
     	if( POPUP_ABOUT.equals( menuItem ) )
     	{
     		String message =

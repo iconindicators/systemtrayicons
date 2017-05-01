@@ -37,8 +37,7 @@ public class StardateSystemTray
 		        (
 		        	new Runnable() 
 		        	{
-		        		@Override
-						public void run() 
+		        		@Override public void run() 
 		        		{
 		        			TrayIcon trayIcon = TrayIcon.createTrayIcon();
 			            	try 
@@ -68,7 +67,6 @@ public class StardateSystemTray
 	private static boolean systemTraySupported()
 	{
         if( ! SystemTray.isSupported() )
-        {
         	MessageDialog.showMessageDialog
         	(
         		Messages.getString( "StardateSystemTray.1" ), //$NON-NLS-1$
@@ -76,8 +74,7 @@ public class StardateSystemTray
         		JOptionPane.ERROR_MESSAGE,
 				JOptionPane.DEFAULT_OPTION
         	);
-        }
-		
+
         return SystemTray.isSupported();
 	}
 
