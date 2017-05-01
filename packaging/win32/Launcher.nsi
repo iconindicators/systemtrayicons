@@ -10,7 +10,7 @@
 ;General
 
   Name "${APPLICATION_NAME}"
-  Icon "..\..\img\worldtimesystemtray.ico"
+  Icon "..\..\img\worldtimesystemtray48x48.ico"
   OutFile "${LAUNCHER_NAME}"
   RequestExecutionLevel user
   SetCompressor /SOLID lzma
