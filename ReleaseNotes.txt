@@ -6,6 +6,8 @@ World Time System Tray Release Notes
 
 * Removed Debian target.
 
+* Tidy up of code.
+
 
 2011-10-19 Version 1.7
 
