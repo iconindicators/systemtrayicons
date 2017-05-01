@@ -81,11 +81,10 @@ Section "Install"
   SetOverwrite on
 
   File ..\..\ReleaseNotes.txt
-  File ..\..\TODO.txt
   File ..\..\License.txt
-  File ..\..\img\worldtimesystemtray.ico		
+  File ..\..\img\worldtimesystemtray48x48.ico
   File ..\..\release\worldtimesystemtray.jar
-  File ..\..\packaging\win32\WorldTimeSystemTray.exe	
+  File ..\..\packaging\win32\WorldTimeSystemTray.exe
 
   WriteUninstaller "$INSTDIR\${UNINSTALLER_NAME}"
 
@@ -98,7 +97,7 @@ Section "Install"
 
   SetShellVarContext current
   CreateDirectory "${START_MENU}"
-  CreateShortCut "${START_MENU}\${APPLICATION_NAME}.lnk" "$INSTDIR\${LAUNCHER_NAME}" "" "$INSTDIR\worldtimesystemtray.ico"
+  CreateShortCut "${START_MENU}\${APPLICATION_NAME}.lnk" "$INSTDIR\${LAUNCHER_NAME}" "" "$INSTDIR\worldtimesystemtray48x48.ico"
   CreateShortCut "${START_MENU}\Uninstall.lnk" "$INSTDIR\${UNINSTALLER_NAME}"
 
 SectionEnd
