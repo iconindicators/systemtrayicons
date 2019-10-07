@@ -2,6 +2,18 @@ Stardate System Tray Release Notes
 ----------------------------------
 
 
+2019-10-07 Version 4.0
+
+* Minor changes to Stardate API.
+
+* Stardate System Tray and Stardate Converter updated to reflect changes to
+  the Stardate API.
+
+* Removed ',' separator from Stardate Converter.
+
+* Updated Joda library.
+
+
 2017-04-29 Version 3.0
 
 * Overhaul of Stardate API.
@@ -76,8 +88,8 @@ Stardate System Tray Release Notes
 
 2009-11-13 Version 1.6
 
-* Fixed aggressive rounding of the fractional part of a Stardate
-    (which resulted in its value only being a 0 or 5).
+* Fixed aggressive rounding of the fractional part of a Stardate,
+  which resulted in its value only being a 0 or 5.
     
 * Clean up of the sample Converter program.
 
@@ -98,8 +110,8 @@ Stardate System Tray Release Notes
   
   NOTE for Microsoft Windows users: Your user preferences from the previous 
   version will NOT be loaded...sorry about that.  However, you can copy the
-  'Program Files/Stardate System Tray/properties' file to your 
-  "user home" directory.
+  'Program Files/Stardate System Tray/properties' file to your "user home"
+  directory.
 
 * Added option to show selected calendars in a new window.
 
@@ -133,12 +145,10 @@ Stardate System Tray Release Notes
   Ensure that jRegistryKey.jar, jRegistryKey.dll, joda-time-1.4.jar and
   stardate.jar are on the path if executing on Microsoft Windows.  
 
-  Ensure that joda-time-1.4.jar and stardate.jar are on the path if executing 
-  on any platform other than Microsoft Windows.  
-
-  jRegistryKey.jar, jRegistryKey.dll, joda-time-1.4.jar must be downloaded 
-  from their respective sites.
-
+  Ensure that joda-time-1.4.jar and stardate.jar are on the path if
+  executing on any platform other than Microsoft Windows.  
+  Ensure the files jRegistryKey.jar, jRegistryKey.dll, joda-time-1.4.jar
+  are downloaded from their respective sites.
   Has not been tested on any platform other than Microsoft Windows.
 
 * To execute the sample application from the command line as
@@ -146,12 +156,11 @@ Stardate System Tray Release Notes
     "java -jar stardate-converter.jar"
 
   Ensure that stardate.jar is on the path for all platforms.
-
   Has not been tested on any platform other than Microsoft Windows.
 
-* To execute the sample applet, load stardate.html into a browser.  Ensure 
-  stardate.jar and stardate-applet.jar are in the same directory as 
-  stardate.html.
+* To execute the sample applet, load stardate.html into a browser.
+  Ensure stardate.jar and stardate-applet.jar are in the same directory
+  as stardate.html.
 
 * Tray icon is now included in the stardate-system-tray.jar file.  
 
@@ -165,12 +174,14 @@ Stardate System Tray Release Notes
 2007-07-24 Version 1.2
 
 * Better handling for absence of system tray support.
+
 * Added internationalisation capability.
 
 
 2007-06-22 Version 1.1
 
 * Disabled the pop up menu when the About dialogue is displayed.
+
 * Now uses system Look and Feel.
 
 

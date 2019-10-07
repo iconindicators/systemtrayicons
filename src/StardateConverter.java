@@ -176,6 +176,7 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
 		JLabel issueLabel = new JLabel( "Issue" ); //$NON-NLS-1$
 
         m_spinnerIssue = new JSpinner( new SpinnerNumberModel() );
+        m_spinnerIssue.setEditor( new JSpinner.NumberEditor( m_spinnerIssue, "#" ) );
         m_spinnerIssue.setToolTipText( "Only applies to 'classic'." ); //$NON-NLS-1$
         m_spinnerIssue.addChangeListener( this );
         ( (JSpinner.DefaultEditor)m_spinnerIssue.getEditor() ).getTextField().addFocusListener( this );
@@ -183,6 +184,7 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
         JLabel integerLabel = new JLabel( "Integer" ); //$NON-NLS-1$
 
         m_spinnerInteger = new JSpinner( new SpinnerNumberModel() );
+        m_spinnerInteger.setEditor( new JSpinner.NumberEditor( m_spinnerInteger, "#" ) );
         m_spinnerInteger.setToolTipText
         (
         	"<html>" +
@@ -200,6 +202,7 @@ public class StardateConverter extends JFrame implements ActionListener, ChangeL
         JLabel fractionLabel = new JLabel( "Fraction" ); //$NON-NLS-1$
 
         m_spinnerFraction = new JSpinner( new SpinnerNumberModel() );
+        m_spinnerFraction.setEditor( new JSpinner.NumberEditor( m_spinnerFraction, "#" ) );
         m_spinnerFraction.setToolTipText
         (
         	"<html>" +

@@ -2,15 +2,15 @@
 
 
   <!-- Version numbers. -->
-  <property name="libraryVersion" value="4.0" />
-  <property name="applicationVersion" value="3.0" />
+  <property name="libraryVersion" value="5.0" />
+  <property name="applicationVersion" value="4.0" />
 
 
   <!-- Jars/files. -->
   <property name="libraryJar" value="stardate-${libraryVersion}.jar" />
   <property name="sampleApplicationJar" value="StardateSampleApplication.jar" />
   <property name="systemTrayJar" value="stardatesystemtray.jar" />
-  <property name="joda" value="joda-time-2.9.9.jar" />
+  <property name="joda" value="joda-time-2.10.4.jar" />
 
 
   <!-- Directories. -->
@@ -31,7 +31,7 @@
     <delete dir="${release}" />
     <mkdir dir="${release}" />
 
-    <javac srcdir="${src}" destdir="${classes}" includeantruntime="false">
+    <javac target="1.6" source="1.6" srcdir="${src}" destdir="${classes}" includeantruntime="false">
       <classpath>
         <pathelement location="${lib}/${joda}" />                
       </classpath>
@@ -123,5 +123,7 @@
     </copy>
     <zip destfile="${release}/Stardate-${libraryVersion}-SourceAndJavaDoc.zip" basedir="${release}/sourceAndJavaDoc" />  
     <delete dir="${release}/sourceAndJavaDoc" />
+    <copy file="ReleaseNotes.txt" todir="${release}" />
+    <copy file="README" todir="${release}" />
   </target>
 </project>
