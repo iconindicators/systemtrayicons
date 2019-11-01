@@ -2,6 +2,13 @@ World Time System Tray Release Notes
 ------------------------------------
 
 
+2019-11-01 Version 2.1
+
+* Bug Fix: Java 11+ has changed the first parameter from int to long for accessing Windows registry.
+
+* Revert to building for Java 1.6 as it makes life easier when testing!
+
+
 2017-05-01 Version 1.8
 
 * Removed Debian target.
