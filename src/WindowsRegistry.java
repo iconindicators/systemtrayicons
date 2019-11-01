@@ -42,34 +42,43 @@ public class WindowsRegistry
 
 	public static void initialise() throws SecurityException, NoSuchMethodException
 	{
-		regOpenKey = userClass.getDeclaredMethod( "WindowsRegOpenKey", new Class[] { int.class, byte[].class, int.class } ); //$NON-NLS-1$
+		Class<?> clazz;
+		String javaVersion = System.getProperty( "java.specification.version" );
+		// Seems that from Java 11 onward, the first parameter of int should be long.
+		// Refer to https://stackoverflow.com/a/6163701/2156453 and see the comment from September 20, 2019.
+		if( javaVersion.startsWith( "1." ) ) // Safe enough to use to check if Java 11 or greater.
+			clazz = int.class;
+		else
+			clazz = long.class;
+		
+		regOpenKey = userClass.getDeclaredMethod( "WindowsRegOpenKey", new Class[] { clazz, byte[].class, int.class } ); //$NON-NLS-1$
 		regOpenKey.setAccessible( true );
 		
-		regCloseKey = userClass.getDeclaredMethod( "WindowsRegCloseKey", new Class[] { int.class } ); //$NON-NLS-1$
+		regCloseKey = userClass.getDeclaredMethod( "WindowsRegCloseKey", new Class[] { clazz } ); //$NON-NLS-1$
 		regCloseKey.setAccessible( true );
 
-		regQueryValueEx = userClass.getDeclaredMethod( "WindowsRegQueryValueEx", new Class[] { int.class, byte[].class } ); //$NON-NLS-1$
+		regQueryValueEx = userClass.getDeclaredMethod( "WindowsRegQueryValueEx", new Class[] { clazz, byte[].class } ); //$NON-NLS-1$
 		regQueryValueEx.setAccessible( true );
 
-		regEnumValue = userClass.getDeclaredMethod( "WindowsRegEnumValue", new Class[] { int.class, int.class, int.class } ); //$NON-NLS-1$
+		regEnumValue = userClass.getDeclaredMethod( "WindowsRegEnumValue", new Class[] { clazz, int.class, int.class } ); //$NON-NLS-1$
 		regEnumValue.setAccessible( true );
 
-		regQueryInfoKey = userClass.getDeclaredMethod( "WindowsRegQueryInfoKey1", new Class[] { int.class } ); //$NON-NLS-1$
+		regQueryInfoKey = userClass.getDeclaredMethod( "WindowsRegQueryInfoKey1", new Class[] { clazz } ); //$NON-NLS-1$
 		regQueryInfoKey.setAccessible( true );
 
-		regEnumKeyEx = userClass.getDeclaredMethod( "WindowsRegEnumKeyEx", new Class[] { int.class, int.class, int.class } );  //$NON-NLS-1$
+		regEnumKeyEx = userClass.getDeclaredMethod( "WindowsRegEnumKeyEx", new Class[] { clazz, int.class, int.class } );  //$NON-NLS-1$
 		regEnumKeyEx.setAccessible( true );
 
-		regCreateKeyEx = userClass.getDeclaredMethod( "WindowsRegCreateKeyEx", new Class[] { int.class, byte[].class } );  //$NON-NLS-1$
+		regCreateKeyEx = userClass.getDeclaredMethod( "WindowsRegCreateKeyEx", new Class[] { clazz, byte[].class } );  //$NON-NLS-1$
 		regCreateKeyEx.setAccessible( true );
 
-		regSetValueEx = userClass.getDeclaredMethod( "WindowsRegSetValueEx", new Class[] { int.class, byte[].class, byte[].class } ); //$NON-NLS-1$ 
+		regSetValueEx = userClass.getDeclaredMethod( "WindowsRegSetValueEx", new Class[] { clazz, byte[].class, byte[].class } ); //$NON-NLS-1$ 
 		regSetValueEx.setAccessible( true );
 
-		regDeleteValue = userClass.getDeclaredMethod( "WindowsRegDeleteValue", new Class[] { int.class, byte[].class } );  //$NON-NLS-1$
+		regDeleteValue = userClass.getDeclaredMethod( "WindowsRegDeleteValue", new Class[] { clazz, byte[].class } );  //$NON-NLS-1$
 		regDeleteValue.setAccessible( true );
 
-		regDeleteKey = userClass.getDeclaredMethod( "WindowsRegDeleteKey", new Class[] { int.class, byte[].class } );  //$NON-NLS-1$
+		regDeleteKey = userClass.getDeclaredMethod( "WindowsRegDeleteKey", new Class[] { clazz, byte[].class } );  //$NON-NLS-1$
 		regDeleteKey.setAccessible( true ); 
 	}
 
