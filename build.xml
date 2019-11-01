@@ -1,9 +1,8 @@
 <project name="StardateSystemTray" default="CompileAndJar" basedir=".">
 
-
   <!-- Version numbers. -->
   <property name="libraryVersion" value="5.0" />
-  <property name="applicationVersion" value="4.0" />
+  <property name="applicationVersion" value="5.0" />
 
 
   <!-- Jars/files. -->
