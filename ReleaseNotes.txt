@@ -2,6 +2,11 @@ Stardate System Tray Release Notes
 ----------------------------------
 
 
+2019-11-01 Version 5.0
+
+* Bug Fix: Java 11+ has changed the first parameter from int to long for accessing Windows registry.
+
+
 2019-10-07 Version 4.0
 
 * Minor changes to Stardate API.
