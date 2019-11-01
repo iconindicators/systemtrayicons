@@ -1,7 +1,7 @@
 <project name="WorldTimeSystemTray" default="CompileAndJar" basedir=".">
 
   <!-- Application and version properties. -->
-  <property name="version" value="2.0" />
+  <property name="version" value="2.1" />
 
   <!-- Compile properties -->
   <property name="classes" location="classes" />
@@ -22,7 +22,10 @@
     <delete dir="${release}" />
     <mkdir dir="${release}" />
 
-    <javac srcdir="${src}" destdir="${classes}" includeantruntime="false">
+    <!-- Do a build supporting Java 1.6 as some people still have old machines/installations. -->
+  	<property name="ant.build.javac.source" value="1.6"/>
+  	<property name="ant.build.javac.target" value="1.6"/>
+  	<javac srcdir="${src}" destdir="${classes}" includeantruntime="false">
       <compilerarg value="-Xlint:deprecation,fallthrough,finally,path,unchecked" />
     </javac>
 
