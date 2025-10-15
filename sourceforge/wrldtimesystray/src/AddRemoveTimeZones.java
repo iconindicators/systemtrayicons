@@ -1,0 +1,103 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.Collator;
+import java.util.Vector;
+
+import javax.swing.GroupLayout;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JScrollPane;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+
+
+public class AddRemoveTimeZones extends JDialog implements ActionListener
+{
+	private static final long serialVersionUID = 1L;
+
+	private CheckboxList m_addRemoveCheckboxList = null;
+    private JButton m_close = null;
+
+
+    private AddRemoveTimeZones() { super( (JDialog)null ); }
+
+
+    public static AddRemoveTimeZones create()
+    {
+		AddRemoveTimeZones addRemoveTimeZones = new AddRemoveTimeZones();
+		
+        addRemoveTimeZones.m_addRemoveCheckboxList = new CheckboxList( new Vector<String>( UserTimeZones.getAvailableTimeZones() ), Properties.getInstance().getPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED ) );
+        addRemoveTimeZones.m_addRemoveCheckboxList.setVisibleRowCount( 15 );
+        addRemoveTimeZones.m_addRemoveCheckboxList.setSelectedIndex( 0 );
+        JScrollPane scrollPane = new JScrollPane( addRemoveTimeZones.m_addRemoveCheckboxList );
+
+        addRemoveTimeZones.m_close = new JButton( Messages.getString( "AddRemoveTimeZones.0" ) ); //$NON-NLS-1$
+        addRemoveTimeZones.m_close.addActionListener( addRemoveTimeZones );
+
+        GroupLayout layout = new GroupLayout( addRemoveTimeZones.getContentPane() );
+        addRemoveTimeZones.getContentPane().setLayout( layout );
+        layout.setAutoCreateGaps( true );
+        layout.setAutoCreateContainerGaps( true );
+
+        layout.setHorizontalGroup
+        (
+    		layout.createParallelGroup( Alignment.CENTER )
+    			.addComponent( scrollPane )
+    			.addComponent( addRemoveTimeZones.m_close )
+    	);
+
+        layout.setVerticalGroup
+        (
+    		layout.createSequentialGroup()
+    			.addComponent( scrollPane )
+    			.addPreferredGap( ComponentPlacement.UNRELATED )
+    			.addComponent( addRemoveTimeZones.m_close )
+		);
+
+        addRemoveTimeZones.setTitle( Messages.getString( "AddRemoveTimeZones.1" ) ); //$NON-NLS-1$
+		addRemoveTimeZones.setIconImage( TrayIcon.getApplicationIconImage() );
+		addRemoveTimeZones.pack();
+        addRemoveTimeZones.setLocationRelativeTo( null );
+        addRemoveTimeZones.setModalityType( ModalityType.APPLICATION_MODAL );
+        addRemoveTimeZones.setVisible( true );
+
+		return addRemoveTimeZones;
+    }
+
+
+	@Override  public void actionPerformed( ActionEvent actionEvent )
+	{
+    	if( actionEvent.getSource() == this.m_close )
+		{
+			m_close.removeActionListener( this );
+
+			Vector<String> existingTimeZones = Properties.getInstance().getPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED );
+			Vector<String> existingTimeZonesDisplayable = Properties.getInstance().getPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED_DISPLAY_NAMES );
+			Vector<String> newTimeZones = this.m_addRemoveCheckboxList.getSelectedItems();
+			Vector<String> newTimeZonesDisplayable = new Vector<String>( newTimeZones.size() );
+
+			// We need to retain the display names of the existing time zones.
+			for( int i = 0; i < newTimeZones.size(); i++ )
+			{
+				int j = 0;
+				for( ; j < existingTimeZones.size(); j++ )
+				{
+					if( Collator.getInstance().equals( newTimeZones.get( i ), existingTimeZones.get( j ) ) )
+					{
+						newTimeZonesDisplayable.add( existingTimeZonesDisplayable.get( j ) );
+						break;
+					}
+				}
+
+				if( j == existingTimeZones.size() )
+					newTimeZonesDisplayable.add( newTimeZones.get( i ) );
+			}
+
+			Properties.getInstance().setPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED, newTimeZones );
+			Properties.getInstance().setPropertyList( Properties.PROPERTY_TIME_ZONES_SELECTED_DISPLAY_NAMES, newTimeZonesDisplayable );
+			Properties.getInstance().store();
+
+			dispose();
+		}
+	}
+}

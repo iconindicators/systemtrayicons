@@ -1,0 +1,72 @@
+<project name="WorldTimeSystemTray" default="CompileAndJar" basedir=".">
+
+  <!-- Application and version properties. -->
+  <property name="version" value="2.1" />
+
+  <!-- Compile properties -->
+  <property name="classes" location="classes" />
+  <property name="doc" location="doc" />
+  <property name="i18n" location="i18n" />
+  <property name="img" location="img" />
+  <property name="jar-filename" value="worldtimesystemtray.jar" />
+  <property name="lib" location="lib" />
+  <property name="packaging" location="packaging" />
+  <property name="release" location="release" />
+  <property name="src" location="src" />
+
+
+  <target name="CompileAndJar" description="Compiles the Java source and build various JAR files.">
+    <delete dir="${classes}" />
+    <mkdir dir="${classes}" />
+
+    <delete dir="${release}" />
+    <mkdir dir="${release}" />
+
+    <!-- Do a build supporting Java 1.6 as some people still have old machines/installations. -->
+  	<property name="ant.build.javac.source" value="1.6"/>
+  	<property name="ant.build.javac.target" value="1.6"/>
+  	<javac srcdir="${src}" destdir="${classes}" includeantruntime="false">
+      <compilerarg value="-Xlint:deprecation,fallthrough,finally,path,unchecked" />
+    </javac>
+
+    <copy todir="${classes}/i18n">
+      <fileset dir="${i18n}"/>
+    </copy>
+
+    <copy file="${img}/worldtimesystemtray16x16.gif" todir="${classes}" />
+    <copy file="${img}/worldtimesystemtray20x20.gif" todir="${classes}" />
+
+    <manifest file="${classes}/MANIFEST.MF">
+      <attribute name="Class-Path" value="." />
+      <attribute name="Main-Class" value="WorldTimeSystemTray" />
+    </manifest>
+    <jar jarfile="${release}/${jar-filename}" basedir="${classes}" manifest="${classes}/MANIFEST.MF" excludes="MANIFEST.MF" />
+
+    <delete dir="${classes}" />
+  </target>
+
+
+  <target name="Win32" depends="CompileAndJar" description="Build the Microsoft Windows installer and executable using NSIS.">
+    <exec executable="makensis">
+      <arg line="packaging/win32/Launcher.nsi"/>
+    </exec>
+
+    <exec executable="makensis">
+      <arg line="packaging/win32/Installer.nsi"/>
+    </exec>
+
+    <move file="packaging/win32/WorldTimeSystemTraySetup.exe" tofile="${release}/WorldTimeSystemTraySetup-${version}.exe" />
+    <delete file="packaging/win32/WorldTimeSystemTray.exe" />
+  </target>
+
+
+  <target name="Release" depends="Win32" description="Packages up the various parts for a formal release.">
+    <zip destfile="${release}/WorldTimeSystemTrayJAR-${version}.zip">
+      <fileset file="${release}/${jar-filename}"/>
+    </zip>
+    <delete file="${release}/${jar-filename}" />
+
+    <zip destfile="${release}/WorldTimeSystemTraySource-${version}.zip" basedir="${src}" includes="*.java" />    
+  </target>
+
+</project>
