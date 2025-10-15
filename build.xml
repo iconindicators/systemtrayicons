@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE project>
+<project
+    default="CompileAndJar"
+    xmlns:if="ant:if"
+    xmlns:unless="ant:unless">
+
+
+    <!--
+        Compile and JAR:
+            Stardate
+            Stardate System Tray Icon
+            World Time System Tray Icon
+
+        Create Javadoc:
+            Stardate
+
+        Create Microsoft Windows executable and installer:
+            Stardate System Tray Icon
+            World Time System Tray Icon
+    -->
+
+
+    <!-- Version Numbers. -->
+    <property name="version.stardate" value="6.0.0" />
+    <property name="version.stardatesystemtrayicon" value="6.0.0" />
+    <property name="version.worldtimesystemtrayicon" value="3.0.0" />
+
+    <!-- Project author(s); separate additional authors by comma. -->
+    <property name="author.stardate" value="Bernard Giannetti" />
+    <property name="author.stardatesystemtrayicon" value="Bernard Giannetti" />
+    <property name="author.worldtimesystemtrayicon" value="Bernard Giannetti" />
+
+    <!-- Size on disk (kilobytes). -->
+    <property name="size.stardatesystemtrayicon" value="984" />
+    <property name="size.worldtimesystemtrayicon" value="396" />
+
+    <!-- Project URL. -->
+    <property
+        name="url"
+        value="https://github.com/iconindicators/systemtrayicons" />
+
+    <!--
+        Project names, human readable, displayed in installer/launcher and
+        manifest.
+    -->
+    <property
+        name="project.stardate.humanreadable"
+        value="Stardate" />
+    <property
+        name="project.stardatesystemtray.humanreadable"
+        value="Stardate System Tray Icon" />
+    <property
+        name="project.worldtimesystemtray.humanreadable"
+        value="World Time System Tray Icon" />
+
+    <!-- Project names, lower case, for package and JAR name. -->
+    <property
+        name="project.base.lowercase"
+        value="basesystemtrayicon" />
+    <property
+        name="project.stardate.lowercase"
+        value="stardate" />
+    <property
+        name="project.stardatesystemtrayicon.lowercase"
+        value="stardatesystemtrayicon" />
+    <property
+        name="project.worldtimesystemtrayicon.lowercase"
+        value="worldtimesystemtrayicon" />
+
+    <!-- Project names, camel case, for installer/launcher. -->
+    <property
+        name="project.stardatesystemtrayicon.camelcase"
+        value="StardateSystemTrayIcon" />
+    <property
+        name="project.worldtimesystemtrayicon.camelcase"
+        value="WorldTimeSystemTrayIcon" />
+
+    <!-- Directories. -->
+    <property name="release" location="release" />
+    <property name="release.classes" location="release/classes" />
+    <property name="release.javadoc" location="release/javadoc" />
+
+    <!-- Input Jars; see CONTRIBUTING.md for more information. -->
+    <property name="jar.joda" value="joda-time-2.14.0.jar" />
+    <property name="jar.runtime" value="lib/rt.jar" />
+
+    <!-- Output Jars Basenames. -->
+    <property
+        name="jar.stardate"
+        value="${project.stardate.lowercase}" />
+    <property
+        name="jar.stardatesystemtrayicon"
+        value="${project.stardatesystemtrayicon.lowercase}" />
+    <property
+        name="jar.worldtimesystemtrayicon"
+        value="${project.worldtimesystemtrayicon.lowercase}" />
+
+
+    <!-- Compile a project. -->
+    <target name="Compile">
+        <javac
+            debug="true"
+            debuglevel="lines,source,vars"
+            sourcepath=""
+            source="8"
+            target="8"
+            srcdir="${srcdir}"
+            destdir="${release.classes}"
+            includeantruntime="false">
+
+            <include name="${include}"/>
+
+            <exclude name="${exclude}"/>
+
+            <bootclasspath>
+                <pathelement location="${jar.runtime}" />
+            </bootclasspath>
+
+            <classpath>
+                <pathelement path="${classpath.javac}" />
+            </classpath>
+
+            <compilerarg value="-Xdiags:verbose" />
+            <compilerarg value="-Xlint:all" />
+        </javac>
+    </target>
+
+
+    <!--
+        Convert the SVG icon to PNG, embedded in the JAR and used as the system
+        tray icon.
+
+        Using a size of 48 seems fine as a tray icon, so no need for 16 or 20
+        as was used in previous releases.
+    -->
+    <target name="SVGtoPNG">
+        <exec executable="convert" failonerror="true" >
+            <arg value="-background"/>
+            <arg value="none"/>
+            <arg value="${source}"/>
+            <arg value="-resize"/>
+            <arg value="48x48"/>
+            <arg value="${destination}"/>
+        </exec>
+
+        <echo message="Converted"/>
+        <echo message="&#x9;${source}"/>
+        <echo message="to"/>
+        <echo message="&#x9;${destination}"/>
+    </target>
+
+
+    <!-- JAR a project. -->
+    <target name="Jar">
+        <mkdir dir="${release.classes}/img" if:true="${img}"/>
+
+        <antcall target="SVGtoPNG" if:true="${img}">
+            <param name="source" value="${package}/img/${package}.svg"/>
+            <param
+                name="destination"
+                value="${release.classes}/img/${package}.png"/>
+        </antcall>
+
+        <copy
+            todir="${release.classes}/i18n"
+            unless:blank="${i18n.directories}" >
+
+            <multirootfileset
+                basedirs="${i18n.directories}"
+                erroronmissingdir="false" >
+
+                <include name="*.properties"/>
+            </multirootfileset>
+        </copy>
+
+        <jar
+            destfile="${release}/${jar.basename}-${version}.jar"
+            basedir="${release.classes}">
+
+            <manifest>
+                <attribute
+                    name="Class-Path"
+                    value="${classpath.jar}"
+                    unless:blank="${classpath.jar}"/>
+
+                <attribute
+                    name="Implementation-Title"
+                    value="${project.humanreadable}"/>
+
+                <attribute name="Implementation-Version" value="${version}"/>
+
+                <attribute
+                    name="Main-Class"
+                    value="${mainclass}"
+                    unless:blank="${mainclass}"/>
+
+                <attribute
+                    name="Package"
+                    value="${package}"
+                    unless:blank="${package}"/>
+
+                <attribute name="Project-Author" value="${author}" />
+
+                <attribute name="Project-URL" value="${url}" />
+            </manifest>
+        </jar>
+    </target>
+
+
+    <!-- Compile and JAR all projects. -->
+    <target name="CompileAndJar">
+        <delete dir="${release}" />
+        <mkdir dir="${release}" />
+
+        <!-- Stardate libary. -->
+        <delete dir="${release.classes}" />
+        <mkdir dir="${release.classes}" />
+        <antcall target="Compile">
+            <param name="classpath.javac" value=""/>
+            <param name="exclude" value=""/>
+            <param name="images.directories" value=""/>
+            <param name="include" value="**/Stardate.java"/>
+            <param
+                name="srcdir"
+                value="${project.stardatesystemtrayicon.lowercase}/src"/>
+        </antcall>
+
+        <antcall target="Jar">
+            <param name="author" value="${author.stardate}"/>
+            <param name="classpath.jar" value=""/>
+            <param name="img" value="false"/>
+            <param name="i18n.directories" value=""/>
+            <param name="jar.basename" value="${jar.stardate}"/>
+            <param name="mainclass" value=""/>
+            <param name="package" value="${project.stardate.lowercase}"/>
+            <param
+                name="project.humanreadable"
+                value="${project.stardate.humanreadable} Library"/>
+            <param name="version" value="${version.stardate}"/>
+        </antcall>
+
+        <!-- Stardate System Tray Icon. -->
+        <delete dir="${release.classes}" />
+        <mkdir dir="${release.classes}" />
+        <antcall target="Compile">
+            <param
+                name="classpath.javac"
+                value="
+                    ${project.stardatesystemtrayicon.lowercase}/lib/${jar.joda}
+                    :
+                    ${release}/${jar.stardate}-${version.stardate}.jar"/>
+            <param name="exclude" value="**/Stardate.java"/>
+            <param
+                name="images.directories"
+                value="${project.stardatesystemtrayicon.lowercase}/img"/>
+            <param name="include" value="**/*.java"/>
+            <param
+                name="srcdir"
+                value="
+                    ${project.base.lowercase}/src
+                    :
+                    ${project.stardatesystemtrayicon.lowercase}/src"/>
+        </antcall>
+
+        <antcall target="Jar">
+            <param name="author" value="${author.stardatesystemtrayicon}"/>
+            <param
+                name="classpath.jar"
+                value="${jar.joda} ${jar.stardate}-${version.stardate}.jar"/>
+
+            <param name="img" value="true"/>
+            <param
+                name="i18n.directories"
+                value="${project.base.lowercase}/i18n,${project.stardatesystemtrayicon.lowercase}/i18n"/>
+            <param name="jar.basename" value="${jar.stardatesystemtrayicon}"/>
+            <param
+                name="mainclass"
+                value="${project.stardatesystemtrayicon.lowercase}.StardateSystemTrayIcon"/>
+            <param
+                name="package"
+                value="${project.stardatesystemtrayicon.lowercase}"/>
+            <param
+                name="project.humanreadable"
+                value="${project.stardatesystemtray.humanreadable}"/>
+            <param
+                name="version"
+                value="${version.stardatesystemtrayicon}"/>
+        </antcall>
+
+        <!-- World Time System Tray Icon. -->
+        <delete dir="${release.classes}" />
+        <mkdir dir="${release.classes}" />
+        <antcall target="Compile">
+            <param name="classpath.javac" value=""/>
+            <param name="exclude" value=""/>
+            <param
+                name="images.directories"
+                value="${project.worldtimesystemtrayicon.lowercase}/img"/>
+            <param name="include" value="**/*.java"/>
+            <param
+                name="srcdir"
+                value="
+                    ${project.base.lowercase}/src
+                    :
+                    ${project.worldtimesystemtrayicon.lowercase}/src"/>
+        </antcall>
+
+        <antcall target="Jar">
+            <param name="author" value="${author.worldtimesystemtrayicon}"/>
+            <param name="classpath.jar" value=""/>
+            <param name="img" value="true"/>
+            <param
+                name="i18n.directories"
+                value="${project.base.lowercase}/i18n,${project.worldtimesystemtrayicon.lowercase}/i18n"/>
+            <param name="jar.basename" value="${jar.worldtimesystemtrayicon}"/>
+            <param
+                name="mainclass"
+                value="${project.worldtimesystemtrayicon.lowercase}.WorldTimeSystemTrayIcon"/>
+            <param
+                name="package"
+                value="${project.worldtimesystemtrayicon.lowercase}"/>
+            <param
+                name="project.humanreadable"
+                value="${project.worldtimesystemtray.humanreadable}"/>
+            <param
+                name="version"
+                value="${version.worldtimesystemtrayicon}"/>
+        </antcall>
+
+        <delete dir="${release.classes}" />
+    </target>
+
+
+    <!-- Spotbugs; see CONTRIBUTING.md for more information. -->
+    <target name="Spotbugs" depends="CompileAndJar">
+        <taskdef
+            resource="edu/umd/cs/findbugs/anttask/tasks.properties"
+            classpath="spotbugs/lib/spotbugs-ant.jar" />
+
+        <path id="source.path">
+            <pathelement
+                location="${project.basesystemtrayicon.lowercase}/src" />
+            <pathelement
+                location="${project.stardatesystemtrayicon.lowercase}/src" />
+            <pathelement
+                location="${project.worldtimesystemtrayicon.lowercase}/src" />
+        </path>
+
+        <spotbugs home="spotbugs"
+            output="html"
+            outputFile="spotbugs.html" >
+
+            <auxClasspath path="
+                ${project.stardatesystemtrayicon.lowercase}/lib/${jar.joda}" />
+
+            <sourcePath refid="source.path"/>
+
+            <class
+                location="${release}/${jar.stardate}-${version.stardate}.jar" />
+            <class
+                location="${release}/${jar.stardatesystemtrayicon}-${version.stardatesystemtrayicon}.jar" />
+            <class
+                location="${release}/${jar.worldtimesystemtrayicon}-${version.worldtimesystemtrayicon}.jar" />
+        </spotbugs>
+    </target>
+
+
+    <!-- Stardate Javadoc. -->
+    <target name="Javadoc" depends="CompileAndJar">
+        <property
+            name="title"
+            value="Stardate Version ${version.stardate} API Specification" />
+
+        <echo file="${release.javadoc}/overview.html" message="${title}" />
+
+        <javadoc
+            author="true"
+            destdir="${release.javadoc}"
+            doctitle="${title}"
+            header="${title}"
+            overview="${release.javadoc}/overview.html"
+            packagenames="stardate"
+            sourcefiles="${project.stardatesystemtrayicon.lowercase}/src/${project.stardate.lowercase}/Stardate.java"
+            use="true"
+            version="true"
+            windowtitle="${title}">
+        </javadoc>
+
+        <zip
+            destfile="${release}/${project.stardate.lowercase}-${version.stardate}-javadoc.zip"
+            basedir="${release.javadoc}"/>
+
+    <delete dir="${release.javadoc}"/>
+    </target>
+
+
+    <!--
+        Create defines.nsh used by the installer and launcher.
+
+        Some definitions are common to both, whereas some only relate to one or
+        the other.
+    -->
+    <target name="NSIS-Defines">
+        <echo
+            append="true"
+            file="${release}/defines.nsh"
+            message="  !define APPLICATION_NAME &quot;${project.humanreadable}&quot;${line.separator}"/>
+
+        <echo
+            append="true"
+            file="${release}/defines.nsh"
+            message="  !define ICON_NAME &quot;${project.lowercase}.ico&quot;${line.separator}"/>
+
+        <echo
+            append="true"
+            file="${release}/defines.nsh"
+            message="  !define INSTALLER_NAME &quot;${project.camelcase}Setup-${version}.exe&quot;${line.separator}"/>
+
+        <echo
+            append="true"
+            file="${release}/defines.nsh"
+            message="  !define JAR_NAME &quot;${project.lowercase}-${version}.jar&quot;${line.separator}"/>
+
+        <echo
+            append="true"
+            file="${release}/defines.nsh"
+            message="  !define LAUNCHER_NAME &quot;${project.camelcase}.exe&quot;${line.separator}"/>
+
+        <echo
+            append="true"
+            file="${release}/defines.nsh"
+            message="  !define PUBLISHER_NAME &quot;${publisher}&quot;${line.separator}"/>
+
+        <echo
+            append="true"
+            file="${release}/defines.nsh"
+            message="  !define RELEASE &quot;..\..\release&quot;${line.separator}"/>
+
+        <echo
+            append="true"
+            file="${release}/defines.nsh"
+            message="  !define SIZE &quot;${size}&quot;${line.separator}"/>
+
+        <echo
+            append="true"
+            file="${release}/defines.nsh"
+            message="  !define URL &quot;${url}&quot;${line.separator}"/>
+
+        <echo
+            append="true"
+            file="${release}/defines.nsh"
+            message="  !define VERSION &quot;${version}&quot;${line.separator}"/>
+    </target>
+
+
+    <!--
+        Convert the SVG icon to ICO, used by Windows.
+
+        https://learn.microsoft.com/en-us/windows/apps/design/style/iconography/app-icon-construction
+        https://learn.microsoft.com/en-us/windows/win32/uxguide/vis-icons
+        https://learn.microsoft.com/en-us/windows/win32/shell/desktop-app-tiles-on-the-start-screen
+    -->
+    <target name="SVGtoICO">
+        <exec executable="convert" failonerror="true" >
+            <arg value="-background"/>
+            <arg value="none"/>
+            <arg value="${source}"/>
+            <arg value="-define"/>
+            <arg value="icon:auto-resize=16,24,32,48,256"/>
+            <arg value="${destination}"/>
+        </exec>
+
+        <echo message="Converted"/>
+        <echo message="&#x9;${source}"/>
+        <echo message="to"/>
+        <echo message="&#x9;${destination}"/>
+    </target>
+
+
+    <!-- Create a launcher and installer with NSIS. -->
+    <target name="NSIS">
+
+        <antcall target="SVGtoICO">
+            <param
+                name="source"
+                value="${project.lowercase}/img/${project.lowercase}.svg"/>
+            <param
+                name="destination"
+                value="${release}/${project.lowercase}.ico"/>
+        </antcall>
+
+        <antcall target="NSIS-Defines">
+            <param
+                name="project.humanreadable"
+                value="${project.humanreadable}"/>
+
+            <param name="project.camelcase" value="${project.camelcase}"/>
+            <param name="project.lowercase" value="${project.lowercase}"/>
+            <param name="publisher" value="${publisher}"/>
+            <param name="size" value="${size}"/>
+            <param name="version" value="${version}"/>
+        </antcall>
+
+        <exec executable="makensis">
+            <arg value="${project.base.lowercase}/packaging/Launcher.nsi"/>
+        </exec>
+
+        <pathconvert targetos="windows" property="changelog.windows" >
+            <path location="${changelog}"/>
+        </pathconvert>
+
+        <echo
+            append="true"
+            file="${release}/files.nsh"
+            message="  File ${changelog.windows}${line.separator}"/>
+
+        <exec executable="makensis">
+            <arg value="${project.base.lowercase}/packaging/Installer.nsi"/>
+        </exec>
+
+
+        <delete>
+            <fileset dir="${release}">
+                <include name="**/*.nsh"/>
+                <include name="**/*.ico"/>
+            </fileset>
+        </delete>
+
+        <delete file="${release}/${project.camelcase}.exe" />
+    </target>
+
+
+    <!-- Initialise NSIS files.nsh -->
+    <target name="NSIS-Initialise-Files">
+        <echo file="${release}/files.nsh" message=""/>
+    </target>
+
+
+    <!-- Create NSIS installer/launcher for Startdate System Tray Icon. -->
+    <target
+        name="NSIS-StardateSystemTrayIcon"
+        depends="CompileAndJar,NSIS-Initialise-Files">
+
+        <pathconvert targetos="windows" property="jar.stardate.windows" >
+            <path location="${release}/${jar.stardate}-${version.stardate}.jar"/>
+        </pathconvert>
+
+        <echo
+            append="true"
+            file="${release}/files.nsh"
+            message="  File ${jar.stardate.windows}${line.separator}"/>
+
+        <pathconvert targetos="windows" property="jar.joda.windows" >
+            <path location="${project.stardatesystemtrayicon.lowercase}/lib/${jar.joda}"/>
+        </pathconvert>
+
+        <echo
+            append="true"
+            file="${release}/files.nsh"
+            message="  File ${jar.joda.windows}${line.separator}"/>
+
+        <antcall target="NSIS">
+            <param name="is.stardatesystemtrayicon" value="true"/>
+
+            <param
+                name="changelog"
+                value="${project.stardatesystemtrayicon.lowercase}/CHANGELOG.md"/>
+
+            <param
+                name="project.humanreadable"
+                value="${project.stardatesystemtray.humanreadable}"/>
+
+            <param
+                name="project.camelcase"
+                value="${project.stardatesystemtrayicon.camelcase}"/>
+
+            <param
+                name="project.lowercase"
+                value="${project.stardatesystemtrayicon.lowercase}"/>
+
+            <param name="publisher" value="${author.stardatesystemtrayicon}"/>
+            <param name="size" value="${size.stardatesystemtrayicon}"/>
+            <param name="version" value="${version.stardatesystemtrayicon}"/>
+        </antcall>
+    </target>
+
+
+    <!-- Create NSIS installer/launcher for World Time System Tray Icon. -->
+    <target
+        name="NSIS-WorldTimeSystemTrayIcon"
+        depends="CompileAndJar,NSIS-Initialise-Files">
+
+        <antcall target="NSIS">
+            <param
+                name="changelog"
+                value="${project.worldtimesystemtrayicon.lowercase}/CHANGELOG.md"/>
+
+            <param
+                name="project.humanreadable"
+                value="${project.worldtimesystemtray.humanreadable}"/>
+
+            <param
+                name="project.camelcase"
+                value="${project.worldtimesystemtrayicon.camelcase}"/>
+
+            <param
+                name="project.lowercase"
+                value="${project.worldtimesystemtrayicon.lowercase}"/>
+
+            <param name="publisher" value="${author.worldtimesystemtrayicon}"/>
+            <param name="size" value="${size.worldtimesystemtrayicon}"/>
+            <param name="version" value="${version.worldtimesystemtrayicon}"/>
+        </antcall>
+    </target>
+
+
+    <!--
+        Create a release
+            Installer for StardateSystemTrayIcon
+            Installer for WorldTimeSystemTrayIcon
+            Stardate library JAR and javadoc
+    -->
+    <target
+        name="Release"
+        depends="
+            CompileAndJar,
+            Javadoc,
+            NSIS-StardateSystemTrayIcon,
+            NSIS-WorldTimeSystemTrayIcon">
+
+        <delete>
+            <fileset dir="${release}">
+                <include name="**/${jar.stardatesystemtrayicon}*.jar"/>
+                <include name="**/${jar.worldtimesystemtrayicon}*.jar"/>
+            </fileset>
+        </delete>
+    </target>
+</project>
