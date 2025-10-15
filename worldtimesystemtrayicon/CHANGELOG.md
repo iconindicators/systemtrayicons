@@ -1,6 +1,6 @@
 # World Time System Tray Icon changelog
 
-## v2.2 (2025-10-10)     TODO Fix date.
+## v2.2 (2025-10-15)
 
 - Simplified the popup menu, moving some options to a new `Preferences` dialog
 and dropping others.

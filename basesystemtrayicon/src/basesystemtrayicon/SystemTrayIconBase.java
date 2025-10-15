@@ -26,34 +26,6 @@ import basesystemtrayicon.gui.PopupMenuBase;
 import basesystemtrayicon.gui.TrayIconBase;
 
 
-//TODO Update sourceforge front page with new URL to github.
-//      https://github.com/iconindicators/systemtrayicons
-//
-// Also mention the sourceforge repository is now defunct.
-//      https://softwareengineering.stackexchange.com/questions/287190/migrating-from-sourceforge-to-github-should-i-delete-the-sf-repository-entirely
-
-//TODO
-// Add all source to github
-// Remove final/remaining TODOs prior.
-// Don't include .geany, .properties, .project, .classpath 
-// Don't include Screenshots, bin, release 
-// Don't include lib/rt.jar
-
-
-//TODO What to do about rt.jar?
-//Error   could not read Username for 'https://github.com': terminal prompts disabled 
-//Enumerating objects: 70, done.  
-//Delta compression using up to 8 threads 
-//Total 68 (delta 6), reused 0 (delta 0)  
-//Remote  Resolving deltas    
-//Remote  warning: See https://gh.io/lfs for more information.            
-//Remote  warning: File lib/rt.jar is 62.46 MB; this is larger than GitHub's recommended maximum file size of 50.00 MB            
-//Remote  warning: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.          
-//To  https://github.com/iconindicators/systemtrayiconstest   
-//   b6218d0..ce2edb2  main -> main   
-//Finished    
-
-
 /**
  * Abstract base class for a system tray icon, fully supported ONLY on Windows.
  *
