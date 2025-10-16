@@ -168,7 +168,7 @@ Create `users.txt` to match the list of authors:
     echo "bernmeister = Bernard Giannetti <thebernmeister@hotmail.com>" > users.txt
   ```
 
-Convert each `SVN` working copy to a `Git` repository:
+Convert each `SVN` repository to a `Git` repository:
 
   ```
     git svn clone file://$(pwd)/stardatesystraysvn/code \
