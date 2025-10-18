@@ -45,14 +45,18 @@ three jars in `release`:
 
 For `Microsoft Windows`, run `stardatesystemtrayicon` from a command prompt:
 
-    java -jar release/stardatesystemtrayicon-6.0.0.jar
+```
+  java -jar release/stardatesystemtrayicon-6.0.0.jar
+```
 
 which will launch a tray icon in the system tray.
 
 For `Linux` (and presumably `Apple`), the system tray is unsupported, so instead
 from a terminal:
 
-    java -DrunWithoutSystemTrayIcon=true -jar release/stardatesystemtrayicon-6.0.0.jar
+```
+  java -DrunWithoutSystemTrayIcon=true -jar release/stardatesystemtrayicon-6.0.0.jar
+```
 
 which will create a frame/window and on a mouse right-click, will display the
 popup menu.
@@ -68,7 +72,9 @@ To print (some of the) system properties, include `-Ddebug=true` (on any operati
 `NSIS` is used to create the installer (and launcher) for the system tray icons.
 In a command prompt or terminal:
 
-    ant Release
+```
+  ant Release
+```
 
 produces (with version numbers)
 - `StardateSystemTrayIconSetup.exe`
@@ -93,7 +99,9 @@ terminal:
 
 To build the packages for a release on `GitHub`, in a command prompt or terminal:
 
-    ant Release
+```
+  ant Release
+```
 
 which produces (with version numbers)
 - `StardateSystemTrayIconSetup.exe`
@@ -101,7 +109,7 @@ which produces (with version numbers)
 - `stardate.jar`
 - `stardate-javadoc.zip`
 
-On `GitHub` create a new `Release` with corresponding version tag and upload the above files.
+On `GitHub` create a new release with version tag and upload the above files.
 
 ---
 
@@ -111,8 +119,10 @@ Prerequisite: `SpotBugs` must be downloaded and extracted into a directory
 `spotbugs` at the project root (remove any release numbering).
 
 Calling
-    
-    ant Spotbugs
+
+```
+  ant Spotbugs
+```
     
 will run `SpotBugs` and produce the report `spotbugs.html`.
 
@@ -126,84 +136,84 @@ repository on `GitHub`.
 
 Obtain each `SVN` repository from `Sourceforge` and create a working copy:
 
-  ```
-    rsync -av svn.code.sf.net::p/stardatesystray/code \
-      ./stardatesystraysvn
+```
+  rsync -av svn.code.sf.net::p/stardatesystray/code \
+    ./stardatesystraysvn
 
-    svn checkout file://$(pwd)/stardatesystraysvn/code \
-      stardatesystraysvnworkingcopy
+  svn checkout file://$(pwd)/stardatesystraysvn/code \
+    stardatesystraysvnworkingcopy
 
-    rsync -av svn.code.sf.net::p/wrldtimesystray/code \
-      ./wrldtimesystraysvn
+  rsync -av svn.code.sf.net::p/wrldtimesystray/code \
+    ./wrldtimesystraysvn
 
-    svn checkout file://$(pwd)/wrldtimesystraysvn/code \
-      wrldtimesystraysvnworkingcopy
-  ```
+  svn checkout file://$(pwd)/wrldtimesystraysvn/code \
+    wrldtimesystraysvnworkingcopy
+```
 
 If a dump file is ever required:
 
-  ```
-    svnadmin dump --incremental --deltas \
-      stardatesystraysvn/code > stardatesystray.dump
+```
+  svnadmin dump --incremental --deltas \
+    stardatesystraysvn/code > stardatesystray.dump
 
-    svnadmin dump --incremental --deltas \
-      wrldtimesystraysvn/code > wrldtimesystray.dump
-  ```
+  svnadmin dump --incremental --deltas \
+    wrldtimesystraysvn/code > wrldtimesystray.dump
+```
 
 Verify list of authors (should only be `bernmeister =`):
 
-  ```
-    cd stardatesystraysvnworkingcopy
-    svn log --xml --quiet | grep author | sort -u | perl -pe 's/.*>(.*?)<.*/$1 = /'
-    cd ..
+```
+  cd stardatesystraysvnworkingcopy
+  svn log --xml --quiet | grep author | sort -u | perl -pe 's/.*>(.*?)<.*/$1 = /'
+  cd ..
 
-    cd wrldtimesystraysvnworkingcopy
-    svn log --xml --quiet | grep author | sort -u | perl -pe 's/.*>(.*?)<.*/$1 = /'
-    cd ..
-  ```
+  cd wrldtimesystraysvnworkingcopy
+  svn log --xml --quiet | grep author | sort -u | perl -pe 's/.*>(.*?)<.*/$1 = /'
+  cd ..
+```
 
 Create `users.txt` to match the list of authors:
 
-  ```
-    echo "bernmeister = Bernard Giannetti <thebernmeister@hotmail.com>" > users.txt
-  ```
+```
+  echo "bernmeister = Bernard Giannetti <thebernmeister@hotmail.com>" > users.txt
+```
 
 Convert each `SVN` repository to a `Git` repository:
 
-  ```
-    git svn clone file://$(pwd)/stardatesystraysvn/code \
-      --authors-file=users.txt \
-      --no-metadata \
-      --prefix "" \
-      -s stardatesystraygit
+```
+  git svn clone file://$(pwd)/stardatesystraysvn/code \
+    --authors-file=users.txt \
+    --no-metadata \
+    --prefix "" \
+    -s stardatesystraygit
 
-    git svn clone file://$(pwd)/wrldtimesystraysvn/code \
-      --authors-file=users.txt \
-      --no-metadata \
-      --prefix "" \
-      -s wrldtimesystraygit
-  ```
+  git svn clone file://$(pwd)/wrldtimesystraysvn/code \
+    --authors-file=users.txt \
+    --no-metadata \
+    --prefix "" \
+    -s wrldtimesystraygit
+```
 
 Clone the main repository from `GitHub`:
 
-  ```
-    git clone https://github.com/iconindicators/systemtrayicons
-  ```
+```
+  git clone https://github.com/iconindicators/systemtrayicons
+```
 
 Insert the two converted `Git` repositories from above to the clone (in a
 directory called `sourceforge`) and push back up to `GitHub`:
 
-  ```
-    cd systemtrayicons
+```
+  cd systemtrayicons
 
-    git remote add stardatesystraygit $(pwd)/../stardatesystraygit/.git
-    git subtree add -P sourceforge/stardatesystray stardatesystraygit HEAD
+  git remote add stardatesystraygit $(pwd)/../stardatesystraygit/.git
+  git subtree add -P sourceforge/stardatesystray stardatesystraygit HEAD
 
-    git remote add wrldtimesystraygit $(pwd)/../wrldtimesystraygit/.git
-    git subtree add -P sourceforge/wrldtimesystray wrldtimesystraygit HEAD
+  git remote add wrldtimesystraygit $(pwd)/../wrldtimesystraygit/.git
+  git subtree add -P sourceforge/wrldtimesystray wrldtimesystraygit HEAD
 
-    git push origin main
-  ```
+  git push origin main
+```
 
 References
 - [https://sourceforge.net/p/forge/documentation/svn](https://sourceforge.net/p/forge/documentation/svn)
