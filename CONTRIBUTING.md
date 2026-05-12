@@ -6,9 +6,7 @@ This project produces the following `system tray icons` for `Microsoft Windows`:
 
 where each system tray icon is built upon `basesystemtrayicon`.
 
-In addition, the library `stardate` is produced, which is used by
-`stardatesystemtrayicon`, but may also be called through its API by any
-third-party `Java` application.
+In addition, the library `stardate` is produced, which is used by `stardatesystemtrayicon`, but may also be called through its API by any third-party `Java` application.
 
 ---
 
@@ -26,44 +24,48 @@ Compilation is set at `Java 8` and so requires the corresponding `rt.jar`:
 
 Compiling `stardatesystemtrayicon` requires `Joda-Time`.  Download the latest `joda-time-x.y.z.jar` from [https://www.joda.org/joda-time](https://www.joda.org/joda-time) and place, as is, into the directory `stardatesystemtrayicon\lib`.
 
-In `build.xml` ensure the version number of the property `jar.joda` matches
-that of the jar.
+In `build.xml` ensure the version number of the property `jar.joda` matches that of the jar.
 
 ---
 
 ## Compile and Jar
 
-Calling `ant` without parameters compiles **ALL** the source code and produces
-three jars in `release`:
+Calling `ant` without parameters compiles **ALL** the source code and produces three jars in `release`:
 - `stardate`
 - `stardatesystemtrayicon`
 - `worldtimesystemtrayicon`
 
 ---
 
-## Run a System Tray Icon from a Jar
+## Run a System Tray Icon Jar within the Source Folder
 
-For `Microsoft Windows`, run `stardatesystemtrayicon` from a command prompt:
+**Prerequisite:** Compile and Jar
+
+For `Microsoft Windows`:
+```
+  java -cp release\stardatesystemtrayicon-6.0.0.jar;stardatesystemtrayicon\lib\joda-time-2.14.0.jar stardatesystemtrayicon.StardateSystemTrayIcon
+```
+or
+```
+  java -jar release\worldtimesystemtrayicon-3.0.0.jar
 
 ```
-  java -jar release/stardatesystemtrayicon-6.0.0.jar
-```
-
 which will launch a tray icon in the system tray.
 
-For `Linux` (and presumably `Apple`), the system tray is unsupported, so instead
-from a terminal:
+For `Linux`, the system tray is unsupported, so an additional parameter is used:
+```
+  java -DrunWithoutSystemTrayIcon=true -cp release/stardatesystemtrayicon-6.0.0.jar:stardatesystemtrayicon/lib/joda-time-2.14.0.jar stardatesystemtrayicon.StardateSystemTrayIcon
+```
+or
+```
+  java -DrunWithoutSystemTrayIcon=true -jar release/worldtimesystemtrayicon-3.0.0.jar
 
 ```
-  java -DrunWithoutSystemTrayIcon=true -jar release/stardatesystemtrayicon-6.0.0.jar
-```
+which creates a frame/window and on a mouse right-click, displays the popup menu.
 
-which will create a frame/window and on a mouse right-click, will display the
-popup menu.
+The above `Linux` commands will also work on `Microsoft Windows` if wanting to run without the trayicon. 
 
-Repeat above for `worldtimesystemtrayicon`.
-
-To print (some of the) system properties, include `-Ddebug=true` (on any operating system).
+To print (some of the) system properties, include `-Ddebug=true`.
 
 ---
 
@@ -84,10 +86,28 @@ Then install on `Microsoft Windows` and run as any regular application.
 
 ---
 
+## Run a System Tray Icon Jar in a Windows Terminal within the Installation Folder (Microsoft Windows)    
+
+**Prerequisite:** The System Tray Icon must be installed.
+
+Launch a Windows Terminal (Command Prompt):
+
+```
+  java -jar stardatesystemtrayicon-6.0.0.jar
+```
+or
+```
+  java -jar worldtimesystemtrayicon-3.0.0.jar
+```
+which will launch a tray icon in the system tray.
+
+The parameters `-DrunWithoutSystemTrayIcon=true` and/or `-Ddebug=true` may also be used (described above when running within the source folder).
+
+---
+
 ## Create Javadoc for Stardate
 
-To create the `Javadoc` for the `Stardate` API, in a command prompt or
-terminal:
+To create the `Javadoc` for the `Stardate` API, in a command prompt or terminal:
 
     ant Javadoc
 
@@ -115,8 +135,7 @@ On `GitHub` create a new release with version tag and upload the above files.
 
 ## SpotBugs
 
-Prerequisite: `SpotBugs` must be downloaded and extracted into a directory
-`spotbugs` at the project root (remove any release numbering).
+Prerequisite: `SpotBugs` must be downloaded and extracted into a directory `spotbugs` at the project root (remove any release numbering).
 
 Calling
 
@@ -130,9 +149,7 @@ will run `SpotBugs` and produce the report `spotbugs.html`.
 
 ## Migraton from Sourceforge
 
-Documentation of the process used to bring the legacy projects
-`stardatesystray` and `wrldtimesystray` from `Sourceforge` into a single
-repository on `GitHub`.
+Documentation of the process used to bring the legacy projects `stardatesystray` and `wrldtimesystray` from `Sourceforge` into a single repository on `GitHub`.
 
 Obtain each `SVN` repository from `Sourceforge` and create a working copy:
 
@@ -200,8 +217,7 @@ Clone the main repository from `GitHub`:
   git clone https://github.com/iconindicators/systemtrayicons
 ```
 
-Insert the two converted `Git` repositories from above to the clone (in a
-directory called `sourceforge`) and push back up to `GitHub`:
+Insert the two converted `Git` repositories from above to the clone (in a directory called `sourceforge`) and push back up to `GitHub`:
 
 ```
   cd systemtrayicons
