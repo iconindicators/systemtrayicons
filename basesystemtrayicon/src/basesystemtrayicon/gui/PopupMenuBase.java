@@ -41,7 +41,7 @@ implements ActionListener, ClipboardOwner
 
     private String m_applicationName;
 
-    private Image m_applicationIconImage;
+    private transient Image m_applicationIconImage;
 
     private Class<? extends DialogSettingsBase> m_dialogSettingsBase;
 

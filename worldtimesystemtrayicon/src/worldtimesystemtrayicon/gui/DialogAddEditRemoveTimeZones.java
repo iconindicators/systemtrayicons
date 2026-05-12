@@ -35,7 +35,7 @@ implements ActionListener, TableModelListener
 {
     private static final long serialVersionUID = 1L;
 
-    private Image m_applicationIconImage;
+    private transient Image m_applicationIconImage;
 
     private JTable m_table;
     private TableModel m_tableModel;
@@ -220,7 +220,7 @@ implements ActionListener, TableModelListener
             Properties.getPropertyList(
                 Properties.KEY_TIME_ZONES_DISPLAY_NAMES );
 
-        private Object[][] m_data;
+        private transient Object[][] m_data;
 
 
         public TableModel()

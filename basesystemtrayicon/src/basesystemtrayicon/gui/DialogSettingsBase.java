@@ -29,7 +29,7 @@ implements ActionListener, ItemListener
     protected JButton m_cancel =
         new JButton( Messages.getString( "DialogSettingsBase.1" ) );
 
-    protected Image m_applicationIconImage;
+    protected transient Image m_applicationIconImage;
 
 
     protected DialogSettingsBase( Image applicationIconImage )
