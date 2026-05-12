@@ -27,39 +27,39 @@ public class DialogMessageLayout
 extends JDialog
 implements ActionListener, KeyListener
 {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private static final String LAYOUT_DIFFERENT_DAY_INDICATOR =
+    private static final String LAYOUT_DIFFERENT_DAY_INDICATOR =
         Messages.getString( "DialogMessageLayout.4" );
 
-	private static final String LAYOUT_DATE_TIME =
+    private static final String LAYOUT_DATE_TIME =
         Messages.getString( "DialogMessageLayout.5" );
 
-	private static final String LAYOUT_TIME_ZONE =
+    private static final String LAYOUT_TIME_ZONE =
         Messages.getString( "DialogMessageLayout.6" );
 
     private static final String LAYOUT_NONE =
         Messages.getString( "DialogMessageLayout.7" );
 
-	private JTextField
-	    m_layoutTextLeft,
-	    m_layoutTextLeftCentre,
-	    m_layoutTextRightCentre,
-	    m_layoutTextRight;
+    private JTextField
+        m_layoutTextLeft,
+        m_layoutTextLeftCentre,
+        m_layoutTextRightCentre,
+        m_layoutTextRight;
 
-	private JComboBox<String>
-	    m_layoutComboleft,
-	    m_layoutComboCentre,
-	    m_layoutComboRight;
+    private JComboBox<String>
+        m_layoutComboleft,
+        m_layoutComboCentre,
+        m_layoutComboRight;
 
-	private String
-	    m_backupTextLeft,
-	    m_backupComboLeft,
-	    m_backupTextLeftCentre,
-	    m_backupComboCentre,
-	    m_backupTextRightCentre,
-	    m_backupComboRight,
-	    m_backupTextRight;
+    private String
+        m_backupTextLeft,
+        m_backupComboLeft,
+        m_backupTextLeftCentre,
+        m_backupComboCentre,
+        m_backupTextRightCentre,
+        m_backupComboRight,
+        m_backupTextRight;
 
     private JLabel m_sampleLabel;
 
@@ -70,7 +70,7 @@ implements ActionListener, KeyListener
     private PopupMenu m_popupMenu;
 
 
-	public DialogMessageLayout(
+    public DialogMessageLayout(
         Image applicationIconImage,
         PopupMenu popupMenu )
     {
@@ -85,35 +85,35 @@ implements ActionListener, KeyListener
 
         backupProperties();
 
-    	final String[] layoutOptions =
-	        new String[] {
+        final String[] layoutOptions =
+            new String[] {
                 LAYOUT_DIFFERENT_DAY_INDICATOR,
                 LAYOUT_NONE,
                 LAYOUT_DATE_TIME,
                 LAYOUT_TIME_ZONE };
 
-    	m_layoutTextLeft =
-	        new JTextField(
+        m_layoutTextLeft =
+            new JTextField(
                 Properties.getProperty(
                     Properties.KEY_LAYOUT_TEXT_LEFT,
                     Properties.VALUE_LAYOUT_TEXT_LEFT_DEFAULT ) );
 
-    	m_layoutTextLeft.setToolTipText(
-	        Messages.getString( "DialogMessageLayout.12" ) );
+        m_layoutTextLeft.setToolTipText(
+            Messages.getString( "DialogMessageLayout.12" ) );
 
-    	m_layoutTextLeft.setColumns( Utils.NUMBER_OF_COLUMNS );
-    	m_layoutTextLeft.addKeyListener( this );
+        m_layoutTextLeft.setColumns( Utils.NUMBER_OF_COLUMNS );
+        m_layoutTextLeft.addKeyListener( this );
 
-    	m_layoutComboleft = new JComboBox<>( layoutOptions );
-    	m_layoutComboleft.setSelectedItem(
-	        convertLayoutPropertyValueToLocale(
+        m_layoutComboleft = new JComboBox<>( layoutOptions );
+        m_layoutComboleft.setSelectedItem(
+            convertLayoutPropertyValueToLocale(
                 Properties.KEY_LAYOUT_COMBO_LEFT,
                 Properties.VALUE_LAYOUT_COMBO_TIME_ZONE ) );
 
-    	m_layoutComboleft.addActionListener( this );
+        m_layoutComboleft.addActionListener( this );
 
-    	m_layoutTextLeftCentre =
-	        new JTextField(
+        m_layoutTextLeftCentre =
+            new JTextField(
                 Properties.getProperty(
                     Properties.KEY_LAYOUT_TEXT_LEFT_CENTRE,
                     Properties.VALUE_LAYOUT_TEXT_LEFT_CENTRE_DEFAULT ) );
@@ -121,19 +121,19 @@ implements ActionListener, KeyListener
         m_layoutTextLeftCentre.setToolTipText(
             Messages.getString( "DialogMessageLayout.13" ) );
 
-    	m_layoutTextLeftCentre.setColumns( Utils.NUMBER_OF_COLUMNS );
-    	m_layoutTextLeftCentre.addKeyListener( this );
+        m_layoutTextLeftCentre.setColumns( Utils.NUMBER_OF_COLUMNS );
+        m_layoutTextLeftCentre.addKeyListener( this );
 
-    	m_layoutComboCentre = new JComboBox<>( layoutOptions );
-    	m_layoutComboCentre.setSelectedItem(
+        m_layoutComboCentre = new JComboBox<>( layoutOptions );
+        m_layoutComboCentre.setSelectedItem(
             convertLayoutPropertyValueToLocale(
                 Properties.KEY_LAYOUT_COMBO_CENTRE,
                 Properties.VALUE_LAYOUT_COMBO_DIFFERENT_DAY_INDICATOR ) );
 
         m_layoutComboCentre.addActionListener( this );
 
-    	m_layoutTextRightCentre =
-	        new JTextField(
+        m_layoutTextRightCentre =
+            new JTextField(
                 Properties.getProperty(
                     Properties.KEY_LAYOUT_TEXT_RIGHT_CENTRE,
                     Properties.VALUE_LAYOUT_TEXT_RIGHT_CENTRE_DEFAULT ) );
@@ -141,19 +141,19 @@ implements ActionListener, KeyListener
         m_layoutTextRightCentre.setToolTipText(
             Messages.getString( "DialogMessageLayout.14" ) );
 
-    	m_layoutTextRightCentre.setColumns( Utils.NUMBER_OF_COLUMNS );
-    	m_layoutTextRightCentre.addKeyListener( this );
+        m_layoutTextRightCentre.setColumns( Utils.NUMBER_OF_COLUMNS );
+        m_layoutTextRightCentre.addKeyListener( this );
 
-    	m_layoutComboRight = new JComboBox<>( layoutOptions );
-    	m_layoutComboRight.setSelectedItem(
+        m_layoutComboRight = new JComboBox<>( layoutOptions );
+        m_layoutComboRight.setSelectedItem(
             convertLayoutPropertyValueToLocale(
                 Properties.KEY_LAYOUT_COMBO_RIGHT,
                 Properties.VALUE_LAYOUT_COMBO_DATE_TIME ) );
 
-    	m_layoutComboRight.addActionListener( this );
+        m_layoutComboRight.addActionListener( this );
 
-    	m_layoutTextRight =
-	        new JTextField(
+        m_layoutTextRight =
+            new JTextField(
                 Properties.getProperty(
                     Properties.KEY_LAYOUT_TEXT_RIGHT,
                     Properties.VALUE_LAYOUT_TEXT_RIGHT_DEFAULT ) );
@@ -161,17 +161,17 @@ implements ActionListener, KeyListener
         m_layoutTextRight.setToolTipText(
             Messages.getString( "DialogMessageLayout.15" ) );
 
-    	m_layoutTextRight.setColumns( Utils.NUMBER_OF_COLUMNS );
-    	m_layoutTextRight.addKeyListener( this );
+        m_layoutTextRight.setColumns( Utils.NUMBER_OF_COLUMNS );
+        m_layoutTextRight.addKeyListener( this );
 
-    	m_sampleLabel = new JLabel();
-    	m_sampleLabel.setBorder( Utils.createBorder() );
+        m_sampleLabel = new JLabel();
+        m_sampleLabel.setBorder( Utils.createBorder() );
 
-    	m_ok = new JButton( Messages.getString( "DialogMessageLayout.1" ) );
-    	m_ok.addActionListener( this );
+        m_ok = new JButton( Messages.getString( "DialogMessageLayout.1" ) );
+        m_ok.addActionListener( this );
 
-    	m_cancel = new JButton( Messages.getString( "DialogMessageLayout.2" ) );
-    	m_cancel.addActionListener( this );
+        m_cancel = new JButton( Messages.getString( "DialogMessageLayout.2" ) );
+        m_cancel.addActionListener( this );
 
         GroupLayout layout = new GroupLayout( getContentPane() );
         getContentPane().setLayout( layout );
@@ -228,17 +228,17 @@ implements ActionListener, KeyListener
     }
 
 
-	@Override
-	public void actionPerformed( ActionEvent actionEvent )
+    @Override
+    public void actionPerformed( ActionEvent actionEvent )
     {
-	    boolean isLayoutCombobox =
+        boolean isLayoutCombobox =
             actionEvent.getSource() == m_layoutComboleft
             ||
             actionEvent.getSource() == m_layoutComboCentre
             ||
             actionEvent.getSource() == m_layoutComboRight;
 
-	    if( actionEvent.getSource() == m_ok )
+        if( actionEvent.getSource() == m_ok )
         {
             setProperties();
             Properties.store();
@@ -261,8 +261,8 @@ implements ActionListener, KeyListener
     }
 
 
-	@Override
-	public void keyTyped( KeyEvent keyEvent )
+    @Override
+    public void keyTyped( KeyEvent keyEvent )
     {
         /** Do nothing. */
     }
@@ -290,7 +290,7 @@ implements ActionListener, KeyListener
     /**
      * Set the original (unmodified) layout properties.
      */
-	protected void revertProperties()
+    protected void revertProperties()
     {
         Properties.setProperty(
             Properties.KEY_LAYOUT_TEXT_LEFT,
@@ -322,14 +322,14 @@ implements ActionListener, KeyListener
     }
 
 
-	/**
-	 * When the message is displayed, the properties are read.
-	 * 
-	 * So as the user adjusts layout options, those new (temporary) values
-	 * must be saved to the properties for the message to reflect those changes.
-	 * 
-	 * If the user cancels however, the original properties must be restored.
-	 */
+    /**
+     * When the message is displayed, the properties are read.
+     * 
+     * So as the user adjusts layout options, those new (temporary) values
+     * must be saved to the properties for the message to reflect those changes.
+     * 
+     * If the user cancels however, the original properties must be restored.
+     */
     protected void backupProperties()
     {
         m_backupTextLeft =

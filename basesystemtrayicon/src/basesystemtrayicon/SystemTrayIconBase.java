@@ -27,10 +27,12 @@ import basesystemtrayicon.gui.TrayIconBase;
 
 
 /**
- * Abstract base class for a system tray icon, fully supported ONLY on Windows.
+ * Abstract base class for a system tray icon, fully supported ONLY on
+ * Microsoft Windows.
  *
- * To run from the command line and bypass the system tray icon (for testing or
- * to run on linux), specifying the command line parameter
+ * To run from the command line and bypass the system tray icon (for the
+ * purpose of testing or to run on Linux), specifying the command line
+ * parameter
  *
  *      -DrunWithoutSystemTrayIcon=true
  *
@@ -38,7 +40,7 @@ import basesystemtrayicon.gui.TrayIconBase;
  * right-click, the popup menu will be launched.
  *
  * If the above command line parameter is absent, the system tray icon will run
- * as normal (only on Windows).
+ * as normal (only on Microsoft Windows).
  *
  * To print debug information, add
  *
@@ -57,7 +59,7 @@ public abstract class SystemTrayIconBase
 
     public SystemTrayIconBase(
         final Class<? extends TrayIconBase> trayIconClass )
-	{
+    {
         if( Boolean.parseBoolean( System.getProperty( "debug" ) ) )
             debug();
 
@@ -115,7 +117,7 @@ public abstract class SystemTrayIconBase
                     applicationURL,
                     applicationVersion );
         }
-	}
+    }
 
 
     protected static void run(
@@ -279,7 +281,9 @@ public abstract class SystemTrayIconBase
     }
 
 
-    protected static boolean systemTraySupported( boolean runWithoutTrayIcon )
+    protected static boolean
+    systemTraySupported(
+        boolean runWithoutTrayIcon )
     {
         boolean systemTraySupported;
 
@@ -392,7 +396,9 @@ public abstract class SystemTrayIconBase
     }
 
 
-    protected static boolean manifestIsGood( Properties manifest )
+    protected static boolean
+    manifestIsGood(
+        Properties manifest )
     {
         return(
             manifest.containsKey( MANIFEST_KEY_PROJECT_AUTHOR )
@@ -439,7 +445,8 @@ public abstract class SystemTrayIconBase
                                     String.class,
                                     String.class,
                                     String.class } );
-                        final PopupMenuBase popupMenu =
+
+                        final PopupMenuBase popupMenu =
                             ( PopupMenuBase )constructor.newInstance(
                                 applicationAuthors,
                                 applicationIconImage,

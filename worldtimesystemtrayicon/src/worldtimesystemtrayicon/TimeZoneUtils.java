@@ -17,17 +17,17 @@ import java.util.Vector;
 
 public class TimeZoneUtils
 {
-	private static String[] ms_systemTimeZones;
+    private static String[] ms_systemTimeZones;
 
-	public enum DATE_TIME_SORT_OPTIONS
-	{
-		SORT_BY_DATE_TIME,
-		SORT_BY_TIME_ZONE
-	}
+    public enum DATE_TIME_SORT_OPTIONS
+    {
+        SORT_BY_DATE_TIME,
+        SORT_BY_TIME_ZONE
+    }
 
-	
-	static
-	{
+    
+    static
+    {
         final String TIME_ZONE_ETC = "Etc/";
         final String TIME_ZONE_SYSTEMV = "SystemV/";
         final String TIME_ZONE_FORWARD_SLASH = "/";
@@ -56,44 +56,44 @@ public class TimeZoneUtils
         }
 
         ms_systemTimeZones = systemTimeZones.toArray( new String[ 0 ] );
-	}
+    }
 
 
-	public static String[] getSystemTimeZones()
-	{
-		return ms_systemTimeZones;
-	}
+    public static String[] getSystemTimeZones()
+    {
+        return ms_systemTimeZones;
+    }
 
 
     public static Vector<TimeZoneItem> getUserTimeZones()
-	{
-		Vector<String> timeZones =
-	        Properties.getPropertyList(
+    {
+        Vector<String> timeZones =
+            Properties.getPropertyList(
                 Properties.KEY_TIME_ZONES );
 
-		Vector<String> displayNames =
-	        Properties.getPropertyList(
+        Vector<String> displayNames =
+            Properties.getPropertyList(
                 Properties.KEY_TIME_ZONES_DISPLAY_NAMES );
-		
-		Vector<TimeZoneItem> userTimeZones =
-	        new Vector<>( timeZones.size() );
+        
+        Vector<TimeZoneItem> userTimeZones =
+            new Vector<>( timeZones.size() );
 
-		List<String> systemTimeZones = Arrays.asList( getSystemTimeZones() );
-		for( int i = 0; i < timeZones.size(); i++ )
-		    if( systemTimeZones.contains( timeZones.get( i ) ) )
+        List<String> systemTimeZones = Arrays.asList( getSystemTimeZones() );
+        for( int i = 0; i < timeZones.size(); i++ )
+            if( systemTimeZones.contains( timeZones.get( i ) ) )
                 userTimeZones.add(
                     new TimeZoneItem(
                         timeZones.get( i ),
                         displayNames.get( i ) ) );
 
-		    else
-		        // Should never occur, unless in the unlikely situation the time
-		        // zone has changed from one Java version to the next.
-		        System.err.println(
-	                "Dropping time zone: " + timeZones.get( i ) );
+            else
+                // Should never occur, unless in the unlikely situation the time
+                // zone has changed from one Java version to the next.
+                System.err.println(
+                    "Dropping time zone: " + timeZones.get( i ) );
 
-		return userTimeZones;
-	}
+        return userTimeZones;
+    }
 
     
     public static

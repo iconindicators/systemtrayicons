@@ -38,10 +38,10 @@ public class PopupMenu extends PopupMenuBase
     private static final String POPUP_COPY_TO_CLIPBOARD =
         Messages.getString( "PopupMenu.30" );
 
-	private static final String CREDIT_ALGORITHM =
+    private static final String CREDIT_ALGORITHM =
         Messages.getString( "PopupMenu.20" );
 
-	private static final String CREDIT_CHRONOLOGY =
+    private static final String CREDIT_CHRONOLOGY =
         Messages.getString( "PopupMenu.23" );
 
 
@@ -51,14 +51,14 @@ public class PopupMenu extends PopupMenuBase
         String applicationName,
         String applicationURL,
         String applicationVersion )
-	{
-    	super(
+    {
+        super(
             applicationAuthors,
             new String[] {
                 CREDIT_ALGORITHM,
                 CREDIT_CHRONOLOGY },
             applicationIconImage,
-	        applicationName,
+            applicationName,
             applicationURL,
             applicationVersion,
             DialogSettings.class );
@@ -73,13 +73,13 @@ public class PopupMenu extends PopupMenuBase
 
         // For debug.
         System.out.println( getStardate() );
-	}
+    }
 
 
     @Override
     public void actionPerformed( ActionEvent actionEvent )
-	{
-    	String menuItem = ( (MenuItem)actionEvent.getSource() ).getLabel();
+    {
+        String menuItem = ( (MenuItem)actionEvent.getSource() ).getLabel();
         if( POPUP_COPY_TO_CLIPBOARD.equals( menuItem ) )
             copyToClipboard(
                 getStardate()
@@ -95,7 +95,7 @@ public class PopupMenu extends PopupMenuBase
         System.out.println( getStardate() );
         System.out.println( getMessage() );
         System.out.println();
-	}
+    }
 
 
     @Override

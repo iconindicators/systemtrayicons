@@ -10,7 +10,7 @@ import stardatesystemtrayicon.gui.TrayIcon;
  *
  * To run from within the source tree:
  *
- *    Windows:
+ *    Microsoft Windows:
  *        java -cp release\stardatesystemtrayicon-6.0.0.jar;stardatesystemtrayicon\lib\joda-time-2.14.0.jar stardatesystemtrayicon.StardateSystemTrayIcon
  *
  *    Linux:

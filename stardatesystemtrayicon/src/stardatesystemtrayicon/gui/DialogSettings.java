@@ -23,7 +23,7 @@ import stardatesystemtrayicon.Properties;
 
 public class DialogSettings extends DialogSettingsBase
 {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     private JLabel m_dateFormatUserDefinedLabel;
     private JComboBox<String> m_dateFormatCombobox;
@@ -39,8 +39,8 @@ public class DialogSettings extends DialogSettingsBase
     {
         super( applicationIconImage );
 
-    	JLabel dateFormatLabel =
-	        new JLabel( Messages.getString( "DialogSettings.6" ) );
+        JLabel dateFormatLabel =
+            new JLabel( Messages.getString( "DialogSettings.6" ) );
 
         m_dateFormatCombobox =
             new JComboBox<>(
@@ -106,9 +106,9 @@ public class DialogSettings extends DialogSettingsBase
         m_classicCheckbox.addItemListener( this );
 
         m_runOnStartup.setSelected( SystemStart.getRunOnSystemStart() );
-    	m_runOnStartup.addItemListener( this );
+        m_runOnStartup.addItemListener( this );
 
-    	GroupLayout layout = new GroupLayout( getContentPane() );
+        GroupLayout layout = new GroupLayout( getContentPane() );
         getContentPane().setLayout( layout );
         layout.setAutoCreateGaps( true );
         layout.setAutoCreateContainerGaps( true );

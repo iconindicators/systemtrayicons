@@ -46,94 +46,93 @@ public class Utils
     }
 
 
-    /**
-	 * Creates a "label" written in HTML, which may contain clickable links.
-	 *
-	 * @param htmlMessage The message in HTML.
-	 *
-	 * @return A "label" which can be passed in to a message box.
-	 *
-	 * References
-	 *     http://explodingpixels.wordpress.com/2008/10/28/make-jeditorpane-use-the-system-font
-	 *     http://www.devdaily.com/blog/post/jfc-swing/how-add-style-stylesheet-jeditorpane-example-code
-	 *     http://www.apl.jhu.edu/~hall/java/Swing-Tutorial/Swing-Tutorial-JEditorPane.html
-	 */
+   /**
+    * Creates a "label" written in HTML, which may contain clickable links.
+    *
+    * @param htmlMessage The message in HTML.
+    *
+    * @return A "label" which can be passed in to a message box.
+    *
+    * References
+    *     http://explodingpixels.wordpress.com/2008/10/28/make-jeditorpane-use-the-system-font
+    *     http://www.devdaily.com/blog/post/jfc-swing/how-add-style-stylesheet-jeditorpane-example-code
+    *     http://www.apl.jhu.edu/~hall/java/Swing-Tutorial/Swing-Tutorial-JEditorPane.html
+    */
     public static JEditorPane createURLLabel
     (
         String htmlMessage,
         final Image applicationIconImage
     )
     {
-    	Font font = UIManager.getFont( "Label.font" );
-    	String rgb = Integer.toHexString( new JPanel().getBackground().getRGB() );
-    	rgb = rgb.substring( 2, rgb.length() );
+        Font font = UIManager.getFont( "Label.font" );
+        String rgb = Integer.toHexString( new JPanel().getBackground().getRGB() );
+        rgb = rgb.substring( 2, rgb.length() );
         String bodyRule =
-    		"body { background: #"
+            "body { background: #"
             +
-			rgb
+            rgb
             +
-			"; font-family: "
+            "; font-family: "
             +
-			font.getFamily()
+            font.getFamily()
             +
-			"; font-size: "
+            "; font-size: "
             +
-			font.getSize() + "pt; }";
+            font.getSize() + "pt; }";
         
         JEditorPane jEditorPane =
-    		new JEditorPane(
-				new HTMLEditorKit().getContentType(), htmlMessage );
+            new JEditorPane(
+                new HTMLEditorKit().getContentType(),
+                htmlMessage );
 
         ( (HTMLDocument)jEditorPane.getDocument() ).getStyleSheet().addRule( bodyRule );
         jEditorPane.setEditable( false );
         jEditorPane.setBorder( null );
-    	jEditorPane.setOpaque( false );
-    	jEditorPane.addHyperlinkListener(
-    		new HyperlinkListener()
-    		{
-    			@Override
-				public void hyperlinkUpdate( HyperlinkEvent hyperlinkEvent )
-    			{
-    			    boolean canBrowse =
-        			    Desktop.isDesktopSupported()
+        jEditorPane.setOpaque( false );
+        jEditorPane.addHyperlinkListener(
+            new HyperlinkListener()
+            {
+                @Override
+                public void hyperlinkUpdate( HyperlinkEvent hyperlinkEvent )
+                {
+                    boolean canBrowse =
+                        Desktop.isDesktopSupported()
                         &&
                         Desktop.getDesktop().isSupported( Desktop.Action.BROWSE );
 
-    			    if( canBrowse )
-    				{
-    					HyperlinkEvent.EventType eventType =
-                            hyperlinkEvent.getEventType();
+                    if( canBrowse )
+                    {
+                        HyperlinkEvent.EventType eventType = hyperlinkEvent.getEventType();
 
-    					if( eventType == HyperlinkEvent.EventType.ACTIVATED )
-    					{
-    						try
-    						{
-    							Desktop.getDesktop().browse(
-                                    hyperlinkEvent.getURL().toURI() );
-							}
-    						catch( IOException | URISyntaxException exception )
-    						{
-    	                        DialogMessage.showError(
-	                                Messages.getString( "Utils.0" ),
-	                                Messages.getString( "Utils.1" ),
-	                                exception,
-	                                applicationIconImage );
-							}
-    					}
-    				}
-    				else
-    				{
-    					DialogMessage.showError(
-                            Messages.getString( "Utils.0" ),
-							Messages.getString( "Utils.1" ),
-						    null,
-						    applicationIconImage );
-					}
-    			}
-    		}
-    	);
+                        if( eventType == HyperlinkEvent.EventType.ACTIVATED )
+                        {
+                            try
+                            {
+                                Desktop.getDesktop().browse( hyperlinkEvent.getURL().toURI() );
+                            }
+                            catch( IOException | URISyntaxException exception )
+                            {
+                                DialogMessage.showError(
+                                    Messages.getString( "Utils.0" ),
+                                    Messages.getString( "Utils.1" ),
+                                    exception,
+                                    applicationIconImage );
+                            }
+                        }
+                    }
+                    else
+                    {
+                      DialogMessage.showError(
+                          Messages.getString( "Utils.0" ),
+                          Messages.getString( "Utils.1" ),
+                          null,
+                          applicationIconImage );
+                    }
+                }
+            }
+        );
 
-    	return jEditorPane;
+        return jEditorPane;
     }
 
 

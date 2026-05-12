@@ -28,22 +28,22 @@ public abstract class PopupMenuBase
 extends PopupMenu
 implements ActionListener, ClipboardOwner
 {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private static final String POPUP_EXIT =
+    private static final String POPUP_EXIT =
         Messages.getString( "PopupMenuBase.0" );
 
-	private static final String POPUP_ABOUT =
+    private static final String POPUP_ABOUT =
         Messages.getString( "PopupMenuBase.1" );
 
-	private static final String POPUP_SETTINGS =
+    private static final String POPUP_SETTINGS =
         Messages.getString( "PopupMenuBase.2" );
 
     private String m_applicationName;
 
     private Image m_applicationIconImage;
 
-	private Class<? extends DialogSettingsBase> m_dialogSettingsBase;
+    private Class<? extends DialogSettingsBase> m_dialogSettingsBase;
 
     private JEditorPane m_aboutLabel;
 
@@ -58,15 +58,15 @@ implements ActionListener, ClipboardOwner
         String applicationURL,
         String applicationVersion,
         Class<? extends DialogSettingsBase> dialogSettings )
-	{
-    	super();
+    {
+        super();
 
         m_applicationName = applicationName;
         m_applicationIconImage = Utils.getImage( applicationIconImage );
-    	m_dialogSettingsBase = dialogSettings;
+        m_dialogSettingsBase = dialogSettings;
 
-    	m_aboutLabel =
-	        createAboutLabel(
+        m_aboutLabel =
+            createAboutLabel(
                 applicationAuthors,
                 applicationCredits,
                 m_applicationIconImage,
@@ -75,20 +75,20 @@ implements ActionListener, ClipboardOwner
                 applicationURL,
                 applicationVersion );
 
-	    MenuItem menuItem = null;
+        MenuItem menuItem = null;
 
         menuItem = new MenuItem( POPUP_SETTINGS );
-	    menuItem.addActionListener( this );
-	    add( menuItem );
+        menuItem.addActionListener( this );
+        add( menuItem );
 
         menuItem = new MenuItem( POPUP_ABOUT );
-	    menuItem.addActionListener( this );
-	    add( menuItem );
+        menuItem.addActionListener( this );
+        add( menuItem );
 
-	    menuItem = new MenuItem( POPUP_EXIT );
-	    menuItem.addActionListener( this );
-	    add( menuItem );
-	}
+        menuItem = new MenuItem( POPUP_EXIT );
+        menuItem.addActionListener( this );
+        add( menuItem );
+    }
 
 
     public abstract String getMessage();
@@ -140,8 +140,8 @@ implements ActionListener, ClipboardOwner
 
     @Override
     public void actionPerformed( ActionEvent actionEvent )
-	{
-    	String menuItem = ( (MenuItem)actionEvent.getSource() ).getLabel();
+    {
+        String menuItem = ( (MenuItem)actionEvent.getSource() ).getLabel();
         if( POPUP_SETTINGS.equals( menuItem ) )
         {
             setEnabled( false );
@@ -183,9 +183,9 @@ implements ActionListener, ClipboardOwner
 
             setEnabled( true );
         }
-    	else if( POPUP_EXIT.equals( menuItem ) )
+        else if( POPUP_EXIT.equals( menuItem ) )
             System.exit( 0 );
-	}
+    }
 
 
     @Override
@@ -195,8 +195,8 @@ implements ActionListener, ClipboardOwner
     }
 
 
-	private static JEditorPane
-	createAboutLabel(
+    private static JEditorPane
+    createAboutLabel(
         String[] applicationAuthors,
         String[] applicationCredits,
         Image applicationIconImageAsImage,
@@ -204,21 +204,21 @@ implements ActionListener, ClipboardOwner
         String applicationName,
         String applicationURL,
         String applicationVersion )
-	{
+    {
         URL imageURL =
             ClassLoader.getSystemResource( applicationIconImageAsString );
 
-	    String version =
+        String version =
             new MessageFormat(
                 Messages.getString( "PopupMenuBase.6" ) ).format(
                     new Object[] { applicationVersion } );
 
-	    String projectURL =
+        String projectURL =
             "<a href='" + applicationURL + "'>" + applicationURL + "</a>";
 
-	    String urlPadding = "&nbsp;&nbsp;&nbsp;&nbsp;";
+        String urlPadding = "&nbsp;&nbsp;&nbsp;&nbsp;";
 
-	    String author;
+        String author;
         if( applicationAuthors.length == 1 )
             author = Messages.getString( "PopupMenuBase.4" );
 
@@ -264,22 +264,22 @@ implements ActionListener, ClipboardOwner
             "</html>";
 
         return Utils.createURLLabel( message, applicationIconImageAsImage );
-	}
+    }
 
 
-	/**
-	 * Read the value from the given property key and return the corresponding
-	 * date/time formatter.
-	 *
-	 * If the property does not exist or there is no value, a date/time
-	 * formatter for a long date will be used.
-	 *
-	 * @param key Property key.
-	 * @param defaultValue Default value for property if the key is not found
-	 * or has no value.
-	 *
-	 * @return A date/time formatter for the property key's value.
-	 */
+    /**
+     * Read the value from the given property key and return the corresponding
+     * date/time formatter.
+     *
+     * If the property does not exist or there is no value, a date/time
+     * formatter for a long date will be used.
+     *
+     * @param key Property key.
+     * @param defaultValue Default value for property if the key is not found
+     * or has no value.
+     *
+     * @return A date/time formatter for the property key's value.
+     */
     protected static DateTimeFormatter
     getDateTimeFormatter(
         String key,

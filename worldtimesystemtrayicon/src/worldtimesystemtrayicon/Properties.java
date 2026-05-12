@@ -36,9 +36,9 @@ public class Properties extends PropertiesBase
     public static final String KEY_LAYOUT_COMBO_RIGHT = "LayoutComboRight";
 
     /** Values for combo portions of the layout */
-	public static final String VALUE_LAYOUT_COMBO_DATE_TIME = "DateTime";
+    public static final String VALUE_LAYOUT_COMBO_DATE_TIME = "DateTime";
     public static final String VALUE_LAYOUT_COMBO_NONE = "None";
-	public static final String VALUE_LAYOUT_COMBO_TIME_ZONE = "TimeZone";
+    public static final String VALUE_LAYOUT_COMBO_TIME_ZONE = "TimeZone";
     public static final String
         VALUE_LAYOUT_COMBO_DIFFERENT_DAY_INDICATOR =
             "DifferentDayIndicator";

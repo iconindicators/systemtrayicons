@@ -11,7 +11,7 @@ import java.util.Vector;
 
 public abstract class PropertiesBase
 {
-	protected static final java.util.Properties
+    protected static final java.util.Properties
         ms_properties = new java.util.Properties();
 
     protected static File ms_propertyDirectory = null;
@@ -66,7 +66,7 @@ public abstract class PropertiesBase
     public static Status initialise( String packageNameOfConcreteClass )
     {
         Status status = Status.OK;
-    	ms_propertyDirectory =
+        ms_propertyDirectory =
             new File(
                 System.getProperty( "user.home" )
                 +
@@ -76,7 +76,7 @@ public abstract class PropertiesBase
                 +
                 packageNameOfConcreteClass );
 
-    	if( ! ms_propertyDirectory.exists() )
+        if( ! ms_propertyDirectory.exists() )
             if( ! ms_propertyDirectory.mkdir() )
                 status = Status.UNABLE_TO_CREATE_PROPERY_DIRECTORY;
 
@@ -151,10 +151,10 @@ public abstract class PropertiesBase
     public static boolean getPropertyBoolean( String key, boolean defaultValue )
     {
         if( ms_propertyFile == null )
-        	throw new IllegalStateException( "Properties must be initialised." );
+            throw new IllegalStateException( "Properties must be initialised." );
 
         if( key == null )
-        	throw new IllegalArgumentException( "Key cannot be null." );
+            throw new IllegalArgumentException( "Key cannot be null." );
 
         return
             Boolean.parseBoolean(
@@ -165,13 +165,13 @@ public abstract class PropertiesBase
     public static void setProperty( String key, String value )
     {
         if( ms_propertyFile == null )
-        	throw new IllegalStateException( "Properties must be initialised." );
+            throw new IllegalStateException( "Properties must be initialised." );
 
         if( key == null )
-        	throw new IllegalArgumentException( "Key cannot be null." );
+            throw new IllegalArgumentException( "Key cannot be null." );
 
         if( value == null )
-        	throw new IllegalArgumentException( "Value cannot be null." );
+            throw new IllegalArgumentException( "Value cannot be null." );
 
         ms_properties.setProperty( key, value );
     }
@@ -247,19 +247,19 @@ public abstract class PropertiesBase
     public static void removeProperty( String key )
     {
         if( ms_propertyFile == null )
-        	throw new IllegalStateException( "Properties must be initialised." );
+            throw new IllegalStateException( "Properties must be initialised." );
 
         if( key == null )
-        	throw new IllegalArgumentException( "Key cannot be null." );
+            throw new IllegalArgumentException( "Key cannot be null." );
 
         ms_properties.remove( key );
     }
 
 
     public static boolean store()
-	{
+    {
         if( ms_propertyFile == null )
-        	throw new IllegalStateException( "Properties must be initialised." );
+            throw new IllegalStateException( "Properties must be initialised." );
 
         boolean stored;
         try(
@@ -268,7 +268,7 @@ public abstract class PropertiesBase
         {
             ms_properties.store( fileOutputStream, null );
             stored = true;
-    	}
+        }
         catch( IOException ioException )
         {
             stored = false;
@@ -279,7 +279,7 @@ public abstract class PropertiesBase
         }
 
         return stored;
-	}
+    }
 
 
     /**

@@ -22,18 +22,18 @@ import worldtimesystemtrayicon.TimeZoneUtils.SortTimeZoneItems;
 
 public class PopupMenu extends PopupMenuBase
 {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     private static final String POPUP_ADD_EDIT_REMOVE_TIME_ZONES =
         Messages.getString( "PopupMenu.7" );
 
-	private static final String POPUP_SET_LAYOUT =
+    private static final String POPUP_SET_LAYOUT =
         Messages.getString( "PopupMenu.53" );
 
     private static final String POPUP_COPY_TO_CLIPBOARD =
         Messages.getString( "PopupMenu.59" );
 
-	private static final String POPUP_TIME_TRAVEL =
+    private static final String POPUP_TIME_TRAVEL =
         Messages.getString( "PopupMenu.9" );
 
 
@@ -80,15 +80,15 @@ public class PopupMenu extends PopupMenuBase
 
 
     @Override
-	public void actionPerformed( ActionEvent actionEvent )
-	{
+    public void actionPerformed( ActionEvent actionEvent )
+    {
         String menuItem = ( (MenuItem)actionEvent.getSource() ).getLabel();
         if( POPUP_ADD_EDIT_REMOVE_TIME_ZONES.equals( menuItem ) )
-    	{
+        {
             setEnabled( false );
-    		new DialogAddEditRemoveTimeZones( getApplicationIconImage() );
+            new DialogAddEditRemoveTimeZones( getApplicationIconImage() );
             setEnabled( true );
-    	}
+        }
         else if( POPUP_SET_LAYOUT.equals( menuItem ) )
         {
             if( userHasAddedTimeZones() )
@@ -118,7 +118,7 @@ public class PopupMenu extends PopupMenuBase
         // For debug.
         System.out.println( getMessage() );
         System.out.println();
-	}
+    }
 
 
     @Override

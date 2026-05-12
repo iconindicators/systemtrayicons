@@ -10,7 +10,7 @@ import worldtimesystemtrayicon.gui.TrayIcon;
  *
  * To run from within the source tree:
  *
- *    Windows:
+ *    Microsoft Windows:
  *        java -jar release\worldtimesystemtrayicon-3.0.0.jar
  *
  *    Linux:
@@ -18,10 +18,10 @@ import worldtimesystemtrayicon.gui.TrayIcon;
  */
 public class WorldTimeSystemTrayIcon extends SystemTrayIconBase
 {
-	private WorldTimeSystemTrayIcon()
-	{
+    private WorldTimeSystemTrayIcon()
+    {
         super( TrayIcon.class );
-	}
+    }
 
 
     public static void main( String[] args )

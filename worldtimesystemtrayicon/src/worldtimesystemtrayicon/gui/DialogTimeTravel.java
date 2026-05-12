@@ -37,7 +37,7 @@ public class DialogTimeTravel
 extends JDialog
 implements ActionListener, ChangeListener
 {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     private JSpinner
         m_hourSpinner,
@@ -91,17 +91,17 @@ implements ActionListener, ChangeListener
             m_userTimeZones,
             new SortTimeZoneItems( sortByDateTime ) );
 
-    	Vector<String> userTimeZonesDisplayable = new Vector<>();
-    	for( TimeZoneItem timeZoneItem : m_userTimeZones )
-    	    userTimeZonesDisplayable.add(
-	            timeZoneItem.getTimeZoneDisplayable() );
+        Vector<String> userTimeZonesDisplayable = new Vector<>();
+        for( TimeZoneItem timeZoneItem : m_userTimeZones )
+            userTimeZonesDisplayable.add(
+                timeZoneItem.getTimeZoneDisplayable() );
 
-    	m_timeZoneComboBox = new JComboBox<>( userTimeZonesDisplayable );
-    	m_timeZoneComboBox.addActionListener( this );
+        m_timeZoneComboBox = new JComboBox<>( userTimeZonesDisplayable );
+        m_timeZoneComboBox.addActionListener( this );
 
-    	JLabel setTime = new JLabel( Messages.getString( "DialogTimeTravel.1" ) );
+        JLabel setTime = new JLabel( Messages.getString( "DialogTimeTravel.1" ) );
 
-    	ZonedDateTime now = ZonedDateTime.now();
+        ZonedDateTime now = ZonedDateTime.now();
 
         m_hourSpinner =
             new JSpinner(
@@ -121,8 +121,8 @@ implements ActionListener, ChangeListener
 
         m_minuteSpinner.addChangeListener( this );
 
-    	JLabel hours = new JLabel( Messages.getString( "DialogTimeTravel.2" ) );
-    	JLabel minutes = new JLabel( Messages.getString( "DialogTimeTravel.3" ) );
+        JLabel hours = new JLabel( Messages.getString( "DialogTimeTravel.2" ) );
+        JLabel minutes = new JLabel( Messages.getString( "DialogTimeTravel.3" ) );
 
         m_output = new JLabel();
         m_output.setHorizontalAlignment( SwingConstants.CENTER );
@@ -134,26 +134,26 @@ implements ActionListener, ChangeListener
         layout.setAutoCreateContainerGaps( true );
 
         layout.setHorizontalGroup(
-    		layout.createParallelGroup( Alignment.CENTER )
-    			.addGroup(
-		    		layout.createSequentialGroup()
-		    			.addGroup(
-		    				layout.createParallelGroup()
-		    					.addComponent( selectTimeZone )
-		    					.addComponent( setTime ) )
-		    			.addGroup(
-		    				layout.createParallelGroup()
-		    					.addComponent( m_timeZoneComboBox )
-				    			.addGroup(
-				    				layout.createSequentialGroup()
-						    			.addGroup(
-						    				layout.createParallelGroup()
-						    					.addComponent( m_hourSpinner )
-						    					.addComponent( hours, Alignment.CENTER ) )
-						    			.addGroup(
-						    				layout.createParallelGroup()
-												.addComponent( m_minuteSpinner )
-												.addComponent( minutes, Alignment.CENTER ) ) ) ) )
+            layout.createParallelGroup( Alignment.CENTER )
+                .addGroup(
+                    layout.createSequentialGroup()
+                        .addGroup(
+                            layout.createParallelGroup()
+                                .addComponent( selectTimeZone )
+                                .addComponent( setTime ) )
+                        .addGroup(
+                            layout.createParallelGroup()
+                                .addComponent( m_timeZoneComboBox )
+                                .addGroup(
+                                    layout.createSequentialGroup()
+                                        .addGroup(
+                                            layout.createParallelGroup()
+                                                .addComponent( m_hourSpinner )
+                                                .addComponent( hours, Alignment.CENTER ) )
+                                        .addGroup(
+                                            layout.createParallelGroup()
+                                                .addComponent( m_minuteSpinner )
+                                                .addComponent( minutes, Alignment.CENTER ) ) ) ) )
                 .addComponent(
                         m_output,
                         Alignment.CENTER,
@@ -162,23 +162,23 @@ implements ActionListener, ChangeListener
                         GroupLayout.PREFERRED_SIZE ) );
 
         layout.setVerticalGroup(
-    		layout.createSequentialGroup()
-    			.addGroup(
-    				layout.createParallelGroup( Alignment.BASELINE )
-    					.addComponent( selectTimeZone )
-    					.addComponent( m_timeZoneComboBox ) )
-				.addPreferredGap( ComponentPlacement.UNRELATED )
-    			.addGroup(
-    				layout.createParallelGroup( Alignment.BASELINE )
-    					.addComponent( setTime )
-    					.addComponent( m_hourSpinner )
-    					.addComponent( m_minuteSpinner ) )
-    			.addGroup(
-    				layout.createParallelGroup()
-    					.addComponent( hours )
-    					.addComponent( minutes ) )
-				.addPreferredGap( ComponentPlacement.UNRELATED )
-				.addComponent( m_output ) );
+            layout.createSequentialGroup()
+                .addGroup(
+                    layout.createParallelGroup( Alignment.BASELINE )
+                        .addComponent( selectTimeZone )
+                        .addComponent( m_timeZoneComboBox ) )
+                .addPreferredGap( ComponentPlacement.UNRELATED )
+                .addGroup(
+                    layout.createParallelGroup( Alignment.BASELINE )
+                        .addComponent( setTime )
+                        .addComponent( m_hourSpinner )
+                        .addComponent( m_minuteSpinner ) )
+                .addGroup(
+                    layout.createParallelGroup()
+                        .addComponent( hours )
+                        .addComponent( minutes ) )
+                .addPreferredGap( ComponentPlacement.UNRELATED )
+                .addComponent( m_output ) );
 
         selectTimeZone();
         updateLabel();
@@ -189,9 +189,9 @@ implements ActionListener, ChangeListener
 
     @Override
     public void actionPerformed( ActionEvent actionEvent )
-	{
+    {
         updateLabel();
-	}
+    }
 
 
     @Override

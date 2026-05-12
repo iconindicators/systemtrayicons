@@ -18,7 +18,7 @@ public abstract class DialogSettingsBase
 extends JDialog
 implements ActionListener, ItemListener
 {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     protected JCheckBox m_runOnStartup =
         new JCheckBox( Messages.getString( "DialogSettingsBase.4" ) );
@@ -48,14 +48,14 @@ implements ActionListener, ItemListener
     }
 
 
-	@Override
-	public void actionPerformed( ActionEvent actionEvent )
-	{
-	    if( actionEvent.getSource() == m_ok )
-	        storeProperties();
+    @Override
+    public void actionPerformed( ActionEvent actionEvent )
+    {
+        if( actionEvent.getSource() == m_ok )
+            storeProperties();
 
-	    DialogSettingsBase.this.dispose(); 
-	}
+        DialogSettingsBase.this.dispose(); 
+    }
 
 
     private void storeProperties()
