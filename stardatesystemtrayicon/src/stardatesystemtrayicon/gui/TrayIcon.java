@@ -6,20 +6,9 @@ import basesystemtrayicon.gui.TrayIconBase;
 
 public class TrayIcon extends TrayIconBase
 {
-    public TrayIcon(
-        String[] applicationAuthors,
-        String applicationIconImage,
-        String applicationName,
-        String applicationURL,
-        String applicationVersion )
+    public TrayIcon( PopupMenu popupMenu )
     {
-        super(
-            new PopupMenu(
-                applicationAuthors,
-                applicationIconImage,
-                applicationName,
-                applicationURL,
-                applicationVersion ) );
+        super( popupMenu );
     }
 
 

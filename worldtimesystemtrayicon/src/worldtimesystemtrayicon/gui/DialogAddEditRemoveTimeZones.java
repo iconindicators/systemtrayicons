@@ -50,11 +50,16 @@ implements ActionListener, TableModelListener
         super( (JDialog)null );
 
         m_applicationIconImage = applicationIconImage;
+    }
 
+
+    /** Required to satisfy the "this-escape" warning introduced in JDK 21. */
+    public void initialise()
+    {
         Utils.initialiseDialog(
             this,
             Messages.getString( "DialogAddEditRemoveTimeZones.3" ),
-            applicationIconImage );
+            m_applicationIconImage );
 
         m_tableModel = new TableModel();
         m_tableModel.addTableModelListener( this );

@@ -14,7 +14,7 @@ implements MouseListener, MouseMotionListener
     private PopupMenuBase m_popupMenu;
 
 
-    public TrayIconBase( PopupMenuBase popupMenuBase )
+    protected TrayIconBase( PopupMenuBase popupMenuBase )
     {
         super(
             popupMenuBase.getApplicationIconImage(),
@@ -22,14 +22,18 @@ implements MouseListener, MouseMotionListener
             popupMenuBase );
 
         m_popupMenu = popupMenuBase;
+    }
 
+
+    public void initialise()
+    {
         setImageAutoSize( true );
         addMouseListener( this );
         addMouseMotionListener( this );
         setImageAutoSize( true );
     }
 
-    
+
     /**
      * Return the text for display in the icon's tool tip (hover text).
      * 

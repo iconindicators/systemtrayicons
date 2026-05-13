@@ -50,10 +50,15 @@ implements ActionListener, ChangeListener
     private Vector<TimeZoneItem> m_userTimeZones; 
 
 
-    public DialogTimeTravel( Image applicationIconImage )
+    public DialogTimeTravel()
     {
         super( (JDialog)null );
+    }
 
+
+    /** Required to satisfy the "this-escape" warning introduced in JDK 21. */
+    public void initialise( Image applicationIconImage )
+    {
         Utils.initialiseDialog(
             this,
             Messages.getString( "DialogTimeTravel.4" ),

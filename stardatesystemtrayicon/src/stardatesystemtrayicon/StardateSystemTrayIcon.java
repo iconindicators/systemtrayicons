@@ -3,6 +3,7 @@ package stardatesystemtrayicon;
 
 import basesystemtrayicon.SystemTrayIconBase;
 import stardatesystemtrayicon.gui.TrayIcon;
+import stardatesystemtrayicon.gui.PopupMenu;
 
 
 /**
@@ -20,7 +21,7 @@ public class StardateSystemTrayIcon extends SystemTrayIconBase
 {
     private StardateSystemTrayIcon()
     {
-        super( TrayIcon.class );
+        super( PopupMenu.class, TrayIcon.class );
     }
 
 

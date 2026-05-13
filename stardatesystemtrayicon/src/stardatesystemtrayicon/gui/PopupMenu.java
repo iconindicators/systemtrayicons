@@ -54,25 +54,28 @@ public class PopupMenu extends PopupMenuBase
     {
         super(
             applicationAuthors,
-            new String[] {
-                CREDIT_ALGORITHM,
-                CREDIT_CHRONOLOGY },
+            new String[] { CREDIT_ALGORITHM, CREDIT_CHRONOLOGY },
             applicationIconImage,
             applicationName,
             applicationURL,
             applicationVersion,
             DialogSettings.class );
+    }
 
-        Properties.upgrade( applicationVersion );
+
+    /** Required to satisfy the "this-escape" warning introduced in JDK 21. */
+    @Override
+    public void initialise()
+    {
+    	super.initialise();
+
+        Properties.upgrade( getApplicationVersion() );
 
         insertSeparator( 0 );
 
         MenuItem menuItem = new MenuItem( POPUP_COPY_TO_CLIPBOARD );
         menuItem.addActionListener( this );
         insert( menuItem, 0 );
-
-        // For debug.
-        System.out.println( getStardate() );
     }
 
 

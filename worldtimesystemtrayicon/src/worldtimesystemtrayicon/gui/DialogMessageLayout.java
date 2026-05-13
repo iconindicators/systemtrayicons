@@ -70,14 +70,17 @@ implements ActionListener, KeyListener
     private PopupMenu m_popupMenu;
 
 
-    public DialogMessageLayout(
-        Image applicationIconImage,
-        PopupMenu popupMenu )
+    public DialogMessageLayout( PopupMenu popupMenu )
     {
         super( (JDialog)null );
 
         m_popupMenu = popupMenu;
+    }
 
+
+    /** Required to satisfy the "this-escape" warning introduced in JDK 21. */
+    public void initialise( Image applicationIconImage )
+    {
         Utils.initialiseDialog(
             this,
             Messages.getString( "DialogMessageLayout.3" ),

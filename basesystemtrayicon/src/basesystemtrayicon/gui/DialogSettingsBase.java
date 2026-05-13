@@ -20,6 +20,8 @@ implements ActionListener, ItemListener
 {
     private static final long serialVersionUID = 1L;
 
+    protected transient Image m_applicationIconImage;
+
     protected JCheckBox m_runOnStartup =
         new JCheckBox( Messages.getString( "DialogSettingsBase.4" ) );
 
@@ -29,19 +31,22 @@ implements ActionListener, ItemListener
     protected JButton m_cancel =
         new JButton( Messages.getString( "DialogSettingsBase.1" ) );
 
-    protected transient Image m_applicationIconImage;
-
 
     protected DialogSettingsBase( Image applicationIconImage )
     {
         super( (JDialog)null );
 
         m_applicationIconImage = applicationIconImage;
+    }
 
+
+    /** Required to satisfy the "this-escape" warning introduced in JDK 21. */
+    public void initialise()
+    {
         Utils.initialiseDialog(
             this,
             Messages.getString( "DialogSettingsBase.6" ),
-            applicationIconImage );
+            m_applicationIconImage );
 
         m_ok.addActionListener( this );
         m_cancel.addActionListener( this );

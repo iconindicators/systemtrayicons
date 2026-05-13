@@ -58,9 +58,10 @@ public abstract class SystemTrayIconBase
 
 
     public SystemTrayIconBase(
-        final Class<? extends TrayIconBase> trayIconClass )
+    	final Class<? extends PopupMenuBase> popupMenuClass,
+    	final Class<? extends TrayIconBase> trayIconClass)
     {
-        if( Boolean.parseBoolean( System.getProperty( "debug" ) ) )
+    	if( Boolean.parseBoolean( System.getProperty( "debug" ) ) )
             debug();
 
         String applicationNameHumanReadable =
@@ -101,7 +102,7 @@ public abstract class SystemTrayIconBase
 
             if( runWithoutSystemTrayIcon )
                 runWithoutSystemTrayIcon(
-                    packageNameOfConcreteClass,
+                    popupMenuClass,
                     applicationAuthors,
                     applicationIconImage,
                     applicationNameHumanReadable,
@@ -110,6 +111,7 @@ public abstract class SystemTrayIconBase
 
             else
                 run(
+                    popupMenuClass,
                     trayIconClass,
                     applicationAuthors,
                     applicationIconImage,
@@ -121,6 +123,7 @@ public abstract class SystemTrayIconBase
 
 
     protected static void run(
+        final Class<? extends PopupMenuBase> popupMenuClass,
         final Class<? extends TrayIconBase> trayIconClass,
         final String[] applicationAuthors,
         final String applicationIconImage,
@@ -136,25 +139,25 @@ public abstract class SystemTrayIconBase
                 {
                     try
                     {
-                        // Could have had the concrete class pass in the tray
-                        // icon, but doing so this way allows error handling
-                        // here rather than for each concrete class.
-                        Constructor<? extends TrayIconBase> constructor =
-                            trayIconClass.getDeclaredConstructor(
-                                new Class<?>[] {
-                                    String[].class,
-                                    String.class,
-                                    String.class,
-                                    String.class,
-                                    String.class } );
-
-                        TrayIconBase trayIcon =
-                            constructor.newInstance(
+                        final PopupMenuBase popupMenu =
+                    		instantiatePopupMenuAndInitialise(
+                				popupMenuClass,
                                 applicationAuthors,
                                 applicationIconImage,
                                 applicationNameHumanReadable,
                                 applicationURL,
                                 applicationVersion );
+
+                        Constructor<? extends TrayIconBase> constructor_trayIcon =
+                            trayIconClass.getDeclaredConstructor(
+                                new Class<?>[] {
+                                	popupMenu.getClass() } );
+
+                        TrayIconBase trayIcon =
+                    		constructor_trayIcon.newInstance(
+                				popupMenu );
+
+                        trayIcon.initialise();
 
                         SystemTray.getSystemTray().add( trayIcon );
                         trayIcon.displayMessage();
@@ -162,11 +165,9 @@ public abstract class SystemTrayIconBase
                     catch(
                         AWTException | 
                         IllegalAccessException |
-                        IllegalArgumentException |
                         InstantiationException |
                         InvocationTargetException |
-                        NoSuchMethodException |
-                        SecurityException exception )
+                        NoSuchMethodException exception )
                     {
                         DialogMessage.showError(
                             Messages.getString( "SystemTrayIconBase.0" ), 
@@ -416,7 +417,7 @@ public abstract class SystemTrayIconBase
 
 
     protected static void runWithoutSystemTrayIcon(
-        final String packageName,
+        final Class<? extends PopupMenuBase> popupMenuClass,
         final String[] applicationAuthors,
         final String applicationIconImage,
         final String applicationNameHumanReadable,
@@ -431,30 +432,18 @@ public abstract class SystemTrayIconBase
                 {
                     try
                     {
-                        String popupMenuPackageAndClass =
-                            packageName + ".gui.PopupMenu";
-
-                        Class<?> popupMenuClass =
-                            Class.forName( popupMenuPackageAndClass );
-
-                        Constructor<?> constructor =
-                            popupMenuClass.getDeclaredConstructor(
-                                new Class<?>[] {
-                                    String[].class,
-                                    String.class,
-                                    String.class,
-                                    String.class,
-                                    String.class } );
-
                         final PopupMenuBase popupMenu =
-                            ( PopupMenuBase )constructor.newInstance(
+                    		instantiatePopupMenuAndInitialise(
+                				popupMenuClass,
                                 applicationAuthors,
                                 applicationIconImage,
                                 applicationNameHumanReadable,
                                 applicationURL,
                                 applicationVersion );
 
-                        final Frame frame = new Frame( packageName );
+                        final Frame frame =
+                    		new Frame(
+                				popupMenu.getClass().getName() );
 
                         frame.addMouseListener
                         (
@@ -518,9 +507,7 @@ public abstract class SystemTrayIconBase
                         frame.setVisible( true );
                     }
                     catch(
-                        ClassNotFoundException |
                         IllegalAccessException |
-                        IllegalArgumentException |
                         InstantiationException |
                         InvocationTargetException |
                         NoSuchMethodException exception )
@@ -534,5 +521,41 @@ public abstract class SystemTrayIconBase
                 }
             }
         );
+    }
+
+
+    protected static PopupMenuBase
+    instantiatePopupMenuAndInitialise(
+		final Class<? extends PopupMenuBase> popupMenuClass,
+	    final String[] applicationAuthors,
+	    final String applicationIconImage,
+	    final String applicationNameHumanReadable,
+	    final String applicationURL,
+	    final String applicationVersion )
+	throws
+		IllegalAccessException,
+		InvocationTargetException,
+		InstantiationException,
+		NoSuchMethodException
+    {
+        Constructor<? extends PopupMenuBase> constructor_popupMenu =
+    		popupMenuClass.getDeclaredConstructor(
+                new Class<?>[] {
+                    String[].class,
+                    String.class,
+                    String.class,
+                    String.class,
+                    String.class } );
+
+        PopupMenuBase popupMenu =
+    		constructor_popupMenu.newInstance(
+            applicationAuthors,
+            applicationIconImage,
+            applicationNameHumanReadable,
+            applicationURL,
+            applicationVersion );
+
+        popupMenu.initialise();
+        return popupMenu;
     }
 }

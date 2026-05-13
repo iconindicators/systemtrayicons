@@ -38,6 +38,14 @@ public class DialogSettings extends DialogSettingsBase
     public DialogSettings( Image applicationIconImage )
     {
         super( applicationIconImage );
+    }
+
+
+    /** Required to satisfy the "this-escape" warning introduced in JDK 21. */
+    @Override
+    public void initialise()
+    {
+    	super.initialise();
 
         JLabel dateFormatLabel =
             new JLabel( Messages.getString( "DialogSettings.6" ) );

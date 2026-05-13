@@ -2,6 +2,7 @@ package worldtimesystemtrayicon;
 
 
 import basesystemtrayicon.SystemTrayIconBase;
+import worldtimesystemtrayicon.gui.PopupMenu;
 import worldtimesystemtrayicon.gui.TrayIcon;
 
 
@@ -20,7 +21,7 @@ public class WorldTimeSystemTrayIcon extends SystemTrayIconBase
 {
     private WorldTimeSystemTrayIcon()
     {
-        super( TrayIcon.class );
+        super( PopupMenu.class,TrayIcon.class );
     }
 
 

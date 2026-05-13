@@ -52,8 +52,15 @@ public class PopupMenu extends PopupMenuBase
             applicationURL,
             applicationVersion,
             DialogSettings.class );
+    }
 
-        Properties.upgrade( applicationVersion );
+
+    @Override
+    public void initialise()
+    {
+    	super.initialise();
+
+        Properties.upgrade( getApplicationVersion() );
 
         insertSeparator( 0 );
 
@@ -86,7 +93,7 @@ public class PopupMenu extends PopupMenuBase
         if( POPUP_ADD_EDIT_REMOVE_TIME_ZONES.equals( menuItem ) )
         {
             setEnabled( false );
-            new DialogAddEditRemoveTimeZones( getApplicationIconImage() );
+            new DialogAddEditRemoveTimeZones( getApplicationIconImage() ).initialise();
             setEnabled( true );
         }
         else if( POPUP_SET_LAYOUT.equals( menuItem ) )
@@ -94,7 +101,7 @@ public class PopupMenu extends PopupMenuBase
             if( userHasAddedTimeZones() )
             {
                 setEnabled( false );
-                new DialogMessageLayout( getApplicationIconImage(), this );
+                new DialogMessageLayout( this ).initialise( getApplicationIconImage() );
                 setEnabled( true );
             }
         }
@@ -103,7 +110,7 @@ public class PopupMenu extends PopupMenuBase
             if( userHasAddedTimeZones() )
             {
                 setEnabled( false );
-                new DialogTimeTravel( getApplicationIconImage());
+                new DialogTimeTravel().initialise( getApplicationIconImage() );
                 setEnabled( true );
             }
         }

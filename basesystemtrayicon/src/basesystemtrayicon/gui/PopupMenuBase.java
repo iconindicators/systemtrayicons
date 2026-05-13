@@ -39,7 +39,9 @@ implements ActionListener, ClipboardOwner
     private static final String POPUP_SETTINGS =
         Messages.getString( "PopupMenuBase.2" );
 
-    private String m_applicationName;
+    private String
+		m_applicationName,
+		m_applicationVersion;
 
     private transient Image m_applicationIconImage;
 
@@ -62,6 +64,7 @@ implements ActionListener, ClipboardOwner
         super();
 
         m_applicationName = applicationName;
+        m_applicationVersion = applicationVersion;
         m_applicationIconImage = Utils.getImage( applicationIconImage );
         m_dialogSettingsBase = dialogSettings;
 
@@ -74,7 +77,12 @@ implements ActionListener, ClipboardOwner
                 applicationName,
                 applicationURL,
                 applicationVersion );
+    }
 
+
+    /** Required to satisfy the "this-escape" warning introduced in JDK 21. */
+    public void initialise()
+    {
         MenuItem menuItem = null;
 
         menuItem = new MenuItem( POPUP_SETTINGS );
@@ -120,6 +128,12 @@ implements ActionListener, ClipboardOwner
     }
 
 
+    public final String getApplicationVersion()
+    {
+        return m_applicationVersion;
+    }
+
+
     protected void copyToClipboard( String message )
     {
         try
@@ -151,16 +165,14 @@ implements ActionListener, ClipboardOwner
                 Constructor<? extends DialogSettingsBase> constructor =
                     m_dialogSettingsBase.getDeclaredConstructor( Image.class );
 
-                constructor.newInstance( getApplicationIconImage() );
+                constructor.newInstance( getApplicationIconImage() ).initialise();
             }
             catch
             (
                 InstantiationException |
                 IllegalAccessException |
-                IllegalArgumentException |
                 InvocationTargetException |
-                NoSuchMethodException |
-                SecurityException exception
+                NoSuchMethodException exception
             )
             {
                 DialogMessage.showError(
