@@ -102,7 +102,6 @@
         <javac
             debug="true"
             debuglevel="lines,source,vars"
-            sourcepath=""
             source="8"
             target="8"
             srcdir="${srcdir}"
