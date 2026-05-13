@@ -90,7 +90,16 @@ Then install on `Microsoft Windows` and run as any regular application.
 
 **Prerequisite:** The System Tray Icon must be installed.
 
-Launch a Windows Terminal (Command Prompt):
+Launch a Windows Terminal (Command Prompt); for `Windows XP` navigate to:
+```
+  C:\Documents and Settings\<current user>\Local Settings\Application Data\<system tray icon>
+```
+whereas for `Windows Vista` and greater, navigate to:
+
+```
+  C:\Users\<current user>\AppData\Local\<system tray icon>
+```
+Run the system tray icon Jar:
 
 ```
   java -jar stardatesystemtrayicon-6.0.0.jar
@@ -99,7 +108,6 @@ or
 ```
   java -jar worldtimesystemtrayicon-3.0.0.jar
 ```
-which will launch a tray icon in the system tray.
 
 The parameters `-DrunWithoutSystemTrayIcon=true` and/or `-Ddebug=true` may also be used (described above when running within the source folder).
 
