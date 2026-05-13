@@ -57,6 +57,12 @@ import java.util.TimeZone;
  */
 public class Stardate
 {
+    private Stardate()
+    {
+        throw new UnsupportedOperationException( "Do not instantiate!" );
+    }
+
+
     /**
      * The Gregorian dates which reflect the start date for each rate in the
      * 'classic' stardate era.
