@@ -537,7 +537,7 @@
     </target>
 
 
-    <!-- Create NSIS installer/launcher for Startdate System Tray Icon. -->
+    <!-- Create NSIS installer/launcher for Stardate System Tray Icon. -->
     <target
         name="NSIS-StardateSystemTrayIcon"
         depends="CompileAndJar,NSIS-Initialise-Files">
