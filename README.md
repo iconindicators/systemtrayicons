@@ -68,4 +68,4 @@ License
 This project in its entirety is licensed under the terms of the GNU General
 Public License v3.0 license.
 
-Copyright 2007-2025 Bernard Giannetti.
+Copyright 2007-2026 Bernard Giannetti.
